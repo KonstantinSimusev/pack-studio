@@ -36,9 +36,9 @@
 }
 
 .button {
+  opacity: 0.6;
   text-align: end;
   font-size: 14px;
-  opacity: 0.6;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
@@ -60,7 +60,7 @@
 }
 
 .button__wrapper {
-  margin-top: 40px;
+  margin-top: 60px;
   display: flex;
   justify-content: center;
 }
