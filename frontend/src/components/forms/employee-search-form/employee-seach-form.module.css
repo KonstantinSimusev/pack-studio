@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input {
+  margin-top: clamp(3.125rem, 2.7729rem + 1.7606vw, 4.375rem);
+}
+
+.message {
+  position: relative; /* Создаём контекст для абсолютного позиционирования */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 26px;
+  margin-bottom: clamp(1.25rem, 0.9052rem + 1.7241vw, 1.875rem);
+}
+
+.button {
+  color: var(--color-button);
+  background-color: var(--bg-color-button);
+}

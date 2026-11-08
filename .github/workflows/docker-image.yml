@@ -1,0 +1,65 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - "**"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/pack-studio-backend
+          tags: |
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+
+      - name: Build and push pack-studio-backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata for pack-studio-server
+        id: meta_server
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/pack-studio-server
+          tags: |
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+
+      - name: Build and push pack-studio-server
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: nginx/Dockerfile
+          push: true
+          tags: ${{ steps.meta_server.outputs.tags }}
+          labels: ${{ steps.meta_server.outputs.labels }}

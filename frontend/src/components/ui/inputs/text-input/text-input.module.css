@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: clamp(6.25rem, 5.9052rem + 1.7241vw, 6.875rem);
+}
+
+.label {
+  font-size: 14px;
+  position: relative;
+  padding: 0 10px;
+  opacity: 0.6;
+}
+
+.label::after {
+  content: '*';
+  position: absolute;
+  top: 0;
+  left: 2px;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 18px 50px 18px 20px; 
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  outline: none;
+  overflow: hidden; /* Скрываем всё, что не влезло */
+  white-space: nowrap; /* Запрещаем перенос строки */
+  text-overflow: ellipsis; /* Показываем «…» вместо обрезанного текста */
+}
+
+/* Крестик — просто справа, по центру высоты */
+.clear__button {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transform: translateY(-50%); /* Центрирует по вертикали */
+  border: none;
+  opacity: 0.4;
+  background: none;
+  cursor: pointer;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.error {
+  padding: 0 6px;
+  color: var(--color-error);
+  font-size: 12px;
+}
+
+.input::-webkit-password-picker-indicator {
+  filter: invert(100%);
+}

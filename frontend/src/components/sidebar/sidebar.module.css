@@ -1,0 +1,82 @@
+.container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 290px;
+  height: 100vh;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-left: 1px solid rgba(234 234 234 / 0.4);
+  padding: 30px;
+  background-color: #1c1c1c;
+  transition: transform 0.2s ease;
+  transform: translateX(100%);
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.button {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 0;
+  overflow-y: auto;
+}
+
+.link {
+  position: relative;
+  width: fit-content;
+  color: rgba(255 255 255 / 0.5);
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.label {
+  letter-spacing: 0.2px;
+}
+
+.badge {
+  position: absolute;
+  top: 50%;
+  right: -26px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #d32f2f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.active {
+  color: rgba(255 255 255 / 0.8);
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logoutButton {
+  color: rgba(255 255 255 / 0.5);
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.link:hover,
+.logoutButton:hover {
+  opacity: 0.8;
+}

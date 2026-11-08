@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.block {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  font-size: 14px;
+}
+
+.title {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.text {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

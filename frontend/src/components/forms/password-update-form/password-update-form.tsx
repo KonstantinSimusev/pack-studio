@@ -1,0 +1,78 @@
+import { useContext, useEffect } from 'react';
+
+import { useDispatch, useSelector } from '../../../services/store';
+
+import { updateLoginAndPassword } from '../../../services/slices/account/actions';
+
+import {
+  clearUpdateAccountError,
+  selectUpdateAccountError,
+} from '../../../services/slices/account/slice';
+
+import { LayerContext } from '../../../contexts/layer/layerContext';
+
+import { Button } from '../../ui/buttons/button/button';
+import { Form } from '../../ui/form/form';
+import { ServerError } from '../../ui/server-error/server-error';
+
+import styles from './password-update-form.module.css';
+
+export const PasswordUpdateForm = () => {
+  const dispatch = useDispatch();
+
+  const serverError = useSelector(selectUpdateAccountError);
+
+  const {
+    selectedId,
+    isPasswordUpdateOpen,
+    setIsOverlayOpen,
+    setIsPasswordUpdateOpen,
+    setIsAccountInfoOpen,
+  } = useContext(LayerContext);
+
+  useEffect(() => {
+    if (isPasswordUpdateOpen) {
+      dispatch(clearUpdateAccountError());
+    }
+  }, [isPasswordUpdateOpen]);
+
+  const handleUpdateClick = async () => {
+    const result = await dispatch(updateLoginAndPassword(selectedId));
+
+    // Очищаем состояние оверлеев и модальных окон
+    if (result.payload) {
+      setIsPasswordUpdateOpen(false);
+      setIsAccountInfoOpen(true);
+    }
+  };
+
+  const handleReturnClick = () => {
+    setIsOverlayOpen(false);
+    setIsPasswordUpdateOpen(false);
+  };
+
+  return (
+    <Form title='Обновить логин и пароль?' className={styles.title}>
+      <div className={styles.message}><ServerError text={serverError} />
+      </div>
+
+      <div className={styles.buttons__wrapper}>
+        <Button
+          type='button'
+          onClick={handleUpdateClick}
+          className={styles.button__ok}
+        >
+          Да
+        </Button>
+
+        <Button
+          type='button'
+          onClick={handleReturnClick}
+          className={styles.button__return}
+        >
+          Отменить
+        </Button>
+      </div>
+    </Form>
+  );
+};

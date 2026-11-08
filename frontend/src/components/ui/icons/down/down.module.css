@@ -1,0 +1,6 @@
+.icon {
+  width: 26px;
+  height: 26px;
+  fill: var(--color-default);
+  pointer-events: none; /* Ключевое свойство */
+}

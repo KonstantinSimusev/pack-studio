@@ -1,0 +1,680 @@
+// Определяем тип для одного правила валидации
+interface IValidationRule {
+  type: string;
+  pattern?: RegExp;
+  message: string;
+  min?: number;
+  max?: number;
+  options?: string[];
+}
+
+// Определяем тип для поля валидации
+interface IFieldValidation {
+  required: boolean;
+  validators: IValidationRule[];
+}
+
+// Определяем общий тип для всех правил валидации
+interface IValidationRules {
+  [fieldName: string]: IFieldValidation;
+}
+
+// Объект с расширенными правилами валидации
+export const validationRules: IValidationRules = {
+  email: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректный адрес почты', // Email не должен содержать пробелы
+      },
+      {
+        type: 'hasAtSymbol',
+        pattern: /@/,
+        message: 'Введите корректный адрес почты', // 'Отсутствует символ @
+      },
+      {
+        type: 'atSymbolPosition',
+        pattern: /^[^@]+@[^@]+$/,
+        message: 'Введите корректный адрес почты', // Символ @ должен быть между другими символами
+      },
+      {
+        type: 'domainPart',
+        pattern: /@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        message: 'Введите корректный адрес почты', // Некорректная доменная часть emai
+      },
+      {
+        type: 'latin',
+        pattern: /^[a-zA-Z0-9._%+-@]+$/,
+        message: 'Введите корректный адрес почты', // Разрешены только латинские символы, цифры и ._%+-@
+      },
+      {
+        type: 'length',
+        pattern: /^.{6,100}$/,
+        message: 'Введите корректный адрес почты', // Email должен содержать от 6 до 50 символов
+      },
+      {
+        type: 'noLeadingHyphen',
+        pattern: /^[a-zA-Z0-9]/,
+        message: 'Введите корректный адрес почты', // Домен не может начинаться с дефиса
+      },
+      {
+        type: 'noDoubleHyphens',
+        pattern: /^(?!.*--)/,
+        message: 'Введите корректный адрес почты', // Запрещено использовать два дефиса подряд
+      },
+    ],
+  },
+  login: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^.{8,50}$/,
+        message: 'Введите 8-50 символов',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректный логин',
+      },
+      {
+        type: 'uppercase',
+        pattern: /[A-Z]/,
+        message: 'Введите корректный логин', // Должна быть хотя бы одна заглавная буква
+      },
+    ],
+  },
+  password: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^.{8,50}$/,
+        message: 'Введите 8-50 символов',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректный пароль',
+      },
+    ],
+  },
+  lastName: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^.{2,50}$/,
+        message: 'Введите 2-50 символов',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректную фамилию',
+      },
+    ],
+  },
+  firstName: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^.{2,30}$/,
+        message: 'Введите 2-30 символов',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректное имя',
+      },
+    ],
+  },
+  patronymic: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^.{2,40}$/,
+        message: 'Введите 2-40 символов',
+      },
+      {
+        type: 'noSpaces',
+        pattern: /^\S+$/,
+        message: 'Введите корректное отчество',
+      },
+    ],
+  },
+  personalNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^.{3,10}$/,
+        message: 'Введите 3-10 символов',
+      },
+    ],
+  },
+  teamNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^(1|2|3|4|5)$/,
+        message: 'Введите чило от 1 до 5',
+      },
+    ],
+  },
+  positionCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^.{3,10}$/,
+        message: 'Введите 3-10 символов',
+      },
+    ],
+  },
+  gradeCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  scheduleCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  paymentCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  attendanceCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  profileTeamNumber: {
+    required: false,
+    validators: [
+      {
+        type: 'length',
+        pattern: /^$|^(1|2|3|4|5)$/,
+        message: 'Введите чило от 1 до 5',
+      },
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  profilePositionCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^.{3,10}$/,
+        message: 'Введите 3-10 символов',
+      },
+    ],
+  },
+  profileGradeCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  profileScheduleCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  profilePaymentCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  birthDay: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'dateFormat',
+        pattern:
+          /^((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  startDate: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'dateFormat',
+        pattern:
+          /^((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  endDate: {
+    required: false,
+    validators: [
+      {
+        type: 'dateFormat',
+        pattern:
+          /^$|((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  currentProfessionCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  currentPaymentCode: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+    ],
+  },
+  positionStartDate: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Выберите дату',
+      },
+      {
+        type: 'dateFormat',
+        pattern:
+          /^((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  positionEndDate: {
+    required: false,
+    validators: [
+      {
+        type: 'dateFormat',
+        pattern:
+          /^$|((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  transferReason: {
+    required: false,
+    validators: [
+      {
+        type: 'in',
+        options: [
+          '',
+          'Свободная позиция',
+          'На время отсутствия',
+          'На время отвлечения',
+          'Для ознакомления',
+          'Производство',
+        ],
+        message: 'Выберите причину из списка',
+      },
+    ],
+  },
+  shiftDate: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'dateFormat',
+        pattern:
+          /^((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2}$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  shiftNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Выберите смену',
+      },
+      {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^(1|2)$/,
+        message: 'Введите число 1 или 2',
+      },
+    ],
+  },
+  workStatus: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Выберите статус',
+      },
+      {
+        type: 'notDefault',
+        pattern: /^(?!Не определен$).+/,
+        message: 'Выберите статус',
+      },
+    ],
+  },
+  workplace: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Выберите место',
+      },
+    ],
+  },
+  hours: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'pattern',
+        // Разрешает: 0,1,2,...,9,10,11,12. Не пропускает минусы, дроби, пробелы, буквы
+        pattern: /^(?:[0-9]|1[0-2])$/,
+        message: 'Введите число от 0 до 12',
+      },
+    ],
+  },
+  minutes: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'pattern',
+        // 0–9 или 10–59. Не пропускает 60+, минусы, дроби, буквы, пробелы
+        pattern: /^(?:[0-9]|[1-5][0-9])$/,
+        message: 'Введите число от 0 до 59',
+      },
+    ],
+  },
+  count: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'range',
+        pattern: /^\d+$/,
+        min: 0,
+        max: 1000,
+        message: 'Только целое число от 0 до 1000',
+      },
+    ],
+  },
+  documentStartDate: {
+    required: false,
+    validators: [
+      {
+        type: 'dateFormat',
+        pattern:
+          /^(?:$|((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2})$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  documentEndDate: {
+    required: false,
+    validators: [
+      {
+        type: 'dateFormat',
+        pattern:
+          /^(?:$|((0[1-9]|[12][0-9]|3[01])\.(0[13578]|1[02])\.|(0[1-9]|[12][0-9]|30)\.(0[469]|11)\.|(0[1-9]|1[0-9]|2[0-9])\.02\.)(19|20)\d{2})$/,
+        message: 'Введите дату в формате ДД.ММ.ГГГГ',
+      },
+    ],
+  },
+  documentAbsentEmpNumber: {
+    required: false,
+    validators: [
+      {
+        type: 'number',
+        pattern: /^(?:$|^\d+$)$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^(?:$|^.{3,10}$)$/,
+        message: 'Введите 3-10 символов',
+      },
+    ],
+  },
+};
+
+// Функция для валидации одного поля
+export const validateField = (
+  fieldName: string, // Имя поля, которое валидируем
+  value: string, // Значение поля для проверки
+  rules: IValidationRules, // Объект с правилами валидации
+): string => {
+  // Получаем правила валидации для конкретного поля
+  const fieldRules = rules[fieldName];
+
+  // Если поле не найдено в правилах валидации
+  if (!fieldRules) return '';
+
+  // Проходим по всем валидаторам поля
+  for (const validator of fieldRules.validators) {
+    // Обработка валидации 'in' — проверка на принадлежность значения списку
+    if (validator.type === 'in') {
+      if (validator.options && !validator.options.includes(value)) {
+        return validator.message;
+      }
+      continue; // пропускаем остальные проверки, если 'in' пройден
+    }
+
+    if (fieldName === 'date' && !value) {
+      return validator.message;
+    }
+
+    if (validator.type === 'decimal') {
+      // 1. Синтаксическая проверка (формат)
+      if (!validator.pattern?.test(value)) {
+        return validator.message;
+      }
+
+      // 2. Числовая проверка диапазона (0–11.5)
+      const numValue = parseFloat(value.replace(',', '.'));
+      if (isNaN(numValue)) {
+        return validator.message;
+      }
+      if (numValue < 0 || numValue > 12) {
+        return 'Введите число от 0 до 12';
+      }
+    }
+
+    if (validator.type === 'range') {
+      // Если поле пустое — уже отловилось в 'integer'
+      if (value === '') return validator.message;
+
+      const num = Number(value);
+      if (isNaN(num)) return validator.message;
+
+      if (
+        (validator.min !== undefined && num < validator.min) ||
+        (validator.max !== undefined && num > validator.max)
+      ) {
+        return validator.message;
+      }
+    }
+
+    // Если значение не соответствует регулярному выражению
+    if (validator.pattern && !validator.pattern.test(value)) {
+      return validator.message; // Возвращаем сообщение об ошибке
+    }
+  }
+
+  // Если все проверки пройдены, возвращаем пустую строку
+  return '';
+};
+
+// Функция для валидации всей формы
+export const validateForm = (
+  formData: Record<string, string>, // Объект с данными формы
+  rules: IValidationRules, // Объект с правилами валидации
+): Record<string, string> => {
+  const errors: Record<string, string> = {}; // Объект для хранения ошибок
+
+  // Проходим по всем полям формы
+  for (const fieldName in formData) {
+    // Валидируем поле
+    const error = validateField(fieldName, formData[fieldName], rules);
+    // Если есть ошибка, сохраняем её
+    if (error) {
+      errors[fieldName] = error;
+    }
+  }
+
+  return errors; // Возвращаем объект с ошибками
+};

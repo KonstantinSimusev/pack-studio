@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 46px 30px 30px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.title {
+  font-family: var(--font-family-logo);
+  display: flex;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+}
+
+.actions {
+  display: flex;
+  gap: 18px;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
