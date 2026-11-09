@@ -60,18 +60,6 @@ export const EmployeeCard = ({
           text={employee.profilePositionCode ?? '-'}
         />
 
-        <TableBlock title='Разряд' text={employee.profileGradeCode ?? '-'} />
-
-        <TableBlock
-          title='График работы'
-          text={employee.profileScheduleCode ?? '-'}
-        />
-
-        <TableBlock
-          title='Система оплаты'
-          text={employee.profilePaymentCode ?? '-'}
-        />
-        
         <TableBlock title='Роль' text={getRoleName(employee.profileRoleName)} />
 
         <TableBlock
@@ -87,9 +75,6 @@ export const EmployeeCard = ({
         <TableBlock title='Бригада №' text={employee.teamNumber} />
         <TableBlock title='Личный №' text={employee.personalNumber} />
         <TableBlock title='Штатная позиция' text={employee.positionCode} />
-        <TableBlock title='Разряд' text={employee.gradeCode} />
-        <TableBlock title='График работы' text={employee.scheduleCode} />
-        <TableBlock title='Система оплаты' text={employee.paymentCode} />
 
         <TableBlock
           title='Дата рождения'

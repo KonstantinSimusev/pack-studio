@@ -2,12 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { formatDateForISO } from '../../../utils/utils';
-import {
-  GRADE_CODE_OPTIONS,
-  PAYMENT_CODE_OPTIONS,
-  SCHEDULE_CODE_OPTIONS,
-  TEAM_CODE_OPTIONS,
-} from '../../../utils/constants';
+import { TEAM_CODE_OPTIONS } from '../../../utils/constants';
 import { ICreateEmployee } from '../../../utils/api.interfaces';
 
 import {
@@ -42,9 +37,6 @@ interface IFormData extends Record<string, string> {
   personalNumber: string;
   teamNumber: string;
   positionCode: string;
-  gradeCode: string;
-  scheduleCode: string;
-  paymentCode: string;
   birthDay: string;
   startDate: string;
 }
@@ -69,9 +61,6 @@ export const EmployeeCreateForm = () => {
     personalNumber: '',
     teamNumber: '',
     positionCode: '',
-    gradeCode: '',
-    scheduleCode: '',
-    paymentCode: '',
     birthDay: '',
     startDate: '',
   });
@@ -84,9 +73,6 @@ export const EmployeeCreateForm = () => {
     personalNumber: '',
     teamNumber: '',
     positionCode: '',
-    gradeCode: '',
-    scheduleCode: '',
-    paymentCode: '',
     birthDay: '',
     startDate: '',
   });
@@ -157,9 +143,6 @@ export const EmployeeCreateForm = () => {
       personalNumber: formData.personalNumber,
       teamNumber: formData.teamNumber,
       positionCode: formData.positionCode,
-      gradeCode: formData.gradeCode,
-      scheduleCode: formData.scheduleCode,
-      paymentCode: formData.paymentCode,
       birthDay: formatDateForISO(formData.birthDay),
       startDate: formatDateForISO(formData.startDate),
     };
@@ -179,9 +162,6 @@ export const EmployeeCreateForm = () => {
         personalNumber: '',
         teamNumber: '',
         positionCode: '',
-        gradeCode: '',
-        scheduleCode: '',
-        paymentCode: '',
         birthDay: '',
         startDate: '',
       });
@@ -193,8 +173,6 @@ export const EmployeeCreateForm = () => {
         personalNumber: '',
         teamNumber: '',
         positionCode: '',
-        gradeCode: '',
-        scheduleCode: '',
         birthDay: '',
         startDate: '',
       });
@@ -212,9 +190,6 @@ export const EmployeeCreateForm = () => {
     !formData.personalNumber ||
     !formData.teamNumber ||
     !formData.positionCode ||
-    !formData.gradeCode ||
-    !formData.scheduleCode ||
-    !formData.paymentCode ||
     !formData.birthDay ||
     !formData.startDate;
 
@@ -286,36 +261,6 @@ export const EmployeeCreateForm = () => {
         placeholder='123456'
         value={formData.positionCode}
         error={errors.positionCode}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <SelectInput
-        name='gradeCode'
-        label='Разряд'
-        value={formData.gradeCode}
-        options={GRADE_CODE_OPTIONS}
-        error={errors.gradeCode}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-
-      <SelectInput
-        name='scheduleCode'
-        label='График работы'
-        value={formData.scheduleCode}
-        options={SCHEDULE_CODE_OPTIONS}
-        error={errors.scheduleCode}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-
-      <SelectInput
-        name='paymentCode'
-        label='Система оплаты'
-        value={formData.paymentCode}
-        options={PAYMENT_CODE_OPTIONS}
-        error={errors.paymentCode}
         onChange={handleChange}
         onBlur={handleBlur}
       />

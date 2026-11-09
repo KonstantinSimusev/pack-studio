@@ -1,0 +1,124 @@
+import {
+  Entity,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
+
+import { Account } from '../../account/entities/account.entity';
+// import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
+import { Position } from '../../position/entities/position.entity';
+import { Team } from '../../team/entities/team.entity';
+
+@Entity({
+  name: 'employees',
+})
+export class Employee {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({
+    name: 'last_name',
+    type: 'varchar',
+    length: 50,
+    nullable: false,
+  })
+  lastName: string;
+
+  @Column({
+    name: 'first_name',
+    type: 'varchar',
+    length: 50,
+    nullable: false,
+  })
+  firstName: string;
+
+  @Column({
+    name: 'patronymic',
+    type: 'varchar',
+    length: 50,
+    nullable: false,
+  })
+  patronymic: string;
+
+  @Column({
+    name: 'personal_number',
+    type: 'integer',
+    nullable: false,
+    unique: true,
+  })
+  personalNumber: number;
+
+  @Column({
+    name: 'birth_day',
+    type: 'date',
+    nullable: false,
+  })
+  birthDay: Date;
+
+  @Column({
+    name: 'start_date',
+    type: 'date',
+    nullable: false,
+  })
+  startDate: Date;
+
+  @Column({
+    name: 'end_date',
+    type: 'date',
+    nullable: true,
+  })
+  endDate: Date | null;
+
+  // Доступ в личный кабинет
+  @Column({
+    name: 'has_access',
+    default: true,
+    nullable: false,
+  })
+  hasAccess: boolean;
+
+  // Уволен/не уволен
+  @Column({
+    name: 'is_active',
+    default: true,
+    nullable: false,
+  })
+  isActive: boolean;
+
+  // Связь: один сотрудник — один аккаунт
+  @OneToOne(() => Account, (account) => account.employee, {
+    cascade: ['remove'],
+  })
+  @JoinColumn({ name: 'account_id' })
+  account: Account;
+
+  // Связь: много сотрудников — одна бригада
+  @ManyToOne(() => Team, (team) => team.employees)
+  @JoinColumn({ name: 'team_id' })
+  team: Team;
+
+  // Связь: много сотрудников — одна штатная позиция
+  @ManyToOne(() => Position, (position) => position.employees)
+  @JoinColumn({ name: 'position_id' })
+  position: Position;
+
+  // Связь: много сотрудников — одна бригада для руководителя
+  // Это связь нужна для профиля, чтобы зайти в личный кабинет руководителя
+  @ManyToOne(() => Team, (team) => team.profileEmployees)
+  @JoinColumn({ name: 'profile_team_id' })
+  profileTeam: Team;
+
+  // Связь: много сотрудников — одна штатная позиция для руководителя
+  // Это связь нужна для профиля, чтобы зайти в личный кабинет руковдителя
+  @ManyToOne(() => Position, (position) => position.profileEmployees)
+  @JoinColumn({ name: 'profile_position_id' })
+  profilePosition: Position;
+
+  // // Связь: один сотрудник — много смен сотрудника
+  // @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)
+  // employeeShifts: EmployeeShift[];
+}

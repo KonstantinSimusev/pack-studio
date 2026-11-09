@@ -1,4 +1,3 @@
-import { INotice } from '../interfaces/api.interface';
 import { ESchedule, EWorkshop } from '../enums/enums';
 
 export const toNumber = (value: unknown): number => {
@@ -451,27 +450,3 @@ export const normalizeScheduleCode = (
     ? ESchedule.S_2A
     : scheduleCode;
 };
-
-// export const mapNotice = (notice: Notice): INotice => {
-//   // sourceDate — это просто день события. Нам нужна только дата.
-//   const formattedSourceDate = notice.sourceDate
-//     ? new Date(notice.sourceDate).toISOString().split('T')[0] // "2026-09-25"
-//     : null;
-
-//   return {
-//     id: notice.id,
-//     sourceId: notice.sourceId,
-//     sourceDate: formattedSourceDate, // Только дата
-//     categoryCode: notice.title?.category?.categoryCode ?? '',
-//     titleText: notice.title?.titleText ?? '',
-//     statusLabel: notice.title?.status?.statusLabel ?? '',
-//     actionCode: notice.title?.action?.actionCode ?? '',
-//     actionLabel: notice.title?.action?.actionLabel ?? '',
-//     isUnread: notice.isUnread,
-//     isResolved: notice.isResolved,
-//     createdAt: notice.createdAt.toISOString(),
-//     workshopCode: notice.workshop?.workshopCode ?? '',
-//     teamNumber: notice.team?.teamNumber ?? 0,
-//     scheduleCode: notice.schedule?.scheduleCode ?? '',
-//   };
-// };

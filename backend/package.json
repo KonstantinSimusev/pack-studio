@@ -10,7 +10,12 @@
     "start:prod": "node dist/main",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migrate:generate": "npm run typeorm migration:generate -- -d src/database/data-source.ts",
+    "migrate:create": "npm run typeorm migration:create --",
+    "migrate:up": "npm run typeorm migration:run -- -d src/database/data-source.ts",
+    "migrate:down": "npm run typeorm migration:revert -- -d src/database/data-source.ts"
   },
   "overrides": {
     "multer": "^2.5.0",

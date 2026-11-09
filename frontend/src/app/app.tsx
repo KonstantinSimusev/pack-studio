@@ -20,25 +20,25 @@ import {
   selectIsUpdateEmployeeLoading,
 } from '../services/slices/employee/slice';
 
-import {
-  selectIsGetShiftsLoading,
-  selectIsSearchShiftsLoading,
-  selectIsShiftLoading,
-} from '../services/slices/shift/slice';
+// import {
+//   selectIsGetShiftsLoading,
+//   selectIsSearchShiftsLoading,
+//   selectIsShiftLoading,
+// } from '../services/slices/shift/slice';
 
-import {
-  selectIsCreateEmployeeShiftLoading,
-  selectIsDeleteEmployeeShiftLoading,
-  selectIsUpdateEmployeeShiftLoading,
-} from '../services/slices/employee-shift/slice';
+// import {
+//   selectIsCreateEmployeeShiftLoading,
+//   selectIsDeleteEmployeeShiftLoading,
+//   selectIsUpdateEmployeeShiftLoading,
+// } from '../services/slices/employee-shift/slice';
 
 import { DefaultPage } from '../pages/default/default-page';
 import { HomePage } from '../pages/home/home-page';
 import { EmployeePage } from '../pages/employee/employee-page';
 import { NotFoundPage } from '../pages/not-found/not-found-page';
 import { ProductionPage } from '../pages/master/production/production-page';
-import { ShiftPage } from '../pages/master/shift/shift-page';
-import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
+// import { ShiftPage } from '../pages/master/shift/shift-page';
+// import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
 
 import { BlockingLoader } from '../components/ui/blocking-loader/blocking-loader';
 import { Footer } from '../components/footer/footer';
@@ -53,10 +53,10 @@ import { EmployeeSearchForm } from '../components/forms/employee-search-form/emp
 import { LoginForm } from '../components/forms/login-form/login-form';
 import { LogoutForm } from '../components/forms/loguot-form/logout-form';
 import { PasswordUpdateForm } from '../components/forms/password-update-form/password-update-form';
-import { EmployeeAddForm } from '../components/forms/employee-add-form/employee-add-form';
-import { ShiftSearchForm } from '../components/forms/shift-search-form/shift-search-form';
-import { EmployeeShiftEditForm } from '../components/forms/employee-shift-edit-form/employee-shift-edit-form';
-import { EmployeeShiftDeleteForm } from '../components/forms/employee-shift-delete-form/employee-shift-delete-form';
+// import { EmployeeAddForm } from '../components/forms/employee-add-form/employee-add-form';
+// import { ShiftSearchForm } from '../components/forms/shift-search-form/shift-search-form';
+// import { EmployeeShiftEditForm } from '../components/forms/employee-shift-edit-form/employee-shift-edit-form';
+// import { EmployeeShiftDeleteForm } from '../components/forms/employee-shift-delete-form/employee-shift-delete-form';
 
 import styles from './app.module.css';
 
@@ -70,10 +70,10 @@ const App = () => {
     isEmployeeEditOpen,
     isAccountInfoOpen,
     isPasswordUpdateOpen,
-    isShiftSearchOpen,
-    isEmployeeAddOpen,
-    isEmployeeShiftEditOpen,
-    isEmployeeShiftDeleteOpen,
+    // isShiftSearchOpen,
+    // isEmployeeAddOpen,
+    // isEmployeeShiftEditOpen,
+    // isEmployeeShiftDeleteOpen,
   } = useContext(LayerContext);
 
   const dispatch = useDispatch();
@@ -83,34 +83,34 @@ const App = () => {
   const isCreateEmployeeLoading = useSelector(selectIsCreateEmployeeLoading);
   const isUpdateEmployeeLoading = useSelector(selectIsUpdateEmployeeLoading);
   const isSearchEmployeeLoading = useSelector(selectIsSearchEmployeeLoading);
-  const isShiftLoading = useSelector(selectIsShiftLoading);
-  const isGetShiftsLoading = useSelector(selectIsGetShiftsLoading);
-  const isSearchShiftsLoading = useSelector(selectIsSearchShiftsLoading);
+  // const isShiftLoading = useSelector(selectIsShiftLoading);
+  // const isGetShiftsLoading = useSelector(selectIsGetShiftsLoading);
+  // const isSearchShiftsLoading = useSelector(selectIsSearchShiftsLoading);
 
-  const isCreateEmployeeShiftLoading = useSelector(
-    selectIsCreateEmployeeShiftLoading,
-  );
+  // const isCreateEmployeeShiftLoading = useSelector(
+  //   selectIsCreateEmployeeShiftLoading,
+  // );
 
-  const isUpdateEmployeeShiftLoading = useSelector(
-    selectIsUpdateEmployeeShiftLoading,
-  );
+  // const isUpdateEmployeeShiftLoading = useSelector(
+  //   selectIsUpdateEmployeeShiftLoading,
+  // );
 
-  const isDeleteEmployeeShiftLoading = useSelector(
-    selectIsDeleteEmployeeShiftLoading,
-  );
+  // const isDeleteEmployeeShiftLoading = useSelector(
+  //   selectIsDeleteEmployeeShiftLoading,
+  // );
 
   const isLoading =
     isAuthLoading ||
     isUpdateAccountLoading ||
     isCreateEmployeeLoading ||
     isUpdateEmployeeLoading ||
-    isSearchEmployeeLoading ||
-    isShiftLoading ||
-    isGetShiftsLoading ||
-    isSearchShiftsLoading ||
-    isCreateEmployeeShiftLoading ||
-    isUpdateEmployeeShiftLoading ||
-    isDeleteEmployeeShiftLoading;
+    isSearchEmployeeLoading;
+    // isShiftLoading ||
+    // isGetShiftsLoading ||
+    // isSearchShiftsLoading ||
+    // isCreateEmployeeShiftLoading ||
+    // isUpdateEmployeeShiftLoading ||
+    // isDeleteEmployeeShiftLoading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
   const showBlocker = useLoaderWithDelay(isLoading, 300, 300);
@@ -142,8 +142,8 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path='/home' element={<HomePage />} />
               <Route path='/employee' element={<EmployeePage />} />
-              <Route path='/timesheet' element={<TimesheetPage />} />
-              <Route path='/timesheet/:shiftId' element={<ShiftPage />} />
+              {/* <Route path='/timesheet' element={<TimesheetPage />} />
+              <Route path='/timesheet/:shiftId' element={<ShiftPage />} /> */}
                <Route path='/production' element={<ProductionPage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>
@@ -191,7 +191,7 @@ const App = () => {
         </Modal>
       )}
 
-      {isShiftSearchOpen && (
+      {/* {isShiftSearchOpen && (
         <Modal>
           <ShiftSearchForm />
         </Modal>
@@ -213,7 +213,7 @@ const App = () => {
         <Modal>
           <EmployeeShiftDeleteForm />
         </Modal>
-      )}
+      )} */}
 
       {isLogoutOpen && (
         <Modal>

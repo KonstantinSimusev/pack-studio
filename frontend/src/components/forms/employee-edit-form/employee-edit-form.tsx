@@ -4,12 +4,7 @@ import { formatDateFormUI, formatDateForISO } from '../../../utils/utils';
 
 import { IUpdateEmployee } from '../../../utils/api.interfaces';
 
-import {
-  GRADE_CODE_OPTIONS,
-  PAYMENT_CODE_OPTIONS,
-  SCHEDULE_CODE_OPTIONS,
-  TEAM_CODE_OPTIONS,
-} from '../../../utils/constants';
+import { TEAM_CODE_OPTIONS } from '../../../utils/constants';
 
 import {
   validateField,
@@ -43,9 +38,6 @@ import styles from './employee-edit-form.module.css';
 interface IFormData extends Record<string, string> {
   profileTeamNumber: string;
   profilePositionCode: string;
-  profileGradeCode: string;
-  profileScheduleCode: string;
-  profilePaymentCode: string;
 
   lastName: string;
   firstName: string;
@@ -53,9 +45,6 @@ interface IFormData extends Record<string, string> {
   personalNumber: string;
   teamNumber: string;
   positionCode: string;
-  gradeCode: string;
-  scheduleCode: string;
-  paymentCode: string;
 
   birthDay: string;
   startDate: string;
@@ -81,9 +70,6 @@ export const EmployeeEditForm = () => {
   const [formData, setFormData] = useState<IFormData>({
     profileTeamNumber: String(employee.profileTeamNumber),
     profilePositionCode: String(employee.profilePositionCode),
-    profileGradeCode: String(employee.profileGradeCode),
-    profileScheduleCode: employee.profileScheduleCode,
-    profilePaymentCode: employee.profilePaymentCode,
 
     lastName: employee.lastName,
     firstName: employee.firstName,
@@ -91,9 +77,6 @@ export const EmployeeEditForm = () => {
     personalNumber: String(employee.personalNumber),
     teamNumber: String(employee.teamNumber),
     positionCode: String(employee.positionCode),
-    gradeCode: String(employee.gradeCode),
-    scheduleCode: employee.scheduleCode,
-    paymentCode: employee.paymentCode,
     birthDay: formatDateFormUI(employee.birthDay),
     startDate: formatDateFormUI(employee.startDate),
     endDate: formatDateFormUI(employee.endDate),
@@ -103,9 +86,6 @@ export const EmployeeEditForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     profileTeamNumber: '',
     profilePositionCode: '',
-    profileGradeCode: '',
-    profileScheduleCode: '',
-    profilePaymentCode: '',
 
     hasAccess: '',
 
@@ -115,9 +95,6 @@ export const EmployeeEditForm = () => {
     personalNumber: '',
     teamNumber: '',
     positionCode: '',
-    gradeCode: '',
-    scheduleCode: '',
-    paymentCode: '',
     birthDay: '',
     startDate: '',
     endDate: '',
@@ -200,9 +177,6 @@ export const EmployeeEditForm = () => {
 
       profileTeamNumber: Number(formData.profileTeamNumber),
       profilePositionCode: Number(formData.profilePositionCode),
-      profileGradeCode: Number(formData.profileGradeCode),
-      profileScheduleCode: formData.profileScheduleCode,
-      profilePaymentCode: formData.profilePaymentCode,
 
       hasAccess: hasAccess,
 
@@ -212,9 +186,6 @@ export const EmployeeEditForm = () => {
       personalNumber: Number(formData.personalNumber),
       teamNumber: Number(formData.teamNumber),
       positionCode: Number(formData.positionCode),
-      gradeCode: Number(formData.gradeCode),
-      scheduleCode: formData.scheduleCode,
-      paymentCode: formData.paymentCode,
 
       // Преобразование строк в Date
       birthDay: formatDateForISO(formData.birthDay),
@@ -234,9 +205,6 @@ export const EmployeeEditForm = () => {
       setFormData({
         profileTeamNumber: '',
         profilePositionCode: '',
-        profileGradeCode: '',
-        profileScheduleCode: '',
-        profilePaymentCode: '',
 
         lastName: '',
         firstName: '',
@@ -244,9 +212,6 @@ export const EmployeeEditForm = () => {
         personalNumber: '',
         teamNumber: '',
         positionCode: '',
-        gradeCode: '',
-        scheduleCode: '',
-        paymentCode: '',
         birthDay: '',
         startDate: '',
         endDate: '',
@@ -255,9 +220,6 @@ export const EmployeeEditForm = () => {
       setErrors({
         profileTeamNumber: '',
         profilePositionCode: '',
-        profileGradeCode: '',
-        profileScheduleCode: '',
-        profilePaymentCode: '',
 
         lastName: '',
         firstName: '',
@@ -265,9 +227,6 @@ export const EmployeeEditForm = () => {
         personalNumber: '',
         teamNumber: '',
         positionCode: '',
-        gradeCode: '',
-        scheduleCode: '',
-        paymentCode: '',
         birthDay: '',
         startDate: '',
         endDate: '',
@@ -282,18 +241,12 @@ export const EmployeeEditForm = () => {
     Object.values(errors).some(Boolean) ||
     !formData.profileTeamNumber ||
     !formData.profilePositionCode ||
-    !formData.profileGradeCode ||
-    !formData.profileScheduleCode ||
-    !formData.profilePaymentCode ||
     !formData.lastName ||
     !formData.firstName ||
     !formData.patronymic ||
     !formData.personalNumber ||
     !formData.teamNumber ||
     !formData.positionCode ||
-    !formData.gradeCode ||
-    !formData.scheduleCode ||
-    !formData.paymentCode ||
     !formData.birthDay ||
     !formData.startDate;
 
@@ -321,36 +274,6 @@ export const EmployeeEditForm = () => {
         placeholder='123456'
         value={formData.profilePositionCode}
         error={errors.profilePositionCode}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <SelectInput
-        name='profileGradeCode'
-        label='Разряд'
-        value={formData.profileGradeCode}
-        options={GRADE_CODE_OPTIONS}
-        error={errors.profileGradeCode}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <SelectInput
-        name='profileScheduleCode'
-        label='График работы'
-        value={formData.profileScheduleCode}
-        options={SCHEDULE_CODE_OPTIONS}
-        error={errors.profileScheduleCode}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <SelectInput
-        name='profilePaymentCode'
-        label='Система оплаты'
-        value={formData.profilePaymentCode}
-        options={PAYMENT_CODE_OPTIONS}
-        error={errors.profilePaymentCode}
         onChange={handleChange}
         onBlur={handleBlur}
       />
@@ -433,36 +356,6 @@ export const EmployeeEditForm = () => {
             placeholder='123456'
             value={formData.positionCode}
             error={errors.positionCode}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <SelectInput
-            name='gradeCode'
-            label='Разряд'
-            value={formData.gradeCode}
-            options={GRADE_CODE_OPTIONS}
-            error={errors.gradeCode}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <SelectInput
-            name='scheduleCode'
-            label='График работы'
-            value={formData.scheduleCode}
-            options={SCHEDULE_CODE_OPTIONS}
-            error={errors.scheduleCode}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <SelectInput
-            name='paymentCode'
-            label='Система оплаты'
-            value={formData.paymentCode}
-            options={PAYMENT_CODE_OPTIONS}
-            error={errors.paymentCode}
             onChange={handleChange}
             onBlur={handleBlur}
           />

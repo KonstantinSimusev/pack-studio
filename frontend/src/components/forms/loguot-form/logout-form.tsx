@@ -23,16 +23,11 @@ import {
   clearEmployeeInfo,
 } from '../../../services/slices/employee/slice';
 
-import {
-  clearNotice,
-  clearNotices,
-} from '../../../services/slices/notice/slice';
-
-import {
-  clearSearchShifts,
-  clearShift,
-  clearShifts,
-} from '../../../services/slices/shift/slice';
+// import {
+//   clearSearchShifts,
+//   clearShift,
+//   clearShifts,
+// } from '../../../services/slices/shift/slice';
 
 import { Button } from '../../ui/buttons/button/button';
 import { Form } from '../../ui/form/form';
@@ -63,11 +58,10 @@ export const LogoutForm = () => {
       dispatch(clearAccountInfo());
       dispatch(clearEmployeeInfo());
       dispatch(clearEmployeeAccountInfo());
-      dispatch(clearNotice());
-      dispatch(clearNotices());
-      dispatch(clearShift());
-      dispatch(clearShifts());
-      dispatch(clearSearchShifts());
+
+      // dispatch(clearShift());
+      // dispatch(clearShifts());
+      // dispatch(clearSearchShifts());
 
       // Очищаем состояние оверлеев и модальных окон
       setIsOverlayOpen(false);
