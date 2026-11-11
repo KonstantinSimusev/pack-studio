@@ -18,28 +18,16 @@ export class AccountRepository {
   }
 
   // 2. CRUD: Read (общие методы поиска)
-  async findByLogin(login: string): Promise<Account | null> {
+  async findById(id: string): Promise<Account | null> {
     return this.accountRepository.findOne({
-      where: {
-        login,
-        employee: {
-          hasAccess: true,
-          isActive: true,
-        },
-      },
+      where: { id },
       relations: this.ACCOUNT_RELATIONS,
     });
   }
 
-  async findById(id: string): Promise<Account | null> {
+  async findByLogin(login: string): Promise<Account | null> {
     return this.accountRepository.findOne({
-      where: {
-        id,
-        employee: {
-          hasAccess: true,
-          isActive: true,
-        },
-      },
+      where: { login },
       relations: this.ACCOUNT_RELATIONS,
     });
   }
@@ -49,10 +37,6 @@ export class AccountRepository {
     return this.accountRepository.find({
       where: {
         hashedRefreshToken: Not(IsNull()),
-        employee: {
-          hasAccess: true,
-          isActive: true,
-        },
       },
       select: {
         id: true,
@@ -68,17 +52,14 @@ export class AccountRepository {
 
   private ACCOUNT_RELATIONS = [
     'employee',
-    'employee.team',
-    'employee.position',
-    'employee.position.workshop',
-    'employee.position.profession',
-    'employee.position.schedule',
-    'employee.position.role',
-    'employee.profileTeam',
-    'employee.profilePosition',
-    'employee.profilePosition.workshop',
-    'employee.profilePosition.profession',
-    'employee.profilePosition.schedule',
-    'employee.profilePosition.role',
+    'employee.homeWorkshop',
+    'employee.homeTeam',
+    'employee.homeProfession',
+    'employee.homeSchedule',
+    'employee.assignments',
+    'employee.assignments.currentWorkshop',
+    'employee.assignments.currentTeam',
+    'employee.assignments.currentProfession',
+    'employee.assignments.currentSchedule',
   ];
 }

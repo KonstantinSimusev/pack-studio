@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Position } from '../../position/entities/position.entity';
+import { Assignment } from '../../assignment/entities/assignment.entity';
+import { Employee } from '../../employee/entities/employee.entity';
 // import { Shift } from '../../shift/entities/shift.entity';
 // import { ShiftSchedule } from '../../shift-schedule/entities/shift-schedule.entity';
 
@@ -20,9 +21,22 @@ export class Schedule {
   })
   scheduleCode: string;
 
-  // Связь: один график — много штатных позиций
-  @OneToMany(() => Position, (position) => position.schedule)
-  positions: Position[];
+  @Column({
+    name: 'name',
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+    unique: true,
+  })
+  name: string;
+
+  // Связь: один график — много сотрудников
+  @OneToMany(() => Employee, (employee) => employee.homeSchedule)
+  employees: Employee[];
+
+  // Связь: один график — много назначений
+  @OneToMany(() => Assignment, (assignment) => assignment.currentSchedule)
+  assignments: Assignment[];
 
   // // Связь: один график — много расписаний смен
   // @OneToMany(() => ShiftSchedule, (shiftSchedule) => shiftSchedule.schedule)

@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Position } from '../../position/entities/position.entity';
+import { Assignment } from '../../assignment/entities/assignment.entity';
+import { Employee } from '../../employee/entities/employee.entity';
 
 @Entity({
   name: 'workshops',
@@ -12,13 +13,26 @@ export class Workshop {
   @Column({
     name: 'workshop_code',
     type: 'varchar',
-    length: 100,
+    length: 20,
     nullable: false,
     unique: true,
   })
   workshopCode: string;
 
-  // Связь: один цех — много штатных позиций
-  @OneToMany(() => Position, (position) => position.workshop)
-  positions: Position[];
+  @Column({
+    name: 'name',
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+    unique: true,
+  })
+  name: string;
+
+  // Связь: один цех — много сотрудников
+  @OneToMany(() => Employee, (employee) => employee.homeWorkshop)
+  employees: Employee[];
+
+  // Связь: один цех — много назначений
+  @OneToMany(() => Assignment, (assignment) => assignment.currentWorkshop)
+  assignments: Assignment[];
 }

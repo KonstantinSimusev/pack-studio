@@ -3,6 +3,7 @@ import {
   IAccountInfo,
   ICreateEmployee,
   IEmployeeInfo,
+  ISuccess,
   IUpdateEmployee,
 } from '../api.interfaces';
 
@@ -97,28 +98,28 @@ export const updateEmployeeApi = async (
   }
 };
 
-// export const deleteEmployeeApi = async (id: string): Promise<ISuccess> => {
-//   try {
-//     const response = await fetch(`${BASE_PATH}/employee-management/${id}`, {
-//       method: 'DELETE',
-//       headers: {
-//         'Content-Type': 'application/json;charset=utf-8',
-//       },
-//       credentials: 'include', // Важно добавить эту строку
-//     });
+export const deleteEmployeeApi = async (id: string): Promise<ISuccess> => {
+  try {
+    const response = await fetch(`${BASE_PATH}/employee-management/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      credentials: 'include', // Важно добавить эту строку
+    });
 
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       throw new Error(errorData.message);
-//     }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
 
-//     // Правильно парсим JSON и возвращаем объект
-//     return await response.json();
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       throw error;
-//     }
+    // Правильно парсим JSON и возвращаем объект
+    return await response.json();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
 
-//     throw new Error('Что-то пошло не так');
-//   }
-// };
+    throw new Error('Что-то пошло не так');
+  }
+};

@@ -9,6 +9,6 @@ import { ScheduleService } from './schedule.service';
   imports: [TypeOrmModule.forFeature([Schedule])],
   controllers: [],
   providers: [ScheduleRepository, ScheduleService],
-  exports: [ScheduleRepository, ScheduleService],
+  exports: [ScheduleService],
 })
 export class ScheduleModule {}

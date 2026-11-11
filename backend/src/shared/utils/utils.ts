@@ -1,4 +1,4 @@
-import { ESchedule, EWorkshop } from '../enums/enums';
+import { EScheduleCode, EWorkshopCode } from '../enums/enums';
 
 export const toNumber = (value: unknown): number => {
   // 1. Ловим отсутствие данных сразу
@@ -309,17 +309,17 @@ export const isCondition_2A = (
   scheduleCode: string,
 ): boolean => {
   return (
-    scheduleCode === ESchedule.S_2A &&
+    scheduleCode === EScheduleCode.S_2A &&
     [
-      EWorkshop.W_LPC4,
-      EWorkshop.W_LPC5,
-      EWorkshop.W_LPC8_UGP,
-      EWorkshop.W_LPC8_UL,
-      EWorkshop.W_LPC10,
-      EWorkshop.W_LPC11,
-      EWorkshop.W_PMP_NORTH,
-      EWorkshop.W_PMP_SOUTH,
-    ].includes(workshopCode as EWorkshop)
+      EWorkshopCode.W_LPC4,
+      EWorkshopCode.W_LPC5,
+      EWorkshopCode.W_LPC8_UGP,
+      EWorkshopCode.W_LPC8_UL,
+      EWorkshopCode.W_LPC10,
+      EWorkshopCode.W_LPC11,
+      EWorkshopCode.W_PMP_NORTH,
+      EWorkshopCode.W_PMP_SOUTH,
+    ].includes(workshopCode as EWorkshopCode)
   );
 };
 
@@ -328,17 +328,17 @@ export const isCondition_5B1 = (
   scheduleCode: string,
 ): boolean => {
   return (
-    scheduleCode === ESchedule.S_5B1 &&
+    scheduleCode === EScheduleCode.S_5B1 &&
     [
-      EWorkshop.W_LPC4,
-      EWorkshop.W_LPC5,
-      EWorkshop.W_LPC8_UGP,
-      EWorkshop.W_LPC8_UL,
-      EWorkshop.W_LPC10,
-      EWorkshop.W_LPC11,
-      EWorkshop.W_PMP_NORTH,
-      EWorkshop.W_PMP_SOUTH,
-    ].includes(workshopCode as EWorkshop)
+      EWorkshopCode.W_LPC4,
+      EWorkshopCode.W_LPC5,
+      EWorkshopCode.W_LPC8_UGP,
+      EWorkshopCode.W_LPC8_UL,
+      EWorkshopCode.W_LPC10,
+      EWorkshopCode.W_LPC11,
+      EWorkshopCode.W_PMP_NORTH,
+      EWorkshopCode.W_PMP_SOUTH,
+    ].includes(workshopCode as EWorkshopCode)
   );
 };
 
@@ -347,14 +347,14 @@ export const isCondition_5B1_9 = (
   scheduleCode: string,
 ): boolean => {
   return (
-    scheduleCode === ESchedule.S_5B1 &&
+    scheduleCode === EScheduleCode.S_5B1 &&
     [
       // EWorkshop.W_LPC5,
       // EWorkshop.W_LPC8_UGP,
-      EWorkshop.W_LPC8_UL,
-      EWorkshop.W_LPC10,
-      EWorkshop.W_PMP_NORTH,
-    ].includes(workshopCode as EWorkshop)
+      EWorkshopCode.W_LPC8_UL,
+      EWorkshopCode.W_LPC10,
+      EWorkshopCode.W_PMP_NORTH,
+    ].includes(workshopCode as EWorkshopCode)
   );
 };
 
@@ -363,8 +363,8 @@ export const isCondition_2A_9 = (
   scheduleCode: string,
 ): boolean => {
   return (
-    scheduleCode === ESchedule.S_2A &&
-    [EWorkshop.W_LPC8_UGP].includes(workshopCode as EWorkshop)
+    scheduleCode === EScheduleCode.S_2A &&
+    [EWorkshopCode.W_LPC8_UGP].includes(workshopCode as EWorkshopCode)
   );
 };
 
@@ -373,8 +373,9 @@ export const isCondition_2A_2 = (
   scheduleCode: string,
 ): boolean => {
   return (
-    (scheduleCode === ESchedule.S_2A || scheduleCode === ESchedule.S_2) &&
-    [EWorkshop.W_LPC11].includes(workshopCode as EWorkshop)
+    (scheduleCode === EScheduleCode.S_2A ||
+      scheduleCode === EScheduleCode.S_2) &&
+    [EWorkshopCode.W_LPC11].includes(workshopCode as EWorkshopCode)
   );
 };
 
@@ -387,24 +388,24 @@ export const getScheduleConfigsToNitice = (
 
   // 2-А основная смена
   if (isCondition_2A(workshopCode, scheduleCode)) {
-    result.push({ scheduleCode: ESchedule.S_2A, teamNumber });
+    result.push({ scheduleCode: EScheduleCode.S_2A, teamNumber });
   }
 
   // 5-Б-1 основная смена
   if (isCondition_5B1(workshopCode, scheduleCode)) {
-    result.push({ scheduleCode: ESchedule.S_5B1, teamNumber });
+    result.push({ scheduleCode: EScheduleCode.S_5B1, teamNumber });
   }
 
   // 9 в 5-Б-1: бригады 1 и 2
   if (isCondition_5B1_9(workshopCode, scheduleCode)) {
-    result.push({ scheduleCode: ESchedule.S_9, teamNumber: 1 });
-    result.push({ scheduleCode: ESchedule.S_9, teamNumber: 2 });
+    result.push({ scheduleCode: EScheduleCode.S_9, teamNumber: 1 });
+    result.push({ scheduleCode: EScheduleCode.S_9, teamNumber: 2 });
   }
 
   // 9 в 2-А: бригады 1 и 2
   if (isCondition_2A_9(workshopCode, scheduleCode)) {
-    result.push({ scheduleCode: ESchedule.S_9, teamNumber: 1 });
-    result.push({ scheduleCode: ESchedule.S_9, teamNumber: 2 });
+    result.push({ scheduleCode: EScheduleCode.S_9, teamNumber: 1 });
+    result.push({ scheduleCode: EScheduleCode.S_9, teamNumber: 2 });
   }
 
   return result;
@@ -446,7 +447,8 @@ export const normalizeScheduleCode = (
   workshopCode: string,
   scheduleCode: string,
 ): string => {
-  return workshopCode === EWorkshop.W_LPC11 && scheduleCode === ESchedule.S_2
-    ? ESchedule.S_2A
+  return workshopCode === EWorkshopCode.W_LPC11 &&
+    scheduleCode === EScheduleCode.S_2
+    ? EScheduleCode.S_2A
     : scheduleCode;
 };

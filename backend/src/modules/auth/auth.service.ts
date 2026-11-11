@@ -254,25 +254,37 @@ export class AuthService {
   }
 
   private mapEmployee(account: Account): IProfile {
-    const employee = account.employee;
-    const profileTeamNumber = employee.profileTeam;
-    const profilePositionCode = employee.profilePosition;
+    // Проверяем доступ в личный кабинет
+    const activeAssignment = account.employee.assignments.find(
+      (assignment) => assignment.isActive === true,
+    );
+
+    if (!activeAssignment) {
+      throw new UnauthorizedException('Доступ закрыт');
+    }
+
+    const {
+      currentWorkshop,
+      currentTeam,
+      currentProfession,
+      currentSchedule,
+      isActive,
+    } = activeAssignment;
 
     return {
-      employeeId: employee.id,
-
-      lastName: employee.lastName,
-      firstName: employee.firstName,
-      patronymic: employee.patronymic,
-      personalNumber: employee.personalNumber,
-
-      profileWorkshopCode: profilePositionCode.workshop.workshopCode,
-      profileTeamNumber: profileTeamNumber.teamNumber,
-      profilePositionCode: profilePositionCode.positionCode,
-      profileProfessionName: profilePositionCode.profession.name,
-      profileRoleName: profilePositionCode.role.name,
-
-      hasAccess: employee.hasAccess,
+      employeeId: account.employee.id,
+      lastName: account.employee.lastName,
+      firstName: account.employee.firstName,
+      patronymic: account.employee.patronymic,
+      personalNumber: account.employee.personalNumber,
+      workshopCode: currentWorkshop.workshopCode,
+      workshopName: currentWorkshop.name,
+      teamNumber: currentTeam.teamNumber,
+      professionCode: currentProfession.professionCode,
+      professionName: currentProfession.name,
+      scheduleCode: currentSchedule.scheduleCode,
+      scheduleName: currentSchedule.name,
+      isActive,
     };
   }
 

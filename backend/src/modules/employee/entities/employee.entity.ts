@@ -9,9 +9,12 @@ import {
 } from 'typeorm';
 
 import { Account } from '../../account/entities/account.entity';
+import { Assignment } from '../../assignment/entities/assignment.entity';
 // import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
-import { Position } from '../../position/entities/position.entity';
+import { Profession } from '../../profession/entities/profession.entity';
+import { Schedule } from '../../schedule/entities/schedule.entity';
 import { Team } from '../../team/entities/team.entity';
+import { Workshop } from '../../workshop/entities/workshop.entity';
 
 @Entity({
   name: 'employees',
@@ -52,43 +55,6 @@ export class Employee {
   })
   personalNumber: number;
 
-  @Column({
-    name: 'birth_day',
-    type: 'date',
-    nullable: false,
-  })
-  birthDay: Date;
-
-  @Column({
-    name: 'start_date',
-    type: 'date',
-    nullable: false,
-  })
-  startDate: Date;
-
-  @Column({
-    name: 'end_date',
-    type: 'date',
-    nullable: true,
-  })
-  endDate: Date | null;
-
-  // Доступ в личный кабинет
-  @Column({
-    name: 'has_access',
-    default: true,
-    nullable: false,
-  })
-  hasAccess: boolean;
-
-  // Уволен/не уволен
-  @Column({
-    name: 'is_active',
-    default: true,
-    nullable: false,
-  })
-  isActive: boolean;
-
   // Связь: один сотрудник — один аккаунт
   @OneToOne(() => Account, (account) => account.employee, {
     cascade: ['remove'],
@@ -96,27 +62,29 @@ export class Employee {
   @JoinColumn({ name: 'account_id' })
   account: Account;
 
+  // Связь: много много сотрудников — один цех
+  @ManyToOne(() => Workshop, (workshop) => workshop.employees)
+  @JoinColumn({ name: 'home_workshop_id' })
+  homeWorkshop: Workshop;
+
   // Связь: много сотрудников — одна бригада
   @ManyToOne(() => Team, (team) => team.employees)
-  @JoinColumn({ name: 'team_id' })
-  team: Team;
+  @JoinColumn({ name: 'home_team_id' })
+  homeTeam: Team;
 
-  // Связь: много сотрудников — одна штатная позиция
-  @ManyToOne(() => Position, (position) => position.employees)
-  @JoinColumn({ name: 'position_id' })
-  position: Position;
+  // Связь: много сотрудников — одна профессия
+  @ManyToOne(() => Profession, (profession) => profession.employees)
+  @JoinColumn({ name: 'home_profession_id' })
+  homeProfession: Profession;
 
-  // Связь: много сотрудников — одна бригада для руководителя
-  // Это связь нужна для профиля, чтобы зайти в личный кабинет руководителя
-  @ManyToOne(() => Team, (team) => team.profileEmployees)
-  @JoinColumn({ name: 'profile_team_id' })
-  profileTeam: Team;
+  // Связь: много сотрудников — один график
+  @ManyToOne(() => Schedule, (schedule) => schedule.employees)
+  @JoinColumn({ name: 'home_schedule_id' })
+  homeSchedule: Schedule;
 
-  // Связь: много сотрудников — одна штатная позиция для руководителя
-  // Это связь нужна для профиля, чтобы зайти в личный кабинет руковдителя
-  @ManyToOne(() => Position, (position) => position.profileEmployees)
-  @JoinColumn({ name: 'profile_position_id' })
-  profilePosition: Position;
+  // Связь: один сотрудник — много назначений
+  @OneToMany(() => Assignment, (assignment) => assignment.employee)
+  assignments: Assignment[];
 
   // // Связь: один сотрудник — много смен сотрудника
   // @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)

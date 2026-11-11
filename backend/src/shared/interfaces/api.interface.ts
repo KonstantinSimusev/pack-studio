@@ -29,44 +29,44 @@ export interface IAccountInfo {
 
 export interface IProfile {
   employeeId: string;
-
   lastName: string;
   firstName: string;
   patronymic: string;
   personalNumber: number;
-
-  profileWorkshopCode: string;
-  profileTeamNumber: number;
-  profilePositionCode: number;
-  profileProfessionName: string;
-  profileRoleName: string;
-
-  hasAccess: boolean;
+  workshopCode: string;
+  workshopName: string;
+  teamNumber: number;
+  professionCode: string;
+  professionName: string;
+  scheduleCode: string;
+  scheduleName: string;
+  isActive: boolean;
 }
 
 export interface IEmployeeInfo {
   id: string;
-
-  profileWorkshopCode: string;
-  profileTeamNumber: number;
-  profilePositionCode: number;
-  profileProfessionName: string;
-  profileRoleName: string;
-
-  hasAccess: boolean;
-
   lastName: string;
   firstName: string;
   patronymic: string;
-  professionName: string;
-  workshopCode: string;
-  teamNumber: number;
   personalNumber: number;
-  positionCode: number;
-  birthDay: Date;
-  startDate: Date;
-  endDate: Date | null;
+
   isActive: boolean;
+
+  currentWorkshopCode: string;
+  currentWorkshopName: string;
+  currentTeamNumber: number;
+  currentProfessionCode: string;
+  currentProfessionName: string;
+  currentScheduleCode: string;
+  currentScheduleName: string;
+
+  homeWorkshopCode: string;
+  homeWorkshopName: string;
+  homeTeamNumber: number;
+  homeProfessionCode: string;
+  homeProfessionName: string;
+  homeScheduleCode: string;
+  homeScheduleName: string;
 }
 
 // export interface IShiftInfo {

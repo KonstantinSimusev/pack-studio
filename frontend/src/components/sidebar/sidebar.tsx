@@ -22,7 +22,7 @@ export const Sidebar = () => {
     setSelectedDate,
   } = useContext(LayerContext);
 
-  const employee = useSelector(selectProfile);
+  const profile = useSelector(selectProfile);
   const location = useLocation(); // Получаем текущий путь
 
   const handleMenuItemClick = () => {
@@ -60,25 +60,27 @@ export const Sidebar = () => {
     return location.pathname.startsWith(path);
   };
 
-  // Функция проверки доступа пользователя к пункту меню на основе правил (роли и цеха)
+  // Функция проверки доступа пользователя к пункту меню на основе правил (профессии и цеха)
   const hasAccessToMenuItem = (
-    accessRules: { roles: string[]; workshops: string[] }[],
+    accessRules: { professions: string[]; workshops: string[] }[],
   ): boolean => {
     // Если у пользователя нет роли или цеха — доступ запрещён
-    if (!employee?.profileRoleName || !employee?.profileWorkshopCode) {
+    if (!profile?.professionCode || !profile?.workshopCode) {
       return false;
     }
 
     return accessRules.some((rule) => {
-      // Проверяем, есть ли текущая роль пользователя в списке разрешённых ролей для этого правила
-      const hasRoleAccess = rule.roles.includes(employee.profileRoleName);
+      // Проверяем, есть ли текущая профессия пользователя в списке разрешённых профессий для этого правила
+      const hasProfessionAccess = rule.professions.includes(
+        profile.professionCode,
+      );
 
-      if (!hasRoleAccess) {
+      if (!hasProfessionAccess) {
         return false;
       }
 
       // Иначе проверяем, есть ли текущий цех пользователя в списке разрешённых цехов
-      return rule.workshops.includes(employee.profileWorkshopCode);
+      return rule.workshops.includes(profile.workshopCode);
     });
   };
 

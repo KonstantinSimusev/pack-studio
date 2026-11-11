@@ -9,6 +9,6 @@ import { WorkshopService } from './workshop.service';
   imports: [TypeOrmModule.forFeature([Workshop])],
   controllers: [],
   providers: [WorkshopRepository, WorkshopService],
-  exports: [WorkshopRepository, WorkshopService],
+  exports: [WorkshopService],
 })
 export class WorkshopModule {}

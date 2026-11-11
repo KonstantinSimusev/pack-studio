@@ -22,7 +22,7 @@ export const EmployeePage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
 
-  const onUpdateEmployee = () => {
+  const updateEmployee = () => {
     if (!employee) {
       return;
     }
@@ -37,11 +37,19 @@ export const EmployeePage = () => {
       return;
     }
 
-    if (employee.isActive === true) {
-      setSelectedId(employee.id);
-      setIsOverlayOpen(true);
-      setIsPasswordUpdateOpen(true);
+    setSelectedId(employee.id);
+    setIsOverlayOpen(true);
+    setIsPasswordUpdateOpen(true);
+  };
+
+  const deleteEmployee = () => {
+    if (!employee) {
+      return;
     }
+
+    setSelectedId(employee.id);
+    setIsOverlayOpen(true);
+    setIsPasswordUpdateOpen(true);
   };
 
   return (
@@ -49,8 +57,9 @@ export const EmployeePage = () => {
       {employee && (
         <EmployeeCard
           employee={employee}
-          onUpdateEmployee={onUpdateEmployee}
+          onUpdateEmployee={updateEmployee}
           onUpdatePassword={updatePassword}
+          onDeleteEmployee={deleteEmployee}
         />
       )}
     </>

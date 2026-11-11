@@ -1,8 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { formatDateForISO } from '../../../utils/utils';
-import { TEAM_CODE_OPTIONS } from '../../../utils/constants';
+import {
+  PROFESSION_OPTIONS,
+  SCHEDULE_OPTIONS,
+  TEAM_OPTIONS,
+  WORKSHOP_OPTIONS,
+} from '../../../utils/constants';
+
 import { ICreateEmployee } from '../../../utils/api.interfaces';
 
 import {
@@ -35,10 +40,10 @@ interface IFormData extends Record<string, string> {
   firstName: string;
   patronymic: string;
   personalNumber: string;
+  workshopCode: string;
   teamNumber: string;
-  positionCode: string;
-  birthDay: string;
-  startDate: string;
+  professionCode: string;
+  scheduleCode: string;
 }
 
 export const EmployeeCreateForm = () => {
@@ -59,10 +64,10 @@ export const EmployeeCreateForm = () => {
     firstName: '',
     patronymic: '',
     personalNumber: '',
+    workshopCode: '',
     teamNumber: '',
-    positionCode: '',
-    birthDay: '',
-    startDate: '',
+    professionCode: '',
+    scheduleCode: '',
   });
 
   // Состояние для хранения ошибок валидации
@@ -71,10 +76,10 @@ export const EmployeeCreateForm = () => {
     firstName: '',
     patronymic: '',
     personalNumber: '',
+    workshopCode: '',
     teamNumber: '',
-    positionCode: '',
-    birthDay: '',
-    startDate: '',
+    professionCode: '',
+    scheduleCode: '',
   });
 
   useEffect(() => {
@@ -140,11 +145,11 @@ export const EmployeeCreateForm = () => {
       lastName: formData.lastName,
       firstName: formData.firstName,
       patronymic: formData.patronymic,
-      personalNumber: formData.personalNumber,
-      teamNumber: formData.teamNumber,
-      positionCode: formData.positionCode,
-      birthDay: formatDateForISO(formData.birthDay),
-      startDate: formatDateForISO(formData.startDate),
+      personalNumber: Number(formData.personalNumber),
+      workshopCode: formData.workshopCode,
+      teamNumber: Number(formData.teamNumber),
+      professionCode: formData.professionCode,
+      scheduleCode: formData.scheduleCode,
     };
 
     try {
@@ -160,10 +165,10 @@ export const EmployeeCreateForm = () => {
         firstName: '',
         patronymic: '',
         personalNumber: '',
+        workshopCode: '',
         teamNumber: '',
-        positionCode: '',
-        birthDay: '',
-        startDate: '',
+        professionCode: '',
+        scheduleCode: '',
       });
 
       setErrors({
@@ -171,10 +176,10 @@ export const EmployeeCreateForm = () => {
         firstName: '',
         patronymic: '',
         personalNumber: '',
+        workshopCode: '',
         teamNumber: '',
-        positionCode: '',
-        birthDay: '',
-        startDate: '',
+        professionCode: '',
+        scheduleCode: '',
       });
     } catch (error) {
       throw new Error('Что-то пошло не так');
@@ -188,10 +193,10 @@ export const EmployeeCreateForm = () => {
     !formData.firstName ||
     !formData.patronymic ||
     !formData.personalNumber ||
+    !formData.workshopCode ||
     !formData.teamNumber ||
-    !formData.positionCode ||
-    !formData.birthDay ||
-    !formData.startDate;
+    !formData.professionCode ||
+    !formData.scheduleCode;
 
   return (
     <Form
@@ -245,44 +250,41 @@ export const EmployeeCreateForm = () => {
       />
 
       <SelectInput
+        name='workshopCode'
+        label='Цех №'
+        value={formData.workshopCode}
+        options={WORKSHOP_OPTIONS}
+        error={errors.workshopCode}
+        onBlur={handleBlur}
+        onChange={handleChange}
+      />
+
+      <SelectInput
         name='teamNumber'
         label='Бригада №'
         value={formData.teamNumber}
-        options={TEAM_CODE_OPTIONS}
+        options={TEAM_OPTIONS}
         error={errors.teamNumber}
         onBlur={handleBlur}
         onChange={handleChange}
       />
 
-      <TextInput
-        type='text'
-        name='positionCode'
-        label='Штатная позиция'
-        placeholder='123456'
-        value={formData.positionCode}
-        error={errors.positionCode}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
-      <TextInput
-        type='text'
-        name='birthDay'
-        label='Дата рождения'
-        placeholder='дд.мм.гггг'
-        value={formData.birthDay}
-        error={errors.birthDay}
+      <SelectInput
+        name='professionCode'
+        label='Профессия'
+        value={formData.professionCode}
+        options={PROFESSION_OPTIONS}
+        error={errors.professionCode}
         onBlur={handleBlur}
         onChange={handleChange}
       />
 
-      <TextInput
-        type='text'
-        name='startDate'
-        label='Дата назначения'
-        placeholder='дд.мм.гггг'
-        value={formData.startDate}
-        error={errors.startDate}
+      <SelectInput
+        name='scheduleCode'
+        label='График'
+        value={formData.scheduleCode}
+        options={SCHEDULE_OPTIONS}
+        error={errors.scheduleCode}
         onBlur={handleBlur}
         onChange={handleChange}
       />

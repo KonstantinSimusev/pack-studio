@@ -22,43 +22,17 @@ export interface IAccountInfo {
 
 export interface IProfile {
   employeeId: string;
-
   lastName: string;
   firstName: string;
   patronymic: string;
   personalNumber: number;
-
-  profileWorkshopCode: string;
-  profileTeamNumber: number;
-  profilePositionCode: number;
-  profileProfessionName: string;
-  profileRoleName: string;
-
-  hasAccess: boolean;
-}
-
-export interface IEmployeeInfo {
-  id: string;
-
-  profileWorkshopCode: string;
-  profileTeamNumber: number;
-  profilePositionCode: number;
-  profileProfessionName: string;
-  profileRoleName: string;
-
-  hasAccess: boolean;
-
-  lastName: string;
-  firstName: string;
-  patronymic: string;
-  professionName: string;
   workshopCode: string;
+  workshopName: string;
   teamNumber: number;
-  personalNumber: number;
-  positionCode: number;
-  birthDay: Date;
-  startDate: Date;
-  endDate: Date | null;
+  professionCode: string;
+  professionName: string;
+  scheduleCode: string;
+  scheduleName: string;
   isActive: boolean;
 }
 
@@ -66,31 +40,52 @@ export interface ICreateEmployee {
   lastName: string;
   firstName: string;
   patronymic: string;
-  personalNumber: string;
-  teamNumber: string;
-  positionCode: string;
-  birthDay: string;
-  startDate: string;
+  personalNumber: number;
+  workshopCode: string;
+  teamNumber: number;
+  professionCode: string;
+  scheduleCode: string;
 }
 
 export interface IUpdateEmployee {
   id: string;
+  isActive: boolean;
 
-  profileTeamNumber: number;
-  profilePositionCode: number;
+  currentWorkshopCode: string;
+  currentTeamNumber: number;
+  currentProfessionCode: string;
+  currentScheduleCode: string;
 
-  hasAccess: boolean;
+  homeWorkshopCode: string;
+  homeTeamNumber: number;
+  homeProfessionCode: string;
+  homeScheduleCode: string;
+}
 
+export interface IEmployeeInfo {
+  id: string;
   lastName: string;
   firstName: string;
   patronymic: string;
   personalNumber: number;
-  teamNumber: number;
-  positionCode: number;
 
-  birthDay: string;
-  startDate: string;
-  endDate: string | null;
+  isActive: boolean;
+
+  currentWorkshopCode: string;
+  currentWorkshopName: string;
+  currentTeamNumber: number;
+  currentProfessionCode: string;
+  currentProfessionName: string;
+  currentScheduleCode: string;
+  currentScheduleName: string;
+
+  homeWorkshopCode: string;
+  homeWorkshopName: string;
+  homeTeamNumber: number;
+  homeProfessionCode: string;
+  homeProfessionName: string;
+  homeScheduleCode: string;
+  homeScheduleName: string;
 }
 
 // export interface IShift {

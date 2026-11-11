@@ -7,9 +7,8 @@ import { WorkshopRepository } from './workshop.repository';
 export class WorkshopService {
   constructor(private readonly workshopRepository: WorkshopRepository) {}
 
-  async getWorkshop(workshopCode: string): Promise<Workshop> {
-    const workshop =
-      await this.workshopRepository.findWorkshopByCode(workshopCode);
+  async getWorkshopByCode(workshopCode: string): Promise<Workshop> {
+    const workshop = await this.workshopRepository.findByCode(workshopCode);
 
     if (!workshop) {
       throw new NotFoundException(`Цех ${workshopCode} не найден`);

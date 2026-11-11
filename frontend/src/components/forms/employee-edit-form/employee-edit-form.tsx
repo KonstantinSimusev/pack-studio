@@ -1,10 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { formatDateFormUI, formatDateForISO } from '../../../utils/utils';
-
 import { IUpdateEmployee } from '../../../utils/api.interfaces';
 
-import { TEAM_CODE_OPTIONS } from '../../../utils/constants';
+import {
+  PROFESSION_OPTIONS,
+  SCHEDULE_OPTIONS,
+  TEAM_OPTIONS,
+  WORKSHOP_OPTIONS,
+} from '../../../utils/constants';
 
 import {
   validateField,
@@ -31,24 +34,19 @@ import { Switch } from '../../ui/switch/switch';
 
 import { CheckboxInput } from '../../ui/inputs/checkbox-input/checkbox-input';
 import { SelectInput } from '../../ui/inputs/select-input/select-input';
-import { TextInput } from '../../ui/inputs/text-input/text-input';
 
 import styles from './employee-edit-form.module.css';
 
 interface IFormData extends Record<string, string> {
-  profileTeamNumber: string;
-  profilePositionCode: string;
+  currentWorkshopCode: string;
+  currentTeamNumber: string;
+  currentProfessionCode: string;
+  currentScheduleCode: string;
 
-  lastName: string;
-  firstName: string;
-  patronymic: string;
-  personalNumber: string;
-  teamNumber: string;
-  positionCode: string;
-
-  birthDay: string;
-  startDate: string;
-  endDate: string;
+  homeWorkshopCode: string;
+  homeTeamNumber: string;
+  homeProfessionCode: string;
+  homeScheduleCode: string;
 }
 
 export const EmployeeEditForm = () => {
@@ -64,40 +62,32 @@ export const EmployeeEditForm = () => {
   }
 
   const [isShow, setIsShow] = useState(false);
-  const [hasAccess, setHasAccess] = useState(employee.hasAccess);
+  const [hasAccess, setHasAccess] = useState(employee.isActive);
 
   // Состояние для хранения значений полей формы
   const [formData, setFormData] = useState<IFormData>({
-    profileTeamNumber: String(employee.profileTeamNumber),
-    profilePositionCode: String(employee.profilePositionCode),
+    currentWorkshopCode: employee.currentWorkshopCode,
+    currentTeamNumber: String(employee.currentTeamNumber),
+    currentProfessionCode: employee.currentProfessionCode,
+    currentScheduleCode: employee.currentScheduleCode,
 
-    lastName: employee.lastName,
-    firstName: employee.firstName,
-    patronymic: employee.patronymic,
-    personalNumber: String(employee.personalNumber),
-    teamNumber: String(employee.teamNumber),
-    positionCode: String(employee.positionCode),
-    birthDay: formatDateFormUI(employee.birthDay),
-    startDate: formatDateFormUI(employee.startDate),
-    endDate: formatDateFormUI(employee.endDate),
+    homeWorkshopCode: employee.homeWorkshopCode,
+    homeTeamNumber: String(employee.homeTeamNumber),
+    homeProfessionCode: employee.homeProfessionCode,
+    homeScheduleCode: employee.homeScheduleCode,
   });
 
   // Состояние для хранения ошибок валидации
   const [errors, setErrors] = useState<{ [key: string]: string }>({
-    profileTeamNumber: '',
-    profilePositionCode: '',
+    currentWorkshopCode: '',
+    currentTeamNumber: '',
+    currentProfessionCode: '',
+    currentScheduleCode: '',
 
-    hasAccess: '',
-
-    lastName: '',
-    firstName: '',
-    patronymic: '',
-    personalNumber: '',
-    teamNumber: '',
-    positionCode: '',
-    birthDay: '',
-    startDate: '',
-    endDate: '',
+    homeWorkshopCode: '',
+    homeTeamNumber: '',
+    homeProfessionCode: '',
+    homeScheduleCode: '',
   });
 
   useEffect(() => {
@@ -174,26 +164,17 @@ export const EmployeeEditForm = () => {
     // Преобразование данных перед отправкой
     const dataForBackend: IUpdateEmployee = {
       id: employee.id,
+      isActive: hasAccess,
 
-      profileTeamNumber: Number(formData.profileTeamNumber),
-      profilePositionCode: Number(formData.profilePositionCode),
+      currentWorkshopCode: formData.currentWorkshopCode,
+      currentTeamNumber: Number(formData.currentTeamNumber),
+      currentProfessionCode: formData.currentProfessionCode,
+      currentScheduleCode: formData.currentScheduleCode,
 
-      hasAccess: hasAccess,
-
-      lastName: formData.lastName,
-      firstName: formData.firstName,
-      patronymic: formData.patronymic,
-      personalNumber: Number(formData.personalNumber),
-      teamNumber: Number(formData.teamNumber),
-      positionCode: Number(formData.positionCode),
-
-      // Преобразование строк в Date
-      birthDay: formatDateForISO(formData.birthDay),
-      startDate: formatDateForISO(formData.startDate),
-
-      // endDate: если пустая строка — null, иначе Date
-      endDate:
-        formData.endDate === '' ? null : formatDateForISO(formData.endDate),
+      homeWorkshopCode: formData.homeWorkshopCode,
+      homeTeamNumber: Number(formData.homeTeamNumber),
+      homeProfessionCode: formData.homeProfessionCode,
+      homeScheduleCode: formData.homeScheduleCode,
     };
 
     try {
@@ -203,33 +184,27 @@ export const EmployeeEditForm = () => {
       setIsOverlayOpen(false);
 
       setFormData({
-        profileTeamNumber: '',
-        profilePositionCode: '',
+        currentWorkshopCode: '',
+        currentTeamNumber: '',
+        currentProfessionCode: '',
+        currentScheduleCode: '',
 
-        lastName: '',
-        firstName: '',
-        patronymic: '',
-        personalNumber: '',
-        teamNumber: '',
-        positionCode: '',
-        birthDay: '',
-        startDate: '',
-        endDate: '',
+        homeWorkshopCode: '',
+        homeTeamNumber: '',
+        homeProfessionCode: '',
+        homeScheduleCode: '',
       });
 
       setErrors({
-        profileTeamNumber: '',
-        profilePositionCode: '',
+        currentWorkshopCode: '',
+        currentTeamNumber: '',
+        currentProfessionCode: '',
+        currentScheduleCode: '',
 
-        lastName: '',
-        firstName: '',
-        patronymic: '',
-        personalNumber: '',
-        teamNumber: '',
-        positionCode: '',
-        birthDay: '',
-        startDate: '',
-        endDate: '',
+        homeWorkshopCode: '',
+        homeTeamNumber: '',
+        homeProfessionCode: '',
+        homeScheduleCode: '',
       });
     } catch (error) {
       throw new Error('Что-то пошло не так');
@@ -239,41 +214,58 @@ export const EmployeeEditForm = () => {
   // Определяем, заблокирована ли кнопка
   const isButtonDisabled =
     Object.values(errors).some(Boolean) ||
-    !formData.profileTeamNumber ||
-    !formData.profilePositionCode ||
-    !formData.lastName ||
-    !formData.firstName ||
-    !formData.patronymic ||
-    !formData.personalNumber ||
-    !formData.teamNumber ||
-    !formData.positionCode ||
-    !formData.birthDay ||
-    !formData.startDate;
+    !formData.currentWorkshopCode ||
+    !formData.currentTeamNumber ||
+    !formData.currentProfessionCode ||
+    !formData.currentScheduleCode ||
+    !formData.homeWorkshopCode ||
+    !formData.homeTeamNumber ||
+    !formData.homeProfessionCode ||
+    !formData.homeScheduleCode;
 
   return (
     <Form
-      title='Личный кабинет'
+      title='Текущее назначение'
       onSubmit={handleSubmit}
       className={styles.container}
     >
       <SelectInput
-        name='profileTeamNumber'
-        value={formData.profileTeamNumber}
-        label='Бригада №'
-        options={TEAM_CODE_OPTIONS}
+        name='currentWorkshopCode'
+        value={formData.currentWorkshopCode}
+        label='Цех'
+        options={WORKSHOP_OPTIONS}
         className={styles.input}
-        error={errors.profileTeamNumber}
+        error={errors.currentWorkshopCode}
         onChange={handleChange}
         onBlur={handleBlur}
       />
 
-      <TextInput
-        type='text'
-        name='profilePositionCode'
-        label='Штатная позиция'
-        placeholder='123456'
-        value={formData.profilePositionCode}
-        error={errors.profilePositionCode}
+      <SelectInput
+        name='currentTeamNumber'
+        value={formData.currentTeamNumber}
+        label='Бригада №'
+        options={TEAM_OPTIONS}
+        error={errors.currentTeamNumber}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+
+      <SelectInput
+        name='currentProfessionCode'
+        value={formData.currentProfessionCode}
+        label='Профессия'
+        options={PROFESSION_OPTIONS}
+        error={errors.currentProfessionCode}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+
+      <SelectInput
+        name='currentScheduleCode'
+        value={formData.currentScheduleCode}
+        label='График'
+        options={SCHEDULE_OPTIONS}
+        error={errors.currentScheduleCode}
         onChange={handleChange}
         onBlur={handleBlur}
       />
@@ -294,101 +286,43 @@ export const EmployeeEditForm = () => {
 
       {isShow && (
         <>
-          <TextInput
-            type='text'
-            name='lastName'
-            label='Фамилия'
-            placeholder='Иванов'
-            value={formData.lastName}
-            error={errors.lastName}
-            onChange={handleChange}
-            onBlur={handleBlur}
+          <SelectInput
+            name='homeWorkshopCode'
+            value={formData.homeWorkshopCode}
+            label='Цех'
+            options={WORKSHOP_OPTIONS}
             className={styles.input}
-          />
-
-          <TextInput
-            type='text'
-            name='firstName'
-            label='Имя'
-            placeholder='Иван'
-            value={formData.firstName}
-            error={errors.firstName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <TextInput
-            type='text'
-            name='patronymic'
-            label='Отчество'
-            placeholder='Иванович'
-            value={formData.patronymic}
-            error={errors.patronymic}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <TextInput
-            type='text'
-            name='personalNumber'
-            label='Личный №'
-            placeholder='12345'
-            value={formData.personalNumber}
-            error={errors.personalNumber}
+            error={errors.homeWorkshopCode}
             onChange={handleChange}
             onBlur={handleBlur}
           />
 
           <SelectInput
-            name='teamNumber'
+            name='homeTeamNumber'
+            value={formData.homeTeamNumber}
             label='Бригада №'
-            value={formData.teamNumber}
-            options={TEAM_CODE_OPTIONS}
-            error={errors.teamNumber}
+            options={TEAM_OPTIONS}
+            error={errors.homeTeamNumber}
             onChange={handleChange}
             onBlur={handleBlur}
           />
 
-          <TextInput
-            type='text'
-            name='positionCode'
-            label='Штатная позиция'
-            placeholder='123456'
-            value={formData.positionCode}
-            error={errors.positionCode}
+          <SelectInput
+            name='homeProfessionCode'
+            value={formData.homeProfessionCode}
+            label='Профессия'
+            options={PROFESSION_OPTIONS}
+            error={errors.homeProfessionCode}
             onChange={handleChange}
             onBlur={handleBlur}
           />
 
-          <TextInput
-            type='text'
-            name='birthDay'
-            label='Дата рождения'
-            value={formData.birthDay}
-            placeholder='дд.мм.гггг'
-            error={errors.birthDay}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <TextInput
-            type='text'
-            name='startDate'
-            label='Дата назначения'
-            value={formData.startDate}
-            placeholder='дд.мм.гггг'
-            error={errors.startDate}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-
-          <TextInput
-            type='text'
-            name='endDate'
-            label='Дата увольнения'
-            value={formData.endDate}
-            placeholder='дд.мм.гггг'
-            error={errors.endDate}
+          <SelectInput
+            name='homeScheduleCode'
+            value={formData.homeScheduleCode}
+            label='График'
+            options={SCHEDULE_OPTIONS}
+            error={errors.homeScheduleCode}
             onChange={handleChange}
             onBlur={handleBlur}
           />

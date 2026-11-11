@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { ISuccess } from '../../shared/interfaces/api.interface';
+
 import { Employee } from './entities/employee.entity';
 import { EmployeeRepository } from './employee.repository';
 
@@ -11,25 +13,15 @@ import { EmployeeRepository } from './employee.repository';
 export class EmployeeService {
   constructor(private readonly employeeRepository: EmployeeRepository) {}
 
-  async getEmployee(id: string): Promise<Employee> {
-    const employee = await this.employeeRepository.findEmployeeById(id);
+  // async getEmployee(id: string): Promise<Employee> {
+  //   const employee = await this.employeeRepository.findEmployeeById(id);
 
-    if (!employee) {
-      throw new NotFoundException('Работник не найден');
-    }
+  //   if (!employee) {
+  //     throw new NotFoundException('Работник не найден');
+  //   }
 
-    return employee;
-  }
-
-  async getActiveEmployee(id: string): Promise<Employee> {
-    const employee = await this.employeeRepository.findActiveEmployeeById(id);
-
-    if (!employee) {
-      throw new NotFoundException('Работник не найден');
-    }
-
-    return employee;
-  }
+  //   return employee;
+  // }
 
   async getEmployeeByPersonalNumber(personalNumber: number): Promise<Employee> {
     const employee =
@@ -42,35 +34,47 @@ export class EmployeeService {
     return employee;
   }
 
-  async getEmployeeWithWorkshopById(id: string): Promise<Employee> {
-    const employee = await this.employeeRepository.findWithWorkshopById(id);
+  // async getEmployeeWithWorkshopById(id: string): Promise<Employee> {
+  //   const employee = await this.employeeRepository.findWithWorkshopById(id);
 
-    if (!employee) {
-      throw new NotFoundException('Работник не найден');
-    }
+  //   if (!employee) {
+  //     throw new NotFoundException('Работник не найден');
+  //   }
 
-    return employee;
-  }
+  //   return employee;
+  // }
 
-  async getTeamEmployees(
-    teamNumber: number,
-    workshopCode: string,
-    scheduleCode: string,
-  ): Promise<Employee[]> {
-    const employees = await this.employeeRepository.findByTeamAndSchedule(
-      teamNumber,
-      workshopCode,
-      scheduleCode,
-    );
+  // async getTeamEmployees(
+  //   teamNumber: number,
+  //   workshopCode: string,
+  //   scheduleCode: string,
+  // ): Promise<Employee[]> {
+  //   const employees = await this.employeeRepository.findByTeamAndSchedule(
+  //     teamNumber,
+  //     workshopCode,
+  //     scheduleCode,
+  //   );
 
-    if (employees.length === 0) {
-      throw new NotFoundException(
-        `Не найдены сотрудники для бригады ${teamNumber}, цеха ${workshopCode}, графика ${scheduleCode}`,
-      );
-    }
+  //   if (employees.length === 0) {
+  //     throw new NotFoundException(
+  //       `Не найдены сотрудники для бригады ${teamNumber}, цеха ${workshopCode}, графика ${scheduleCode}`,
+  //     );
+  //   }
 
-    return employees;
-  }
+  //   return employees;
+  // }
+
+  // async deleteEmployee(id: string): Promise<ISuccess> {
+  //   const result = await this.employeeRepository.delete(id);
+
+  //   if (!result.affected) {
+  //     throw new NotFoundException('Работник не найден');
+  //   }
+
+  //   return {
+  //     message: 'Работник удален успешно',
+  //   };
+  // }
 
   async validateUniqueFullName(
     lastName: string,
@@ -88,82 +92,96 @@ export class EmployeeService {
     }
   }
 
-  async validateUniqueFullNameExcluding(
-    employeeId: string,
-    lastName: string,
-    firstName: string,
-    patronymic: string,
-  ): Promise<void> {
-    const count = await this.employeeRepository.countByFullNameExcluding(
-      employeeId,
-      lastName,
-      firstName,
-      patronymic,
-    );
+  // async validateUniqueFullNameExcluding(
+  //   employeeId: string,
+  //   lastName: string,
+  //   firstName: string,
+  //   patronymic: string,
+  // ): Promise<void> {
+  //   const count = await this.employeeRepository.countByFullNameExcluding(
+  //     employeeId,
+  //     lastName,
+  //     firstName,
+  //     patronymic,
+  //   );
 
-    if (count > 0) {
-      throw new ConflictException('ФИО занято');
-    }
-  }
+  //   if (count > 0) {
+  //     throw new ConflictException('ФИО занято');
+  //   }
+  // }
 
-  async validateUniquePersonalNumber(personalNumber: number): Promise<void> {
-    const count =
-      await this.employeeRepository.countByPersonalNumber(personalNumber);
+  // async validateUniquePersonalNumber(personalNumber: number): Promise<void> {
+  //   const count =
+  //     await this.employeeRepository.countByPersonalNumber(personalNumber);
 
-    if (count > 0) {
-      throw new ConflictException('Личный номер занят');
-    }
-  }
+  //   if (count > 0) {
+  //     throw new ConflictException('Личный номер занят');
+  //   }
+  // }
 
-  async validateUniquePersonalNumberExcluding(
-    employeeId: string,
-    personalNumber: number,
-  ): Promise<void> {
-    const count = await this.employeeRepository.countByPersonalNumberExcluding(
-      employeeId,
-      personalNumber,
-    );
+  // async validateUniquePersonalNumberExcluding(
+  //   employeeId: string,
+  //   personalNumber: number,
+  // ): Promise<void> {
+  //   const count = await this.employeeRepository.countByPersonalNumberExcluding(
+  //     employeeId,
+  //     personalNumber,
+  //   );
 
-    if (count > 0) {
-      throw new ConflictException('Личный номер занят');
-    }
-  }
+  //   if (count > 0) {
+  //     throw new ConflictException('Личный номер занят');
+  //   }
+  // }
 
-  async existsTeamManager(
-    teamId: string,
-    workshopId: string,
-    scheduleId: string,
-    roleId: string,
-  ): Promise<void> {
-    const count = await this.employeeRepository.countTeamManagers(
-      teamId,
-      workshopId,
-      scheduleId,
-      roleId,
-    );
+  // async existsTeamManager(
+  //   teamId: string,
+  //   workshopId: string,
+  //   scheduleId: string,
+  //   professionId: string,
+  // ): Promise<void> {
+  //   const managers = await this.employeeRepository.findTeamManagers(
+  //     teamId,
+  //     workshopId,
+  //     scheduleId,
+  //     professionId,
+  //   );
 
-    if (count > 0) {
-      throw new ConflictException('Руководитель уже существует');
-    }
-  }
+  //   const count = managers.filter((manager) =>
+  //     this.hasActiveAssignment(manager),
+  //   ).length;
 
-  async existsTeamManagerExcluding(
-    employeeId: string,
-    teamId: string,
-    workshopId: string,
-    scheduleId: string,
-    roleId: string,
-  ): Promise<void> {
-    const count = await this.employeeRepository.countTeamManagersExcluding(
-      employeeId,
-      teamId,
-      workshopId,
-      scheduleId,
-      roleId,
-    );
+  //   if (count > 0) {
+  //     throw new ConflictException('Руководитель уже существует');
+  //   }
+  // }
 
-    if (count > 0) {
-      throw new ConflictException('Руководитель уже существует');
-    }
-  }
+  // async existsTeamManagerExcluding(
+  //   employeeId: string,
+  //   teamId: string,
+  //   workshopId: string,
+  //   scheduleId: string,
+  //   professionId: string,
+  // ): Promise<void> {
+  //   const managers = await this.employeeRepository.findTeamManagersExcluding(
+  //     employeeId,
+  //     teamId,
+  //     workshopId,
+  //     scheduleId,
+  //     professionId,
+  //   );
+
+  //   const count = managers.filter((manager) =>
+  //     this.hasActiveAssignment(manager),
+  //   ).length;
+
+  //   if (count > 0) {
+  //     throw new ConflictException('Руководитель уже существует');
+  //   }
+  // }
+
+  // private hasActiveAssignment(employee: Employee): boolean {
+  //   return employee.assignments.some(
+  //     (assignment) => assignment.isActive === true,
+  //   );
+  // }
 }

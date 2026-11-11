@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Position } from '../../position/entities/position.entity';
+import { Assignment } from '../../assignment/entities/assignment.entity';
+import { Employee } from '../../employee/entities/employee.entity';
 // import { Workplace } from '../../work-place/entities/work-place.entity';
 
 @Entity({
@@ -28,9 +29,13 @@ export class Profession {
   })
   name: string;
 
-  // // Связь: одна профессия — много позиций
-  @OneToMany(() => Position, (position) => position.profession)
-  positions: Position[];
+  // Связь: одна профессия — много сотрудников
+  @OneToMany(() => Employee, (employee) => employee.homeProfession)
+  employees: Employee[];
+
+  // Связь: одна профессия — много назначений
+  @OneToMany(() => Assignment, (assignment) => assignment.currentProfession)
+  assignments: Assignment[];
 
   // // Связь: одна профессия — много рабочих мест
   // @OneToMany(() => Workplace, (workplace) => workplace.profession)

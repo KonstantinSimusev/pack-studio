@@ -12,11 +12,11 @@ export class ScheduleRepository {
   ) {}
 
   // 2. CRUD: Read (общие методы поиска)
-  async findScheduleByCode(scheduleCode: string): Promise<Schedule | null> {
+  async findByCode(scheduleCode: string): Promise<Schedule | null> {
     return this.scheduleRepository.findOneBy({ scheduleCode });
   }
 
-  async findScheduleById(id: string): Promise<Schedule | null> {
-    return this.scheduleRepository.findOneBy({ id });
-  }
+  // async findScheduleById(id: string): Promise<Schedule | null> {
+  //   return this.scheduleRepository.findOneBy({ id });
+  // }
 }

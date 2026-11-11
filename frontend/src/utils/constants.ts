@@ -1,4 +1,23 @@
-export const ROLE = {
+export const WORKSHOP_CODE = {
+  W_LPC4: 'W_LPC4',
+  W_LPC5: 'W_LPC5',
+  W_LPC8_UGP: 'W_LPC8_UGP',
+  W_LPC8_UL: 'W_LPC8_UL',
+  W_LPC10: 'W_LPC10',
+  W_LPC11: 'W_LPC11',
+  W_PMP_NORTH: 'W_PMP_NORTH',
+  W_PMP_SOUTH: 'W_PMP_SOUTH',
+};
+
+export const TEAM_NUMBER = {
+  T_1: '1',
+  T_2: '2',
+  T_3: '3',
+  T_4: '4',
+  T_5: '5',
+};
+
+export const PROFESSION_CODE = {
   EXECUTIVE: 'EXECUTIVE', // Директор
   HEAD_PRODUCTION: 'HEAD_PRODUCTION', // Начальник производства (в промышленности)
   SENIOR_MANAGER: 'SENIOR_MANAGER', // Старший менеджер
@@ -7,33 +26,25 @@ export const ROLE = {
   MASTER: 'MASTER', // Сменный мастер
   DETAIL_MASTER: 'DETAIL_MASTER', // Мастер реквизитов
   PRODUCTION_FOREMAN: 'PRODUCTION_FOREMAN', // Бригадир на УОП
+  PACKING_FOREMAN: 'PACKING_FOREMAN', // Бригадир на ОГП
   PACKER: 'PACKER', // Укладчик-упаковщик
+  UNIT_PACKER: 'UNIT_PACKER', // Укладчик-упаковщик ЛУМ
+  PACKER_APR8: 'PACKER_APR8', // Укладчик-упаковщик АПР-8
+  REPAIR_MECHANIC: 'REPAIR_MECHANIC', // Слесарь-ремонтник
+  STACKER: 'STACKER', // Штабелировщик
+  STAMPER: 'STAMPER', // Штамповщик
+  DRIVER: 'DRIVER', // Водитель погрузчика
+  CUTTER: 'CUTTER', // Резчик холодного металла
+  GAS_CUTTER: 'GAS_CUTTER', // Газорезчик
+  LEAD_OPERATOR: 'LEAD_OPERATOR', // Оператор поста управления (старший)
+  OPERATOR: 'OPERATOR', // Оператор поста управления
 };
 
-export const WORKSHOP = {
-  W_MANAGEMENT: 'Управление',
-  W_LPC4: 'ЛПЦ-4',
-  W_LPC5: 'ЛПЦ-5',
-  W_LPC8_UGP: 'ЛПЦ-8 (участок гнутого профиля)',
-  W_LPC8_UL: 'ЛПЦ-8 (участок ленты)',
-  W_LPC10: 'ЛПЦ-10',
-  W_LPC11: 'ЛПЦ-11',
-  W_PMP_NORTH: 'ПМП (северный блок)',
-  W_PMP_SOUTH: 'ПМП (южный блок)',
-  W_UVS_LPC4: 'УВС ЛПЦ-4',
-  W_CENTRAL_WAREHOUSE: 'Центральный склад',
-};
-
-export const SCHEDULE = {
-  S_5B1: '5-Б-1',
-  S_2A: '2-А',
-  S_9: '9',
-  S_2: '2',
-};
-
-export const ATTENDANCE_TYPE = {
-  Y: 'Я',
-  V: 'В',
+export const SCHEDULE_CODE = {
+  S_5B1: 'S_5B1',
+  S_2A: 'S_2A',
+  S_9: 'S_9',
+  S_2: 'S_2',
 };
 
 // Динамичсекие пути
@@ -46,27 +57,26 @@ export const MENU_ITEMS = [
     label: 'Главная',
     accessRules: [
       {
-        roles: [
-          ROLE.EXECUTIVE,
-          ROLE.HEAD_PRODUCTION,
-          ROLE.SENIOR_MANAGER,
-          ROLE.HEAD,
-          ROLE.LEAD_MASTER,
-          ROLE.MASTER,
-          ROLE.DETAIL_MASTER,
-          ROLE.PRODUCTION_FOREMAN,
-          ROLE.PACKER,
+        professions: [
+          PROFESSION_CODE.EXECUTIVE,
+          PROFESSION_CODE.HEAD_PRODUCTION,
+          PROFESSION_CODE.SENIOR_MANAGER,
+          PROFESSION_CODE.HEAD,
+          PROFESSION_CODE.LEAD_MASTER,
+          PROFESSION_CODE.MASTER,
+          PROFESSION_CODE.DETAIL_MASTER,
+          PROFESSION_CODE.PRODUCTION_FOREMAN,
+          PROFESSION_CODE.PACKER,
         ],
         workshops: [
-          WORKSHOP.W_MANAGEMENT,
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
@@ -76,20 +86,25 @@ export const MENU_ITEMS = [
     label: 'Табель',
     accessRules: [
       {
-        roles: [ROLE.HEAD, ROLE.LEAD_MASTER, ROLE.MASTER, ROLE.DETAIL_MASTER],
+        professions: [
+          PROFESSION_CODE.HEAD,
+          PROFESSION_CODE.LEAD_MASTER,
+          PROFESSION_CODE.MASTER,
+          PROFESSION_CODE.DETAIL_MASTER,
+        ],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
         ],
       },
       {
-        roles: [ROLE.MASTER, ROLE.DETAIL_MASTER],
-        workshops: [WORKSHOP.W_LPC11],
+        professions: [PROFESSION_CODE.MASTER, PROFESSION_CODE.DETAIL_MASTER],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -98,16 +113,16 @@ export const MENU_ITEMS = [
     label: 'Производство',
     accessRules: [
       {
-        roles: [ROLE.MASTER],
+        professions: [PROFESSION_CODE.MASTER],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
@@ -117,16 +132,16 @@ export const MENU_ITEMS = [
     label: 'Отгрузка',
     accessRules: [
       {
-        roles: [ROLE.MASTER],
+        professions: [PROFESSION_CODE.MASTER],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
@@ -136,16 +151,16 @@ export const MENU_ITEMS = [
     label: 'Упаковка',
     accessRules: [
       {
-        roles: [ROLE.MASTER],
+        professions: [PROFESSION_CODE.MASTER],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
@@ -155,16 +170,16 @@ export const MENU_ITEMS = [
     label: 'Раскрепление',
     accessRules: [
       {
-        roles: [ROLE.MASTER],
+        professions: [PROFESSION_CODE.MASTER],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
@@ -174,140 +189,97 @@ export const MENU_ITEMS = [
     label: 'Остаток',
     accessRules: [
       {
-        roles: [ROLE.MASTER],
+        professions: [PROFESSION_CODE.MASTER],
         workshops: [
-          WORKSHOP.W_LPC4,
-          WORKSHOP.W_LPC5,
-          WORKSHOP.W_LPC8_UGP,
-          WORKSHOP.W_LPC8_UL,
-          WORKSHOP.W_PMP_SOUTH,
-          WORKSHOP.W_PMP_NORTH,
-          WORKSHOP.W_LPC10,
-          WORKSHOP.W_LPC11,
+          WORKSHOP_CODE.W_LPC4,
+          WORKSHOP_CODE.W_LPC5,
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_PMP_SOUTH,
+          WORKSHOP_CODE.W_PMP_NORTH,
+          WORKSHOP_CODE.W_LPC10,
+          WORKSHOP_CODE.W_LPC11,
         ],
       },
     ],
   },
-
   {
     path: '/employee',
     label: 'Персонал',
     accessRules: [
       {
-        roles: [ROLE.LEAD_MASTER, ROLE.PRODUCTION_FOREMAN],
-        workshops: [WORKSHOP.W_LPC10],
+        professions: [
+          PROFESSION_CODE.LEAD_MASTER,
+          PROFESSION_CODE.PRODUCTION_FOREMAN,
+        ],
+        workshops: [WORKSHOP_CODE.W_LPC10],
       },
       {
-        roles: [ROLE.HEAD, ROLE.PRODUCTION_FOREMAN],
-        workshops: [WORKSHOP.W_LPC8_UGP, WORKSHOP.W_LPC8_UL, WORKSHOP.W_LPC11],
+        professions: [PROFESSION_CODE.HEAD, PROFESSION_CODE.PRODUCTION_FOREMAN],
+        workshops: [
+          WORKSHOP_CODE.W_LPC8_UGP,
+          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_LPC11,
+        ],
       },
     ],
   },
 ];
 
-export const PROFILE_ROLE_OPTIONS = [
-  { value: 'HEAD', label: 'Начальник участка' },
-  { value: 'LEAD_MASTER', label: 'Старший мастер участка' },
-  { value: 'DETAIL_MASTER', label: 'Мастер реквизитов' },
-  { value: 'MASTER', label: 'Сменный мастер' },
-  { value: 'MECHANIC', label: 'Слесарь' },
-  { value: 'PRODUCTION_FOREMAN', label: 'Бригадир УОП' },
-  { value: 'PACKING_FOREMAN', label: 'Бригадир УГП' },
-  { value: 'LEAD_OPERATOR', label: 'Старший оператор ПУ' },
-  { value: 'OPERATOR', label: 'Оператор ПУ' },
-  { value: 'DRIVER', label: 'Водитель погрузчика' },
-  { value: 'STAMPER', label: 'Штамповщик' },
-  { value: 'PACKER', label: 'Укладчик-упаковщик' },
-  { value: 'UNIT_PACKER', label: 'Укладчик‑упаковщик ЛУМ' },
-  { value: 'STACKER', label: 'Штабелировщик металла' },
-  { value: 'CUTTER', label: 'Резчик холодного металла' },
-];
-
-export const TEAM_CODE_OPTIONS = [
-  // { value: '', label: 'Не выбрано' },
-  { value: '1', label: '1' },
-  { value: '2', label: '2' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
-  { value: '5', label: '5' },
-];
-
-export const SCHEDULE_CODE_OPTIONS = [
-  // { value: '', label: 'Не выбрано' },
-  { value: '5-Б-1', label: '5-Б-1' },
-  { value: '2-А', label: '2-А' },
-  { value: '9', label: '9' },
-  { value: '2', label: '2' },
-];
-
-export const GRADE_CODE_OPTIONS = [
-  // { value: '', label: 'Не выбрано' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
-  { value: '5', label: '5' },
-  { value: '6', label: '6' },
-  { value: '11', label: '11' },
-  { value: '12', label: '12' },
-  { value: '13', label: '13' },
-  { value: '14', label: '14' },
-  { value: '15', label: '15' },
-  { value: '17', label: '17' },
-];
-
-export const PAYMENT_CODE_OPTIONS = [
-  // { value: '', label: 'Не выбрано' },
-  {
-    value: 'ДСР',
-    label: 'ДСР — Время работы с доплатой до среднего заработка',
-  },
-  { value: 'ОСР', label: 'ОСР — Время работы с оплатой по среднему заработку' },
-  {
-    value: 'РВ',
-    label:
-      'РВ — Работа в выходной и/или нерабочий праздничный день вне графика',
-  },
-  { value: 'ПП', label: 'Повременно-премиальная' },
-  { value: 'ППИ', label: 'Повременно-премиальная индивидуальная' },
-  {
-    value: 'КСП',
-    label: 'Комбинированная (премия на повременный и сдельный заработок)',
-  },
-  {
-    value: 'СКП',
-    label: 'Сдельная коллективная (премия на сдельный заработок)',
-  },
-  {
-    value: 'СПИ',
-    label: 'Сдельно-премиальная индивидуальная',
-  },
-];
-
-export const DOCUMENT_TITLE_OPTIONS = [
+export const WORKSHOP_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  {
-    value: 'title_transfer',
-    label: 'О переводе на другую работу',
-  },
-  { value: 'title_relocation', label: 'О перемещении работника' },
+  { value: WORKSHOP_CODE.W_LPC4, label: 'ЛПЦ-4' },
+  { value: WORKSHOP_CODE.W_LPC5, label: 'ЛПЦ-5' },
+  { value: WORKSHOP_CODE.W_LPC8_UGP, label: 'ЛПЦ-8 (УГП)' },
+  { value: WORKSHOP_CODE.W_LPC8_UL, label: 'ЛПЦ-8 (УЛ)' },
+  { value: WORKSHOP_CODE.W_LPC10, label: 'ЛПЦ-10' },
+  { value: WORKSHOP_CODE.W_LPC11, label: 'ЛПЦ-11' },
+  { value: WORKSHOP_CODE.W_PMP_NORTH, label: 'ПМП (СБ)' },
+  { value: WORKSHOP_CODE.W_PMP_SOUTH, label: 'ПМП (ЮБ)' },
 ];
 
-export const DOCUMENT_REASON_OPTIONS = [
+export const TEAM_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  {
-    value: 'vacation',
-    label: 'На период очередного оплачиваемого отпуска',
-  },
-  { value: 'fix', label: 'Для раскрепления металлопродукции' },
+  { value: TEAM_NUMBER.T_1, label: '1' },
+  { value: TEAM_NUMBER.T_2, label: '2' },
+  { value: TEAM_NUMBER.T_3, label: '3' },
+  { value: TEAM_NUMBER.T_4, label: '4' },
+  { value: TEAM_NUMBER.T_5, label: '5' },
 ];
 
-export const DOCUMENT_ACTION_OPTIONS = [
+export const PROFESSION_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  {
-    value: 'action_transfer',
-    label: 'Перевести на другую работу',
-  },
-  { value: 'action_relocate', label: 'Переместить в другую бригаду' },
+  { value: PROFESSION_CODE.HEAD, label: 'Начальник участка' },
+  { value: PROFESSION_CODE.LEAD_MASTER, label: 'Старший мастер' },
+  { value: PROFESSION_CODE.MASTER, label: 'Сменный мастер' },
+  { value: PROFESSION_CODE.DETAIL_MASTER, label: 'Мастер реквизитов' },
+  { value: PROFESSION_CODE.LEAD_OPERATOR, label: 'Старший оператор' },
+  { value: PROFESSION_CODE.OPERATOR, label: 'Оператор' },
+  { value: PROFESSION_CODE.PRODUCTION_FOREMAN, label: 'Бригадир УОП' },
+  { value: PROFESSION_CODE.PACKING_FOREMAN, label: 'Бригадир ОГП' },
+  { value: PROFESSION_CODE.PACKER, label: 'Укладчик-упаковщик' },
+  { value: PROFESSION_CODE.UNIT_PACKER, label: 'Укладчик-упаковщик ЛУМ' },
+  { value: PROFESSION_CODE.PACKER_APR8, label: 'Укладчик-упаковщик АПР-8' },
+  { value: PROFESSION_CODE.REPAIR_MECHANIC, label: 'Слесарь' },
+  { value: PROFESSION_CODE.STACKER, label: 'Штабелировщик' },
+  { value: PROFESSION_CODE.STAMPER, label: 'Штамповщик' },
+  { value: PROFESSION_CODE.DRIVER, label: 'Водитель погрузчика' },
+  { value: PROFESSION_CODE.CUTTER, label: 'Резчик х/м' },
+  { value: PROFESSION_CODE.GAS_CUTTER, label: 'Газорезчик' },
 ];
+
+export const SCHEDULE_OPTIONS = [
+  { value: '', label: 'Не выбрано' },
+  { value: SCHEDULE_CODE.S_5B1, label: '5-Б-1' },
+  { value: SCHEDULE_CODE.S_2A, label: '2-А' },
+  { value: SCHEDULE_CODE.S_9, label: '9' },
+  { value: SCHEDULE_CODE.S_2, label: '2' },
+];
+
+export const ATTENDANCE_TYPE = {
+  Y: 'Я',
+  V: 'В',
+};
 
 export const ATTENDANCE_OPTIONS = [
   { value: 'БР1', label: 'Бригада №1' },
@@ -535,121 +507,6 @@ export const ATTENDANCE_OPTIONS = [
   { value: 'Я', label: 'Я — Часы работы' },
 ];
 
-export const POSITION_OPTIONS = [
-  { value: '', label: 'Не выбрано' },
-  { value: '643842', label: '643842 — Начальник участка (в промышленности)' },
-  { value: '643850', label: '643850 — Мастер участка (реквизитов)' },
-  { value: '643843', label: '643843 — Мастер участка' },
-  {
-    value: '643852',
-    label: '643852 — Бригадир на участках основного производства',
-  },
-  {
-    value: '643853',
-    label: '643853 — Бригадир на участках основного производства',
-  },
-  { value: '643847', label: '643847 — Оператор поста управления (старший)' },
-  { value: '643848', label: '643848 — Оператор поста управления' },
-  {
-    value: '643985',
-    label:
-      '643985 — Бригадир на отделке, сортировке, приёмке, сдаче, пакетировке и упаковке металла и готовой продукции',
-  },
-  {
-    value: '643984',
-    label:
-      '643984 — Бригадир на отделке, сортировке, приёмке, сдаче, пакетировке и упаковке металла и готовой продукции',
-  },
-  { value: '643854', label: '643854 — Водитель погрузчика' },
-  { value: '643856', label: '643856 — Водитель погрузчика' },
-  { value: '643844', label: '643844 — Укладчик-упаковщик' },
-  { value: '643849', label: '643849 — Укладчик-упаковщик ЛУМ' },
-  { value: '643845', label: '643845 — Штабелировщик металла' },
-  { value: '643857', label: '643857 — Резчик холодного металла' },
-];
-
-export const PROFESSION_OPTIONS = [
-  { value: 'EXECUTIVE', label: 'Директор' },
-  {
-    value: 'HEAD_PRODUCTION',
-    label: 'Начальник производства (в промышленности)',
-  },
-  { value: 'SENIOR_MANAGER', label: 'Старший менеджер' },
-  { value: 'MECHANIC', label: 'Механик' },
-  { value: 'POWER_ENGINEER', label: 'Энергетик' },
-  { value: 'LEAD_SAFETY', label: 'Ведущий специалист по охране труда' },
-  { value: 'LEAD_ENGINEER', label: 'Ведущий инженер' },
-  { value: 'LEAD_QUALITY', label: 'Ведущий инженер по качеству' },
-  { value: 'SAFETY_SPECIALIST', label: 'Специалист по охране труда' },
-  {
-    value: 'PRODUCTION_ENGINEER',
-    label: 'Инженер по подготовке производства первой категории',
-  },
-  { value: 'ADMIN_INSPECTOR', label: 'Инспектор-делопроизводитель' },
-  { value: 'WORK_DISTRIBUTOR', label: 'Распределитель работ' },
-  { value: 'LEAD_ECONOMIST', label: 'Ведущий экономист' },
-  {
-    value: 'LEAD_LABOR_ENGINEER',
-    label: 'Ведущий инженер по организации и нормированию труда',
-  },
-  {
-    value: 'LABOR_ENGINEER',
-    label: 'Инженер по организации и нормированию труда первой категории',
-  },
-  { value: 'LEAD_SPECIALIST', label: 'Ведущий специалист' },
-  { value: 'TECHNOLOGIST_LEAD', label: 'Ведущий инженер-технолог' },
-  { value: 'TECHNOLOGIST', label: 'Инженер-технолог первой категории' },
-  { value: 'ENGINEER', label: 'Инженер первой категории' },
-  { value: 'HEAD', label: 'Начальник участка (в промышленности)' },
-  { value: 'LEAD_MASTER', label: 'Старший мастер участка' },
-  { value: 'DETAIL_MASTER', label: 'Мастер участка (реквизитов)' },
-  { value: 'MASTER', label: 'Мастер участка' },
-  { value: 'LEAD_OPERATOR', label: 'Оператор поста управления (старший)' },
-  { value: 'OPERATOR', label: 'Оператор поста управления' },
-  {
-    value: 'PRODUCTION_FOREMAN',
-    label: 'Бригадир на участках основного производства',
-  },
-  {
-    value: 'PACKING_FOREMAN',
-    label:
-      'Бригадир на отделке, сортировке, приёмке, сдаче, пакетировке и упаковке металла и готовой продукции',
-  },
-  { value: 'PACKER', label: 'Укладчик-упаковщик' },
-  { value: 'PACKER_APR8', label: 'Укладчик-упаковщик АПР-8' },
-  { value: 'UNIT_PACKER', label: 'Укладчик-упаковщик ЛУМ' },
-  { value: 'REPAIR_MECHANIC', label: 'Слесарь-ремонтник' },
-  { value: 'STACKER', label: 'Штабелировщик металла' },
-  { value: 'STAMPER', label: 'Штамповщик' },
-  { value: 'DRIVER', label: 'Водитель погрузчика' },
-  { value: 'CUTTER', label: 'Резчик холодного металла' },
-  { value: 'GAS_CUTTER', label: 'Газорезчик' },
-  { value: 'CRANE_OPERATOR', label: 'Машинист крана' },
-  {
-    value: 'LEAD_AUTOMATION',
-    label:
-      'Ведущий инженер по автоматизации и механизации производственных процессов',
-  },
-  {
-    value: 'ELECTRICIAN',
-    label: 'Электромонтёр по ремонту и обслуживанию электрооборудования',
-  },
-  {
-    value: 'MATERIAL_FOREMAN',
-    label:
-      'Бригадир по перемещению сырья, полуфабрикатов и готовой продукции в процессе производства',
-  },
-  { value: 'CAR_DRIVER', label: 'Водитель автомобиля' },
-  { value: 'SENIOR_WAREHOUSEMAN', label: 'Кладовщик (старший)' },
-  { value: 'WAREHOUSEMAN', label: 'Кладовщик' },
-];
-
-export const PRESENT_OPTIONS = [
-  { value: '', label: 'Не выбрано' },
-  { value: 'false', label: '-' },
-  { value: 'true', label: '+' },
-];
-
 export const WORK_PLACES_OPTIONS = [
   { value: '', label: 'Не выбрано' },
   {
@@ -704,12 +561,4 @@ export const WORK_PLACES_OPTIONS = [
     value: 'Обработка данных',
     label: 'Обработка данных',
   },
-];
-
-export const REASON_OPTIONS = [
-  { value: 'Свободная позиция', label: 'Свободная позиция' },
-  { value: 'На время отсутствия', label: 'На время отсутствия' },
-  { value: 'На время отвлечения', label: 'На время отвлечения' },
-  { value: 'Для ознакомления', label: 'Для ознакомления' },
-  { value: 'Производство', label: 'Производство' },
 ];

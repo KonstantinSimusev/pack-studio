@@ -1,4 +1,4 @@
-import { PROFILE_ROLE_OPTIONS } from './constants';
+// import { PROFESSION_OPTIONS } from './constants';
 
 export const delay = (ms: number = 500): Promise<void> =>
   new Promise((resolve) => {
@@ -151,10 +151,10 @@ export const formatDateForISO = (date: string): string => {
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 };
 
-export const getRoleName = (roleValue: string): string => {
-  const option = PROFILE_ROLE_OPTIONS.find((opt) => opt.value === roleValue);
-  return option?.label || 'Не создана';
-};
+// export const getRoleName = (roleValue: string): string => {
+//   const option = PROFESSION_OPTIONS.find((opt) => opt.value === roleValue);
+//   return option?.label || 'Не создана';
+// };
 
 export const getDayName = (dayOfWeek: number): string => {
   const WEEKDAY_NAMES = [

@@ -31,7 +31,16 @@
 .buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 40px;
+}
+
+.button {
+  display: flex;
+  padding: 6px;
+  border: 1px solid rgba(255 255 255 / 0.1);
+  background-color: rgba(129 129 129 / 0.1);
+  border-radius: 50%;
 }
 
 .table {

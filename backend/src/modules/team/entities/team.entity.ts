@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
+import { Assignment } from '../../assignment/entities/assignment.entity';
 import { Employee } from '../../employee/entities/employee.entity';
 // import { Shift } from '../../shift/entities/shift.entity';
 
@@ -19,12 +20,12 @@ export class Team {
   teamNumber: number;
 
   // Связь: одна бригада — много сотрудников
-  @OneToMany(() => Employee, (employee) => employee.team)
+  @OneToMany(() => Employee, (employee) => employee.homeTeam)
   employees: Employee[];
 
-  // Связь: одна бригада — много сотрудников (profile бригада)
-  @OneToMany(() => Employee, (employee) => employee.profileTeam)
-  profileEmployees: Employee[];
+  // Связь: одна бригада — много назначений
+  @OneToMany(() => Assignment, (assignment) => assignment.currentTeam)
+  assignments: Assignment[];
 
   // // Связь: одна бригада — много смен
   // @OneToMany(() => Shift, (shift) => shift.team)

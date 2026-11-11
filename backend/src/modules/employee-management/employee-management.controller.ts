@@ -18,7 +18,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { CreateEmployeesDto } from './dto/create-employees.dto';
 import { EmployeeIdDto } from './dto/employee-id.dto';
 import { SearchEmployeeDto } from './dto/search-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+// import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 import {
   IAccountInfo,
@@ -59,14 +59,14 @@ export class EmployeeManagementController {
     return this.employeeManagementService.getEmployeeInfo(dto.personalNumber);
   }
 
-  @Put('employee/:id')
-  @UseGuards(AuthGuard)
-  async updateEmployee(
-    @Body() dto: UpdateEmployeeDto,
-    @Req() req: Request & { profile: IProfile },
-  ): Promise<IEmployeeInfo> {
-    return this.employeeManagementService.updateEmployee(dto, req.profile);
-  }
+  // @Put('employee/:id')
+  // @UseGuards(AuthGuard)
+  // async updateEmployee(
+  //   @Body() dto: UpdateEmployeeDto,
+  //   @Req() req: Request & { profile: IProfile },
+  // ): Promise<IEmployeeInfo> {
+  //   return this.employeeManagementService.updateEmployee(dto, req.profile);
+  // }
 
   // @Delete(':id')
   // @UseGuards(AuthGuard)

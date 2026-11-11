@@ -12,7 +12,7 @@ export class WorkshopRepository {
   ) {}
 
   // 2. CRUD: Read (общие методы поиска)
-  async findWorkshopByCode(workshopCode: string): Promise<Workshop | null> {
+  async findByCode(workshopCode: string): Promise<Workshop | null> {
     return this.workshopRepository.findOneBy({ workshopCode });
   }
 }
