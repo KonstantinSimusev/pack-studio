@@ -47,7 +47,6 @@ export class EmployeeManagementService {
   async createEmployee(
     dto: CreateEmployeeDto,
     profile?: IProfile,
-    isManyOperation: boolean = false,
   ): Promise<IAccountInfo> {
     // Получаем сущности нового сотрудника
     const [workshop, team, profession, schedule] = await Promise.all([
@@ -71,7 +70,7 @@ export class EmployeeManagementService {
     );
 
     // Проверяем уникальность личного номера
-    // await this.employeeService.validateUniquePersonalNumber(dto.personalNumber);
+    await this.employeeService.validateUniquePersonalNumber(dto.personalNumber);
 
     // Проверяем условие - руководитель в бригаде может быть только один
     // if (this.isManagerRole(position.role.name as ERole)) {
@@ -121,23 +120,6 @@ export class EmployeeManagementService {
       login: account.login,
       password: initialPassword,
     };
-  }
-
-  async createMany(dtos: CreateEmployeesDto): Promise<IList<IAccountInfo>> {
-    try {
-      const employees = await Promise.all(
-        dtos.employees.map((dto) => this.createEmployee(dto, undefined, true)),
-      );
-
-      return {
-        total: employees.length,
-        items: employees,
-      };
-    } catch (error) {
-      console.error('createMany failed:', error);
-
-      throw new InternalServerErrorException('Не удалось создать работников');
-    }
   }
 
   // async updateEmployee(

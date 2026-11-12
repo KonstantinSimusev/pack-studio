@@ -110,14 +110,14 @@ export class EmployeeService {
   //   }
   // }
 
-  // async validateUniquePersonalNumber(personalNumber: number): Promise<void> {
-  //   const count =
-  //     await this.employeeRepository.countByPersonalNumber(personalNumber);
+  async validateUniquePersonalNumber(personalNumber: number): Promise<void> {
+    const count =
+      await this.employeeRepository.countByPersonalNumber(personalNumber);
 
-  //   if (count > 0) {
-  //     throw new ConflictException('Личный номер занят');
-  //   }
-  // }
+    if (count > 0) {
+      throw new ConflictException('Личный номер занят');
+    }
+  }
 
   // async validateUniquePersonalNumberExcluding(
   //   employeeId: string,

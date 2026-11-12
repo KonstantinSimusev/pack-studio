@@ -79,11 +79,11 @@ export class EmployeeRepository {
     });
   }
 
-  // async countByPersonalNumber(personalNumber: number): Promise<number> {
-  //   return this.employeeRepository.count({
-  //     where: { personalNumber },
-  //   });
-  // }
+  async countByPersonalNumber(personalNumber: number): Promise<number> {
+    return this.employeeRepository.count({
+      where: { personalNumber },
+    });
+  }
 
   // async countByFullNameExcluding(
   //   employeeId: string,

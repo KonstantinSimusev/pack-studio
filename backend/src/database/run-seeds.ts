@@ -1,21 +1,34 @@
-import { AppDataSource } from './data-source';
+import 'reflect-metadata';
+
+import { NestFactory } from '@nestjs/core';
+import { DataSource } from 'typeorm';
+
+import { AppModule } from '../app.module';
+
 import { seedProfessions } from './seeds/professions.seed';
 import { seedSchedules } from './seeds/schedules.seed';
 import { seedTeams } from './seeds/teams.seed';
-
 import { seedWorkshops } from './seeds/workshops.seed';
+import { seedEmployees } from './seeds/employees.seed';
 
 const run = async (): Promise<void> => {
-  await AppDataSource.initialize();
+  // Поднимаем DI-контейнер без HTTP-сервера: сервисы, репозитории, конфиг — как в приложении
+  const app = await NestFactory.createApplicationContext(AppModule, {
+    logger: false,
+  });
 
-  await seedWorkshops(AppDataSource);
-  await seedTeams(AppDataSource);
-  await seedProfessions(AppDataSource);
-  await seedSchedules(AppDataSource);
+  const dataSource = app.get(DataSource);
 
-  // сюда по мере роста проекта добавляйте: await seedWorkers(ds); и т.д.
+  // Справочники — напрямую через репозитории
+  await seedWorkshops(dataSource);
+  await seedTeams(dataSource);
+  await seedProfessions(dataSource);
+  await seedSchedules(dataSource);
 
-  await AppDataSource.destroy();
+  // Работники — через сервис, логика создания живёт в EmployeeManagementService
+  await seedEmployees(app);
+
+  await app.close();
 };
 
 run()

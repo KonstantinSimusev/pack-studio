@@ -44,13 +44,6 @@ export class EmployeeManagementController {
     return this.employeeManagementService.createEmployee(dto, req.profile);
   }
 
-  @Post('many')
-  async createMany(
-    @Body() dtos: CreateEmployeesDto,
-  ): Promise<IList<IAccountInfo>> {
-    return this.employeeManagementService.createMany(dtos);
-  }
-
   @Get('employees/:personalNumber')
   @UseGuards(AuthGuard)
   async getEmployeeInfo(

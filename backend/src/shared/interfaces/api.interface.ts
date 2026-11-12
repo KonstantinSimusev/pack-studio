@@ -19,6 +19,36 @@ export interface IJwtPayload {
   exp?: number;
 }
 
+export interface IProfession {
+  professionCode: string;
+  name: string;
+}
+
+export interface ISchedule {
+  scheduleCode: string;
+  name: string;
+}
+
+export interface ITeam {
+  teamNumber: number;
+}
+
+export interface IWorkshop {
+  workshopCode: string;
+  name: string;
+}
+
+export interface ICreateEmployee {
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  personalNumber: number;
+  workshopCode: string;
+  teamNumber: number;
+  professionCode: string;
+  scheduleCode: string;
+}
+
 export interface IAccountInfo {
   lastName: string;
   firstName: string;
