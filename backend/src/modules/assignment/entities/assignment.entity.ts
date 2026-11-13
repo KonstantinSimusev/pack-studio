@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,12 +28,6 @@ export class Assignment {
   })
   isActive: boolean;
 
-  // Связь: много назначений — один сотрудник
-  // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Employee, (employee) => employee.assignments)
-  @JoinColumn({ name: 'employee_id' })
-  employee: Employee;
-
   // Связь: много назначений — один цех
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
   @ManyToOne(() => Workshop, (workshop) => workshop.assignments)
@@ -56,4 +51,8 @@ export class Assignment {
   @ManyToOne(() => Schedule, (schedule) => schedule.assignments)
   @JoinColumn({ name: 'current_schedule_id' })
   currentSchedule: Schedule;
+
+  // Связь: один аккаунт — один сотрудник
+  @OneToOne(() => Employee, (employee) => employee.assignment)
+  employee: Employee;
 }

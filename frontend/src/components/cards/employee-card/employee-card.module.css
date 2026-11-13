@@ -8,17 +8,19 @@
 
 .profile {
   display: flex;
-  flex-direction: column;
-  gap: 22px;
   align-items: center;
-  margin-top: 10px;
+  gap: 20px;
 }
 
 .fullname {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   gap: 6px;
+}
+
+.lastName {
+  font-size: 18px;
 }
 
 .profession {
@@ -32,7 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
 }
 
 .button {

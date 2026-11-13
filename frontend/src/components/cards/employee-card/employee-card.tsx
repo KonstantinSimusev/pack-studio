@@ -27,14 +27,13 @@ export const EmployeeCard = ({
   return (
     <CardContainer className={styles.container}>
       <div className={styles.profile}>
-        <ProfileIcon />
+        <ProfileIcon width={68} height={68} />
         <span className={styles.fullname}>
-          <span>{`${employee.lastName} ${employee.firstName}`}</span>
-          <span>{employee.patronymic}</span>
+          <span className={styles.lastName}>{employee.lastName}</span>
+          <span className={styles.name}>{employee.firstName}</span>
+          <span className={styles.name}>{employee.patronymic}</span>
         </span>
-        <span className={styles.profession}>{employee.homeProfessionName}</span>
       </div>
-
       <div className={styles.buttons}>
         <IconButton
           type='button'
@@ -76,7 +75,7 @@ export const EmployeeCard = ({
 
         <TableBlock
           title='Доступ в кабинет'
-          text={employee.isActive ? 'Разрешён' : 'Запрещён'}
+          text={employee.hasAccess ? 'Разрешён' : 'Запрещён'}
         />
       </div>
 

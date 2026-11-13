@@ -15,16 +15,16 @@ import { Request } from 'express';
 import { AuthGuard } from '../auth/guards/auth.guard';
 
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { CreateEmployeesDto } from './dto/create-employees.dto';
 import { EmployeeIdDto } from './dto/employee-id.dto';
 import { SearchEmployeeDto } from './dto/search-employee.dto';
-// import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 import {
   IAccountInfo,
   IEmployeeInfo,
   IList,
   IProfile,
+  ISuccess,
 } from '../../shared/interfaces/api.interface';
 
 import { EmployeeManagementService } from './employee-management.service';
@@ -37,11 +37,8 @@ export class EmployeeManagementController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async createEmployee(
-    @Body() dto: CreateEmployeeDto,
-    @Req() req: Request & { profile: IProfile },
-  ) {
-    return this.employeeManagementService.createEmployee(dto, req.profile);
+  async createEmployee(@Body() dto: CreateEmployeeDto) {
+    return this.employeeManagementService.createEmployee(dto);
   }
 
   @Get('employees/:personalNumber')
@@ -52,21 +49,21 @@ export class EmployeeManagementController {
     return this.employeeManagementService.getEmployeeInfo(dto.personalNumber);
   }
 
-  // @Put('employee/:id')
-  // @UseGuards(AuthGuard)
-  // async updateEmployee(
-  //   @Body() dto: UpdateEmployeeDto,
-  //   @Req() req: Request & { profile: IProfile },
-  // ): Promise<IEmployeeInfo> {
-  //   return this.employeeManagementService.updateEmployee(dto, req.profile);
-  // }
+  @Put('employee/:id')
+  @UseGuards(AuthGuard)
+  async updateEmployee(
+    @Body() dto: UpdateEmployeeDto,
+    @Req() req: Request & { profile: IProfile },
+  ): Promise<IEmployeeInfo> {
+    return this.employeeManagementService.updateEmployee(dto, req.profile);
+  }
 
-  // @Delete(':id')
-  // @UseGuards(AuthGuard)
-  // async deleteEmployee(
-  //   @Param() dto: EmployeeIdDto,
-  //   @Req() req: Request & { profile: IProfile },
-  // ): Promise<ISuccess> {
-  //   return this.employeeManagementService.deleteEmployee(dto.id, req.profile);
-  // }
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  async deleteEmployee(
+    @Param() dto: EmployeeIdDto,
+    @Req() req: Request & { profile: IProfile },
+  ): Promise<ISuccess> {
+    return this.employeeManagementService.deleteEmployee(dto.id, req.profile);
+  }
 }

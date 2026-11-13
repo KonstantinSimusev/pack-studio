@@ -33,7 +33,7 @@ export interface IProfile {
   professionName: string;
   scheduleCode: string;
   scheduleName: string;
-  isActive: boolean;
+  hasAccess: boolean;
 }
 
 export interface ICreateEmployee {
@@ -49,7 +49,7 @@ export interface ICreateEmployee {
 
 export interface IUpdateEmployee {
   id: string;
-  isActive: boolean;
+  hasAccess: boolean;
 
   currentWorkshopCode: string;
   currentTeamNumber: number;
@@ -69,7 +69,7 @@ export interface IEmployeeInfo {
   patronymic: string;
   personalNumber: number;
 
-  isActive: boolean;
+  hasAccess: boolean;
 
   currentWorkshopCode: string;
   currentWorkshopName: string;

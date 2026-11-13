@@ -20,14 +20,24 @@ export class AccountRepository {
   // 2. CRUD: Read (общие методы поиска)
   async findById(id: string): Promise<Account | null> {
     return this.accountRepository.findOne({
-      where: { id },
+      where: {
+        id,
+        employee: {
+          assignment: { isActive: true },
+        },
+      },
       relations: this.ACCOUNT_RELATIONS,
     });
   }
 
   async findByLogin(login: string): Promise<Account | null> {
     return this.accountRepository.findOne({
-      where: { login },
+      where: {
+        login,
+        employee: {
+          assignment: { isActive: true },
+        },
+      },
       relations: this.ACCOUNT_RELATIONS,
     });
   }
@@ -56,10 +66,10 @@ export class AccountRepository {
     'employee.homeTeam',
     'employee.homeProfession',
     'employee.homeSchedule',
-    'employee.assignments',
-    'employee.assignments.currentWorkshop',
-    'employee.assignments.currentTeam',
-    'employee.assignments.currentProfession',
-    'employee.assignments.currentSchedule',
+    'employee.assignment',
+    'employee.assignment.currentWorkshop',
+    'employee.assignment.currentTeam',
+    'employee.assignment.currentProfession',
+    'employee.assignment.currentSchedule',
   ];
 }

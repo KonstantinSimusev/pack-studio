@@ -16,6 +16,7 @@ import { selectIsUpdateAccountLoading } from '../services/slices/account/slice';
 
 import {
   selectIsCreateEmployeeLoading,
+  selectIsDeleteEmployeeLoading,
   selectIsSearchEmployeeLoading,
   selectIsUpdateEmployeeLoading,
 } from '../services/slices/employee/slice';
@@ -48,6 +49,7 @@ import { Overlay } from '../components/ui/overlay/overlay';
 
 import { AccountInfoForm } from '../components/forms/account-info-form/account-info-form';
 import { EmployeeCreateForm } from '../components/forms/employee-create-form/employee-create-form';
+import { EmployeeDeleteForm } from '../components/forms/employee-delete-form/employee-delete-form';
 import { EmployeeEditForm } from '../components/forms/employee-edit-form/employee-edit-form';
 import { EmployeeSearchForm } from '../components/forms/employee-search-form/employee-search-form';
 import { LoginForm } from '../components/forms/login-form/login-form';
@@ -68,6 +70,7 @@ const App = () => {
     isEmployeeSearchOpen,
     isEmployeeCreateOpen,
     isEmployeeEditOpen,
+    isEmployeeDeleteOpen,
     isAccountInfoOpen,
     isPasswordUpdateOpen,
     // isShiftSearchOpen,
@@ -83,6 +86,7 @@ const App = () => {
   const isCreateEmployeeLoading = useSelector(selectIsCreateEmployeeLoading);
   const isUpdateEmployeeLoading = useSelector(selectIsUpdateEmployeeLoading);
   const isSearchEmployeeLoading = useSelector(selectIsSearchEmployeeLoading);
+  const isDeleteEmployeeLoading = useSelector(selectIsDeleteEmployeeLoading);
   // const isShiftLoading = useSelector(selectIsShiftLoading);
   // const isGetShiftsLoading = useSelector(selectIsGetShiftsLoading);
   // const isSearchShiftsLoading = useSelector(selectIsSearchShiftsLoading);
@@ -104,7 +108,8 @@ const App = () => {
     isUpdateAccountLoading ||
     isCreateEmployeeLoading ||
     isUpdateEmployeeLoading ||
-    isSearchEmployeeLoading;
+    isSearchEmployeeLoading ||
+    isDeleteEmployeeLoading;
     // isShiftLoading ||
     // isGetShiftsLoading ||
     // isSearchShiftsLoading ||
@@ -176,6 +181,12 @@ const App = () => {
       {isEmployeeEditOpen && (
         <Modal>
           <EmployeeEditForm />
+        </Modal>
+      )}
+
+      {isEmployeeDeleteOpen && (
+        <Modal>
+          <EmployeeDeleteForm />
         </Modal>
       )}
 

@@ -3,28 +3,30 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { EScheduleCode } from '../../shared/enums/enums';
+import { EProfessionCode, EScheduleCode } from '../../shared/enums/enums';
 
 import { Employee } from '../employee/entities/employee.entity';
 
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { CreateEmployeesDto } from './dto/create-employees.dto';
-// import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 import {
   IAccountInfo,
   IEmployeeInfo,
   IList,
   IProfile,
+  ISuccess,
 } from '../../shared/interfaces/api.interface';
 
 import { AssignmentRepository } from '../assignment/assignment.repository';
 import { EmployeeRepository } from '../employee/employee.repository';
 
 import { AccountService } from '../account/account.service';
+import { AssignmentService } from '../assignment/assignment.service';
 import { EmployeeService } from '../employee/employee.service';
 import { ProfessionService } from '../profession/profession.service';
 import { ScheduleService } from '../schedule/schedule.service';
@@ -36,18 +38,16 @@ export class EmployeeManagementService {
   constructor(
     private readonly assignmentRepository: AssignmentRepository,
     private readonly employeeRepository: EmployeeRepository,
-    private readonly employeeService: EmployeeService,
     private readonly accountService: AccountService,
+    private readonly assignmentService: AssignmentService,
+    private readonly employeeService: EmployeeService,
     private readonly professionService: ProfessionService,
     private readonly scheduleService: ScheduleService,
     private readonly teamService: TeamService,
     private readonly workshopService: WorkshopService,
   ) {}
 
-  async createEmployee(
-    dto: CreateEmployeeDto,
-    profile?: IProfile,
-  ): Promise<IAccountInfo> {
+  async createEmployee(dto: CreateEmployeeDto): Promise<IAccountInfo> {
     // Получаем сущности нового сотрудника
     const [workshop, team, profession, schedule] = await Promise.all([
       this.workshopService.getWorkshopByCode(dto.workshopCode),
@@ -62,7 +62,7 @@ export class EmployeeManagementService {
       dto.scheduleCode,
     );
 
-    // Проверяем, не занято ли ФИО
+    // Проверяем уникальность ФИО
     await this.employeeService.validateUniqueFullName(
       dto.lastName,
       dto.firstName,
@@ -73,14 +73,14 @@ export class EmployeeManagementService {
     await this.employeeService.validateUniquePersonalNumber(dto.personalNumber);
 
     // Проверяем условие - руководитель в бригаде может быть только один
-    // if (this.isManagerRole(position.role.name as ERole)) {
-    //   await this.employeeService.existsTeamManager(
-    //     team.id,
-    //     position.workshop.id,
-    //     position.schedule.id,
-    //     position.role.id,
-    //   );
-    // }
+    if (this.isManagerProfessionCode(dto.professionCode as EProfessionCode)) {
+      await this.employeeService.existsTeamManager(
+        workshop.id,
+        team.id,
+        profession.id,
+        schedule.id,
+      );
+    }
 
     // Создаем аккаунт
     const { account, initialPassword } =
@@ -90,27 +90,27 @@ export class EmployeeManagementService {
         dto.patronymic,
       );
 
+    // Создаем назначение
+    const assignment = await this.assignmentRepository.create({
+      isActive: true,
+      currentWorkshop: workshop,
+      currentTeam: team,
+      currentProfession: profession,
+      currentSchedule: schedule,
+    });
+
     // Создаём сотрудника
     const employee = await this.employeeRepository.create({
       lastName: dto.lastName,
       firstName: dto.firstName,
       patronymic: dto.patronymic,
       personalNumber: dto.personalNumber,
-      account: account,
+      account,
+      assignment,
       homeWorkshop: workshop,
       homeTeam: team,
       homeProfession: profession,
       homeSchedule: schedule,
-    });
-
-    // Создаем первое (и пока единственное) активное назначение
-    await this.assignmentRepository.create({
-      isActive: true,
-      employee: employee,
-      currentWorkshop: workshop,
-      currentTeam: team,
-      currentProfession: profession,
-      currentSchedule: schedule,
     });
 
     return {
@@ -122,70 +122,93 @@ export class EmployeeManagementService {
     };
   }
 
-  // async updateEmployee(
-  //   dto: UpdateEmployeeDto,
-  //   profile: IProfile,
-  // ): Promise<IEmployeeInfo> {
-  //   const { employeeId } = profile;
+  async updateEmployee(
+    dto: UpdateEmployeeDto,
+    profile: IProfile,
+  ): Promise<IEmployeeInfo> {
+    const { employeeId } = profile;
 
-  //   // Получаем сущности
-  //   const employee = await this.employeeService.getEmployee(dto.id);
-  //   const team = await this.teamService.getTeam(dto.teamNumber);
-  //   const position = await this.getEmployeePosition(dto.positionCode);
-  //   const profileTeam = await this.teamService.getTeam(dto.profileTeamNumber);
-  //   const profilePosition = await this.getEmployeePosition(
-  //     dto.profilePositionCode,
-  //   );
+    // Получаем сущности
+    const [
+      employee,
+      currentWorkshop,
+      currentTeam,
+      currentProfession,
+      currentSchedule,
+      homeWorkshop,
+      homeTeam,
+      homeProfession,
+      homeSchedule,
+    ] = await Promise.all([
+      this.employeeService.getEmployeeById(dto.id),
+      this.workshopService.getWorkshopByCode(dto.currentWorkshopCode),
+      this.teamService.getTeamByNumber(dto.currentTeamNumber),
+      this.professionService.getProfessionByCode(dto.currentProfessionCode),
+      this.scheduleService.getScheduleByCode(dto.currentScheduleCode),
+      this.workshopService.getWorkshopByCode(dto.homeWorkshopCode),
+      this.teamService.getTeamByNumber(dto.homeTeamNumber),
+      this.professionService.getProfessionByCode(dto.homeProfessionCode),
+      this.scheduleService.getScheduleByCode(dto.homeScheduleCode),
+    ]);
 
-  //   // Проверяем условия - cотрудник не может редактировать собственные данные
-  //   if (employeeId === employee.id) {
-  //     throw new ConflictException('Нельзя редактировать себя');
-  //   }
+    // Проверяем условия - cотрудник не может редактировать собственные данные
+    if (employeeId === employee.id) {
+      throw new ConflictException('Нельзя редактировать себя');
+    }
 
-  //   // Проверяем соответствие бригады и графика по штатной позиции (КЛС)
-  //   await this.validateTeamScheduleCompatibility(
-  //     dto.teamNumber,
-  //     dto.positionCode,
-  //   );
+    // Проверяем соответствие бригады и графика (current-поля)
+    await this.validateTeamScheduleCompatibility(
+      dto.currentTeamNumber,
+      dto.currentScheduleCode,
+    );
 
-  //   // Проверяем соответствие бригады и графика по штатной позиции (profile-поля)
-  //   await this.validateTeamScheduleCompatibility(
-  //     dto.profileTeamNumber,
-  //     dto.profilePositionCode,
-  //   );
+    // Проверяем соответствие бригады и графика (КЛС)
+    await this.validateTeamScheduleCompatibility(
+      dto.homeTeamNumber,
+      dto.homeScheduleCode,
+    );
 
-  //   // Проверяем условие - руководитель в бригаде может быть только один
-  //   if (this.isManagerRole(profilePosition.role.name as ERole)) {
-  //     await this.employeeService.existsTeamManagerExcluding(
-  //       employee.id,
-  //       profileTeam.id,
-  //       profilePosition.workshop.id,
-  //       profilePosition.schedule.id,
-  //       profilePosition.role.id,
-  //     );
-  //   }
+    // Проверяем условие - руководитель в бригаде может быть только один
+    if (
+      this.isManagerProfessionCode(dto.currentProfessionCode as EProfessionCode)
+    ) {
+      await this.employeeService.existsTeamManagerExcluding(
+        employee.id,
+        currentWorkshop.id,
+        currentTeam.id,
+        currentProfession.id,
+        currentSchedule.id,
+      );
+    }
 
-  //   // Обновление полей
-  //   employee.hasAccess = dto.hasAccess;
+    // Обновление связей
+    employee.homeWorkshop = homeWorkshop;
+    employee.homeTeam = homeTeam;
+    employee.homeProfession = homeProfession;
+    employee.homeSchedule = homeSchedule;
 
-  //   // Обновление связей
-  //   employee.team = team;
-  //   employee.position = position;
-  //   employee.profileTeam = profileTeam;
-  //   employee.profilePosition = profilePosition;
+    // Сохранение изменений сотрудника
+    await this.employeeRepository.save(employee);
 
-  //   // Сохранение изменений
-  //   await this.employeeRepository.save(employee);
+    // Сохранение изменений назначения
+    await this.assignmentService.updateByEmployee(
+      employee.id,
+      currentWorkshop,
+      currentTeam,
+      currentProfession,
+      currentSchedule,
+      dto.hasAccess,
+    );
 
-  //   // Возврат результата
-  //   return this.getEmployeeInfo(employee.personalNumber);
-  // }
+    // Возврат результата
+    return this.getEmployeeInfo(employee.personalNumber);
+  }
 
   async getEmployeeInfo(personalNumber: number): Promise<IEmployeeInfo> {
     const employee =
       await this.employeeService.getEmployeeByPersonalNumber(personalNumber);
 
-    const current = employee.assignments.find((a) => a.isActive);
+    const assignment = employee.assignment;
 
     return {
       id: employee.id,
@@ -194,15 +217,15 @@ export class EmployeeManagementService {
       patronymic: employee.patronymic,
       personalNumber: employee.personalNumber,
 
-      isActive: current.isActive,
+      hasAccess: assignment.isActive,
 
-      currentWorkshopCode: current.currentWorkshop.workshopCode,
-      currentWorkshopName: current.currentWorkshop.name,
-      currentTeamNumber: current.currentTeam.teamNumber,
-      currentProfessionCode: current.currentProfession.professionCode,
-      currentProfessionName: current.currentProfession.name,
-      currentScheduleCode: current.currentSchedule.scheduleCode,
-      currentScheduleName: current.currentSchedule.name,
+      currentWorkshopCode: assignment.currentWorkshop.workshopCode,
+      currentWorkshopName: assignment.currentWorkshop.name,
+      currentTeamNumber: assignment.currentTeam.teamNumber,
+      currentProfessionCode: assignment.currentProfession.professionCode,
+      currentProfessionName: assignment.currentProfession.name,
+      currentScheduleCode: assignment.currentSchedule.scheduleCode,
+      currentScheduleName: assignment.currentSchedule.name,
 
       homeWorkshopCode: employee.homeWorkshop.workshopCode,
       homeWorkshopName: employee.homeWorkshop.name,
@@ -243,20 +266,34 @@ export class EmployeeManagementService {
   //   );
   // }
 
-  // private async getEmployeePosition(positionCode: number): Promise<Position> {
-  //   const position = await this.positionService.getPosition(positionCode);
+  async deleteEmployee(id: string, profile: IProfile): Promise<ISuccess> {
+    const { employeeId } = profile;
+    const employee = await this.employeeService.getEmployeeById(id);
 
-  //   return position;
-  // }
+    // Проверяем условия - cотрудник не может редактировать собственные данные
+    if (employeeId === employee.id) {
+      throw new ConflictException('Нельзя редактировать себя');
+    }
 
-  // private isManagerRole(role: ERole): boolean {
-  //   return [
-  //     ERole.HEAD,
-  //     ERole.LEAD_MASTER,
-  //     ERole.DETAIL_MASTER,
-  //     ERole.MASTER,
-  //   ].includes(role);
-  // }
+    const result = await this.employeeRepository.delete(id);
+
+    if (!result.affected) {
+      throw new NotFoundException('Работник не найден');
+    }
+
+    return {
+      message: 'Работник удален успешно',
+    };
+  }
+
+  private isManagerProfessionCode(code: EProfessionCode): boolean {
+    return [
+      EProfessionCode.HEAD,
+      EProfessionCode.LEAD_MASTER,
+      EProfessionCode.DETAIL_MASTER,
+      EProfessionCode.MASTER,
+    ].includes(code);
+  }
 
   private SCHEDULE_TEAM_RULES: Record<string, number[]> = {
     [EScheduleCode.S_5B1]: [5],

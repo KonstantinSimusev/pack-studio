@@ -21,6 +21,7 @@ export const CloseButton = ({ className }: IProps) => {
     setIsEmployeeSearchOpen,
     setIsEmployeeCreateOpen,
     setIsEmployeeEditOpen,
+    setIsEmployeeDeleteOpen,
     setIsPasswordUpdateOpen,
     setIsShiftSearchOpen,
     setIsEmployeeAddOpen,
@@ -40,6 +41,7 @@ export const CloseButton = ({ className }: IProps) => {
     setIsEmployeeSearchOpen(false);
     setIsEmployeeCreateOpen(false);
     setIsEmployeeEditOpen(false);
+    setIsEmployeeDeleteOpen(false);
     setIsPasswordUpdateOpen(false);
     setIsShiftSearchOpen(false);
     setIsEmployeeAddOpen(false);

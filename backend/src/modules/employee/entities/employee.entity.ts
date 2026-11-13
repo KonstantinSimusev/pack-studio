@@ -57,10 +57,17 @@ export class Employee {
 
   // Связь: один сотрудник — один аккаунт
   @OneToOne(() => Account, (account) => account.employee, {
-    cascade: ['remove'],
+    onDelete: 'CASCADE', // при удалении сотрудника - связанный аккаунт удаляется тоже
   })
   @JoinColumn({ name: 'account_id' })
   account: Account;
+
+  // Связь: один сотрудник — одно назначений
+  @OneToOne(() => Assignment, (assignment) => assignment.employee, {
+    onDelete: 'CASCADE', // при удалении сотрудника - связанное назаначение удаляется тоже
+  })
+  @JoinColumn({ name: 'assignment_id' })
+  assignment: Assignment;
 
   // Связь: много много сотрудников — один цех
   @ManyToOne(() => Workshop, (workshop) => workshop.employees)
@@ -81,10 +88,6 @@ export class Employee {
   @ManyToOne(() => Schedule, (schedule) => schedule.employees)
   @JoinColumn({ name: 'home_schedule_id' })
   homeSchedule: Schedule;
-
-  // Связь: один сотрудник — много назначений
-  @OneToMany(() => Assignment, (assignment) => assignment.employee)
-  assignments: Assignment[];
 
   // // Связь: один сотрудник — много смен сотрудника
   // @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)

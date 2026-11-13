@@ -70,7 +70,7 @@ export interface IProfile {
   professionName: string;
   scheduleCode: string;
   scheduleName: string;
-  isActive: boolean;
+  hasAccess: boolean;
 }
 
 export interface IEmployeeInfo {
@@ -80,7 +80,7 @@ export interface IEmployeeInfo {
   patronymic: string;
   personalNumber: number;
 
-  isActive: boolean;
+  hasAccess: boolean;
 
   currentWorkshopCode: string;
   currentWorkshopName: string;

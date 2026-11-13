@@ -21,4 +21,25 @@ export class AssignmentRepository {
   // async findById(id: string): Promise<Assignment | null> {
   //   return this.assignmentRepository.findOneBy({ id });
   // }
+
+  async findByEmployeeId(employeeId: string): Promise<Assignment | null> {
+    return this.assignmentRepository.findOne({
+      where: {
+        employee: {
+          id: employeeId,
+        },
+      },
+      relations: [
+        'currentWorkshop',
+        'currentTeam',
+        'currentProfession',
+        'currentSchedule',
+      ],
+    });
+  }
+
+  // 3. CRUD: Update
+  async save(assignment: Assignment): Promise<Assignment> {
+    return this.assignmentRepository.save(assignment);
+  }
 }

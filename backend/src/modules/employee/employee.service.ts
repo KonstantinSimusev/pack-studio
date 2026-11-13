@@ -13,15 +13,25 @@ import { EmployeeRepository } from './employee.repository';
 export class EmployeeService {
   constructor(private readonly employeeRepository: EmployeeRepository) {}
 
-  // async getEmployee(id: string): Promise<Employee> {
-  //   const employee = await this.employeeRepository.findEmployeeById(id);
+  async getEmployeeById(id: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findById(id);
 
-  //   if (!employee) {
-  //     throw new NotFoundException('Работник не найден');
-  //   }
+    if (!employee) {
+      throw new NotFoundException('Работник не найден');
+    }
 
-  //   return employee;
-  // }
+    return employee;
+  }
+
+  async getEmployeeByIdFromAccount(id: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findByIdFromAccount(id);
+
+    if (!employee) {
+      throw new NotFoundException('Работник не найден');
+    }
+
+    return employee;
+  }
 
   async getEmployeeByPersonalNumber(personalNumber: number): Promise<Employee> {
     const employee =
@@ -64,17 +74,17 @@ export class EmployeeService {
   //   return employees;
   // }
 
-  // async deleteEmployee(id: string): Promise<ISuccess> {
-  //   const result = await this.employeeRepository.delete(id);
+  async deleteEmployee(id: string): Promise<ISuccess> {
+    const result = await this.employeeRepository.delete(id);
 
-  //   if (!result.affected) {
-  //     throw new NotFoundException('Работник не найден');
-  //   }
+    if (!result.affected) {
+      throw new NotFoundException('Работник не найден');
+    }
 
-  //   return {
-  //     message: 'Работник удален успешно',
-  //   };
-  // }
+    return {
+      message: 'Работник удален успешно',
+    };
+  }
 
   async validateUniqueFullName(
     lastName: string,
@@ -92,24 +102,6 @@ export class EmployeeService {
     }
   }
 
-  // async validateUniqueFullNameExcluding(
-  //   employeeId: string,
-  //   lastName: string,
-  //   firstName: string,
-  //   patronymic: string,
-  // ): Promise<void> {
-  //   const count = await this.employeeRepository.countByFullNameExcluding(
-  //     employeeId,
-  //     lastName,
-  //     firstName,
-  //     patronymic,
-  //   );
-
-  //   if (count > 0) {
-  //     throw new ConflictException('ФИО занято');
-  //   }
-  // }
-
   async validateUniquePersonalNumber(personalNumber: number): Promise<void> {
     const count =
       await this.employeeRepository.countByPersonalNumber(personalNumber);
@@ -119,69 +111,41 @@ export class EmployeeService {
     }
   }
 
-  // async validateUniquePersonalNumberExcluding(
-  //   employeeId: string,
-  //   personalNumber: number,
-  // ): Promise<void> {
-  //   const count = await this.employeeRepository.countByPersonalNumberExcluding(
-  //     employeeId,
-  //     personalNumber,
-  //   );
+  async existsTeamManager(
+    workshopId: string,
+    teamId: string,
+    professionId: string,
+    scheduleId: string,
+  ): Promise<void> {
+    const count = await this.employeeRepository.countTeamManagers(
+      workshopId,
+      teamId,
+      professionId,
+      scheduleId,
+    );
 
-  //   if (count > 0) {
-  //     throw new ConflictException('Личный номер занят');
-  //   }
-  // }
+    if (count > 0) {
+      throw new ConflictException('Руководитель уже существует');
+    }
+  }
 
-  // async existsTeamManager(
-  //   teamId: string,
-  //   workshopId: string,
-  //   scheduleId: string,
-  //   professionId: string,
-  // ): Promise<void> {
-  //   const managers = await this.employeeRepository.findTeamManagers(
-  //     teamId,
-  //     workshopId,
-  //     scheduleId,
-  //     professionId,
-  //   );
+  async existsTeamManagerExcluding(
+    employeeId: string,
+    workshopId: string,
+    teamId: string,
+    professionId: string,
+    scheduleId: string,
+  ): Promise<void> {
+    const count = await this.employeeRepository.countTeamManagersExcluding(
+      employeeId,
+      workshopId,
+      teamId,
+      professionId,
+      scheduleId,
+    );
 
-  //   const count = managers.filter((manager) =>
-  //     this.hasActiveAssignment(manager),
-  //   ).length;
-
-  //   if (count > 0) {
-  //     throw new ConflictException('Руководитель уже существует');
-  //   }
-  // }
-
-  // async existsTeamManagerExcluding(
-  //   employeeId: string,
-  //   teamId: string,
-  //   workshopId: string,
-  //   scheduleId: string,
-  //   professionId: string,
-  // ): Promise<void> {
-  //   const managers = await this.employeeRepository.findTeamManagersExcluding(
-  //     employeeId,
-  //     teamId,
-  //     workshopId,
-  //     scheduleId,
-  //     professionId,
-  //   );
-
-  //   const count = managers.filter((manager) =>
-  //     this.hasActiveAssignment(manager),
-  //   ).length;
-
-  //   if (count > 0) {
-  //     throw new ConflictException('Руководитель уже существует');
-  //   }
-  // }
-
-  // private hasActiveAssignment(employee: Employee): boolean {
-  //   return employee.assignments.some(
-  //     (assignment) => assignment.isActive === true,
-  //   );
-  // }
+    if (count > 0) {
+      throw new ConflictException('Руководитель уже существует');
+    }
+  }
 }

@@ -33,12 +33,19 @@ export class EmployeeRepository {
   //   });
   // }
 
-  // async findEmployeeById(id: string): Promise<Employee | null> {
-  //   return this.employeeRepository.findOne({
-  //     where: { id },
-  //     relations: this.EMPLOYEE_ACCOUNT_RELATIONS,
-  //   });
-  // }
+  async findById(id: string): Promise<Employee | null> {
+    return this.employeeRepository.findOne({
+      where: { id },
+      relations: this.EMPLOYEE_RELATIONS,
+    });
+  }
+
+  async findByIdFromAccount(id: string): Promise<Employee | null> {
+    return this.employeeRepository.findOne({
+      where: { id },
+      relations: ['account'],
+    });
+  }
 
   async findByPersonalNumber(personalNumber: number): Promise<Employee | null> {
     return this.employeeRepository.findOne({
@@ -55,14 +62,14 @@ export class EmployeeRepository {
   // }
 
   // 3. CRUD: Update
-  // async save(employee: Employee): Promise<Employee> {
-  //   return this.employeeRepository.save(employee);
-  // }
+  async save(employee: Employee): Promise<Employee> {
+    return this.employeeRepository.save(employee);
+  }
 
   // 4. CRUD: Delete
-  // async delete(id: string): Promise<DeleteResult> {
-  //   return this.employeeRepository.delete(id);
-  // }
+  async delete(id: string): Promise<DeleteResult> {
+    return this.employeeRepository.delete(id);
+  }
 
   // 5. Вспомогательные методы проверки существования
   async countByFullName(
@@ -85,71 +92,43 @@ export class EmployeeRepository {
     });
   }
 
-  // async countByFullNameExcluding(
-  //   employeeId: string,
-  //   lastName: string,
-  //   firstName: string,
-  //   patronymic: string,
-  // ): Promise<number> {
-  //   return this.employeeRepository.count({
-  //     where: {
-  //       id: Not(employeeId), // Исключаем текущего сотрудника
-  //       lastName,
-  //       firstName,
-  //       patronymic,
-  //     },
-  //   });
-  // }
+  // Находим активных сотрудников
+  async countTeamManagers(
+    workshopId: string,
+    teamId: string,
+    professionId: string,
+    scheduleId: string,
+  ): Promise<number> {
+    return this.employeeRepository.count({
+      where: {
+        assignment: { isActive: true },
+        homeWorkshop: { id: workshopId },
+        homeTeam: { id: teamId },
+        homeProfession: { id: professionId },
+        homeSchedule: { id: scheduleId },
+      },
+    });
+  }
 
-  // async countByPersonalNumberExcluding(
-  //   employeeId: string,
-  //   personalNumber: number,
-  // ): Promise<number> {
-  //   return this.employeeRepository.count({
-  //     where: {
-  //       id: Not(employeeId), // Исключаем текущего сотрудника
-  //       personalNumber,
-  //     },
-  //   });
-  // }
-
-  // !!! В сервисе нужна активное назначение через some()
-  // async findTeamManagers(
-  //   teamId: string,
-  //   workshopId: string,
-  //   scheduleId: string,
-  //   professionId: string,
-  // ): Promise<Employee[]> {
-  //   return this.employeeRepository.find({
-  //     where: {
-  //       homeWorkshop: { id: workshopId },
-  //       homeTeam: { id: teamId },
-  //       homeSchedule: { id: scheduleId },
-  //       homeProfession: { id: professionId },
-  //     },
-  //     relations: ['assignments'],
-  //   });
-  // }
-
-  // !!! В сервисе нужна активное назначение через some()
-  // async findTeamManagersExcluding(
-  //   employeeId: string,
-  //   teamId: string,
-  //   workshopId: string,
-  //   scheduleId: string,
-  //   professionId: string,
-  // ): Promise<Employee[]> {
-  //   return this.employeeRepository.find({
-  //     where: {
-  //       id: Not(employeeId),
-  //       homeWorkshop: { id: workshopId },
-  //       homeTeam: { id: teamId },
-  //       homeSchedule: { id: scheduleId },
-  //       homeProfession: { id: professionId },
-  //     },
-  //     relations: ['assignments'],
-  //   });
-  // }
+  // Находим активных сотрудников
+  async countTeamManagersExcluding(
+    employeeId: string,
+    workshopId: string,
+    teamId: string,
+    professionId: string,
+    scheduleId: string,
+  ): Promise<number> {
+    return this.employeeRepository.count({
+      where: {
+        id: Not(employeeId),
+        assignment: { isActive: true },
+        homeWorkshop: { id: workshopId },
+        homeTeam: { id: teamId },
+        homeSchedule: { id: scheduleId },
+        homeProfession: { id: professionId },
+      },
+    });
+  }
 
   // private EMPLOYEE_ACCOUNT_RELATIONS = [
   //   'account',
@@ -157,11 +136,11 @@ export class EmployeeRepository {
   //   'homeTeam',
   //   'homeProfession',
   //   'homeSchedule',
-  //   'assignments',
-  //   'assignments.currentWorkshop',
-  //   'assignments.currentTeam',
-  //   'assignments.currentProfession',
-  //   'assignments.currentSchedule',
+  //   'assignment',
+  //   'assignment.currentWorkshop',
+  //   'assignment.currentTeam',
+  //   'assignment.currentProfession',
+  //   'assignment.currentSchedule',
   //   // 'employeeShifts',
   // ];
 
@@ -170,10 +149,10 @@ export class EmployeeRepository {
     'homeTeam',
     'homeProfession',
     'homeSchedule',
-    'assignments',
-    'assignments.currentWorkshop',
-    'assignments.currentTeam',
-    'assignments.currentProfession',
-    'assignments.currentSchedule',
+    'assignment',
+    'assignment.currentWorkshop',
+    'assignment.currentTeam',
+    'assignment.currentProfession',
+    'assignment.currentSchedule',
   ];
 }

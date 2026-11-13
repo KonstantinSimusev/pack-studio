@@ -45,14 +45,6 @@ export class AccountService {
       throw new NotFoundException('Аккаунт не найден');
     }
 
-    const hasActive = account.employee.assignments.some(
-      (assignment) => assignment.isActive,
-    );
-
-    if (!hasActive) {
-      throw new UnauthorizedException('Доступ закрыт');
-    }
-
     return account;
   }
 
@@ -64,14 +56,6 @@ export class AccountService {
 
     if (!account) {
       throw new UnauthorizedException('Неверный логин или пароль');
-    }
-
-    const hasActive = account.employee.assignments.some(
-      (assignment) => assignment.isActive,
-    );
-
-    if (!hasActive) {
-      throw new UnauthorizedException('Доступ закрыт');
     }
 
     // Проверяем пароль
@@ -87,7 +71,7 @@ export class AccountService {
     return account;
   }
 
-  private generateLogin(
+  generateLogin(
     lastName: string,
     firstName: string,
     patronymic: string,

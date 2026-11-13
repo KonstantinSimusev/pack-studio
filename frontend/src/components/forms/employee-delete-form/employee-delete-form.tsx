@@ -1,90 +1,72 @@
-// import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
-// import { useDispatch, useSelector } from '../../../services/store';
+import { LayerContext } from '../../../contexts/layer/layerContext';
+import { useDispatch, useSelector } from '../../../services/store';
+import { deleteEmployee } from '../../../services/slices/employee/actions';
 
-// import { deleteEmployee } from '../../../services/slices/employee/actions';
+import {
+  clearDeleteEmployeeError,
+  clearEmployeeInfo,
+  selectDeleteEmployeeError,
+} from '../../../services/slices/employee/slice';
 
-// import {
-//   clearDeleteEmployeeError,
-//   selectDeleteEmployeeError,
-//   selectIsDeleteEmployeeLoading,
-// } from '../../../services/slices/employee/slice';
+import { Button } from '../../ui/buttons/button/button';
+import { Form } from '../../ui/form/form';
+import { ServerError } from '../../ui/server-error/server-error';
 
-// import { LayerContext } from '../../../contexts/layer/layerContext';
+import styles from './employee-delete-form.module.css';
 
-// import { Button } from '../../ui/buttons/button/button';
-// import { Form } from '../../ui/form/form';
-// import { Spinner } from '../../ui/spinner/spinner';
+export const EmployeeDeleteForm = () => {
+  const {
+    selectedId,
+    isEmployeeDeleteOpen,
+    setIsOverlayOpen,
+    setIsEmployeeDeleteOpen,
+  } = useContext(LayerContext);
 
-// import styles from './employee-delete-form.module.css';
-// import { ServerError } from '../../ui/server-error/server-error';
+  const dispatch = useDispatch();
+  const serverError = useSelector(selectDeleteEmployeeError);
 
-// export const EmployeeDeleteForm = () => {
-//   const {
-//     selectedId,
-//     isEmployeeDeleteOpen,
-//     setIsOverlayOpen,
-//     setIsEmployeeDeleteOpen,
-//   } = useContext(LayerContext);
+  useEffect(() => {
+    if (isEmployeeDeleteOpen) {
+      dispatch(clearDeleteEmployeeError());
+    }
+  }, [isEmployeeDeleteOpen]);
 
-//   const dispatch = useDispatch();
-//   const isLoading = useSelector(selectIsDeleteEmployeeLoading);
-//   const serverError = useSelector(selectDeleteEmployeeError);
+  const handleDeleteClick = async () => {
+    await dispatch(deleteEmployee(selectedId)).unwrap();
+    dispatch(clearEmployeeInfo());
 
-//   useEffect(() => {
-//     if (isEmployeeDeleteOpen) {
-//       dispatch(clearDeleteEmployeeError());
-//     }
-//   }, [isEmployeeDeleteOpen]);
+    setIsOverlayOpen(false);
+    setIsEmployeeDeleteOpen(false);
+  };
 
-//   const handleDeleteClick = async () => {
-//     const result = await dispatch(deleteEmployee(selectedId));
+  const handleReturnClick = () => {
+    setIsOverlayOpen(false);
+    setIsEmployeeDeleteOpen(false);
+  };
 
-//     // Очищаем состояние оверлеев и модальных окон
-//     if (result.payload) {
-//       setIsOverlayOpen(false);
-//       setIsEmployeeDeleteOpen(false);
-//     }
-//   };
+  return (
+    <Form title='Удалить работника?' className={styles.title}>
+      <div className={styles.message}>{<ServerError text={serverError} />}</div>
 
-//   const handleReturnClick = () => {
-//     setIsOverlayOpen(false);
-//     setIsEmployeeDeleteOpen(false);
-//   };
+      <div className={styles.buttons__wrapper}>
+        <Button
+          type='button'
+          onClick={handleDeleteClick}
+          className={styles.button__ok}
+        >
+          Да
+        </Button>
 
-//   // Определяем, заблокирована ли кнопка
-//   const isButtonDisabled = isLoading;
-
-//   return (
-//     <Form title='Удалить работника?' className={styles.title}>
-//       <span className={styles.info}>
-//         При удалении данные станут недоступны для отчётности. Вместо удаления
-//         укажите дату увольнения в профиле: так данные останутся доступны для
-//         отчётности.
-//       </span>
-
-//       <div className={styles.message}>
-//         {isLoading ? <Spinner /> : <ServerError text={serverError} />}
-//       </div>
-
-//       <div className={styles.buttons__wrapper}>
-//         <Button
-//           type='button'
-//           disabled={isButtonDisabled}
-//           onClick={handleDeleteClick}
-//           className={styles.button__ok}
-//         >
-//           Да
-//         </Button>
-
-//         <Button
-//           type='button'
-//           onClick={handleReturnClick}
-//           className={styles.button__return}
-//         >
-//           Отменить
-//         </Button>
-//       </div>
-//     </Form>
-//   );
-// };
+        <Button
+          type='button'
+          onClick={handleReturnClick}
+          className={styles.button__return}
+        >
+          Отменить
+        </Button>
+      </div>
+    </Form>
+  );
+};

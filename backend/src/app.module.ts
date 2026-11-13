@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module';
 
 import { GlobalAuthModule } from './global/global-auth.module';
 
-// import { EmployeeAccountModule } from './modules/employee-account/employee-account.module';
+import { EmployeeAccountModule } from './modules/employee-account/employee-account.module';
 import { EmployeeManagementModule } from './modules/employee-management/employee-management.module';
 // import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
 // import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
@@ -23,7 +23,7 @@ import { EmployeeManagementModule } from './modules/employee-management/employee
     }),
     DatabaseModule,
     GlobalAuthModule,
-    // EmployeeAccountModule,
+    EmployeeAccountModule,
     EmployeeManagementModule,
     // EmployeeShiftManagementModule,
     // EmployeeShiftModule,

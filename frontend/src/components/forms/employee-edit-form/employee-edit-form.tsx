@@ -62,7 +62,7 @@ export const EmployeeEditForm = () => {
   }
 
   const [isShow, setIsShow] = useState(false);
-  const [hasAccess, setHasAccess] = useState(employee.isActive);
+  const [hasAccess, setHasAccess] = useState(employee.hasAccess);
 
   // Состояние для хранения значений полей формы
   const [formData, setFormData] = useState<IFormData>({
@@ -164,7 +164,7 @@ export const EmployeeEditForm = () => {
     // Преобразование данных перед отправкой
     const dataForBackend: IUpdateEmployee = {
       id: employee.id,
-      isActive: hasAccess,
+      hasAccess: hasAccess,
 
       currentWorkshopCode: formData.currentWorkshopCode,
       currentTeamNumber: Number(formData.currentTeamNumber),

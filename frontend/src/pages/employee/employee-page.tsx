@@ -12,6 +12,7 @@ export const EmployeePage = () => {
   const {
     setIsOverlayOpen,
     setIsEmployeeEditOpen,
+    setIsEmployeeDeleteOpen,
     setIsPasswordUpdateOpen,
     setSelectedId,
   } = useContext(LayerContext);
@@ -49,7 +50,7 @@ export const EmployeePage = () => {
 
     setSelectedId(employee.id);
     setIsOverlayOpen(true);
-    setIsPasswordUpdateOpen(true);
+    setIsEmployeeDeleteOpen(true);
   };
 
   return (
