@@ -17,6 +17,12 @@
   gap: 6px;
 }
 
+.wrapper {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
 .shift {
   opacity: 0.6;
   font-size: 14px;

@@ -13,10 +13,8 @@ export class ShiftController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  async getShiftByIdWithEmployeesShifts(
-    @Param() dto: ShiftIdDto,
-  ): Promise<IShift> {
-    return this.shiftService.getShiftByIdWithEmployeesShifts(dto.id);
+  async getShiftById(@Param() dto: ShiftIdDto): Promise<IShift> {
+    return this.shiftService.getShiftById(dto.id);
   }
 
   // @Post(':id/check')

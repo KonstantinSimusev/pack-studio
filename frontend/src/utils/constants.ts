@@ -256,23 +256,14 @@ export const TEAM_OPTIONS = [
 
 export const PROFESSION_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  { value: PROFESSION_CODE.HEAD, label: 'Начальник участка' },
-  { value: PROFESSION_CODE.LEAD_MASTER, label: 'Старший мастер' },
-  { value: PROFESSION_CODE.MASTER, label: 'Сменный мастер' },
-  { value: PROFESSION_CODE.DETAIL_MASTER, label: 'Мастер реквизитов' },
   { value: PROFESSION_CODE.LEAD_OPERATOR, label: 'Старший оператор' },
   { value: PROFESSION_CODE.OPERATOR, label: 'Оператор' },
-  { value: PROFESSION_CODE.PRODUCTION_FOREMAN, label: 'Бригадир УОП' },
   { value: PROFESSION_CODE.PACKING_FOREMAN, label: 'Бригадир ОГП' },
   { value: PROFESSION_CODE.PACKER, label: 'Укладчик-упаковщик' },
   { value: PROFESSION_CODE.PACKER_LUM, label: 'Укладчик-упаковщик ЛУМ' },
-  { value: PROFESSION_CODE.PACKER_APR8, label: 'Укладчик-упаковщик АПР-8' },
-  { value: PROFESSION_CODE.REPAIR_MECHANIC, label: 'Слесарь' },
   { value: PROFESSION_CODE.STACKER, label: 'Штабелировщик' },
-  { value: PROFESSION_CODE.STAMPER, label: 'Штамповщик' },
   { value: PROFESSION_CODE.DRIVER, label: 'Водитель погрузчика' },
   { value: PROFESSION_CODE.CUTTER, label: 'Резчик х/м' },
-  { value: PROFESSION_CODE.GAS_CUTTER, label: 'Газорезчик' },
 ];
 
 export const SCHEDULE_OPTIONS = [
@@ -313,19 +304,16 @@ export const ATTENDANCE_OPTIONS = [
   { value: 'ОТ', label: 'ОТ — Ежегодный отпуск' },
   {
     value: 'Б',
-    label:
-      'Б — Временная нетрудоспособность',
+    label: 'Б — Временная нетрудоспособность',
   },
   {
     value: 'НБ',
-    label:
-      'НБ — Отпуск без сохранения',
+    label: 'НБ — Отпуск без сохранения',
   },
   { value: 'Д', label: 'Д — Донорский день' },
   {
     value: 'ОИ',
-    label:
-      'ОИ — Уход за детьми-инвалидами',
+    label: 'ОИ — Уход за детьми-инвалидами',
   },
   { value: 'ОС', label: 'ОС — Отпуск социальный' },
   { value: 'К', label: 'К — Служебные командировки' },
@@ -334,8 +322,7 @@ export const ATTENDANCE_OPTIONS = [
   { value: 'НН', label: 'НН — Неявки по невыясненным причинам' },
   {
     value: 'ПР',
-    label:
-      'ПР — Прогул',
+    label: 'ПР — Прогул',
   },
   { value: 'ПТД', label: 'ПТД — Приостановление действия ТК' },
   { value: 'А', label: 'А — Арест' },

@@ -123,6 +123,7 @@ export interface ILastShift {
   shiftCode: number;
   scheduleCode: string;
   scheduleName: string;
+  isReady: boolean;
 }
 
 export interface IShift {

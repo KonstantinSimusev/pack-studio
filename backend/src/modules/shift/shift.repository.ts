@@ -18,11 +18,14 @@ export class ShiftRepository {
   }
 
   // 2. CRUD: Read (общие методы поиска)
-  async findById(id: string): Promise<Shift | null> {
+
+  // Метод для внутренней логики в сервисе
+  async findEntityById(id: string): Promise<Shift | null> {
     return this.shiftRepository.findOneBy({ id });
   }
 
-  async findByIdWithEmployeesShifts(id: string): Promise<Shift | null> {
+  // Метод для страницы смены
+  async findById(id: string): Promise<Shift | null> {
     return this.shiftRepository.findOne({
       where: { id },
       relations: [
@@ -39,7 +42,7 @@ export class ShiftRepository {
     });
   }
 
-  async findLastShift(
+  async findByDetails(
     workshopId: string,
     teamId: string,
     scheduleId: string,
@@ -51,7 +54,7 @@ export class ShiftRepository {
         schedule: { id: scheduleId },
       },
       order: { date: 'DESC' },
-      relations: ['workshop', 'team', 'schedule'],
+      relations: ['workshop', 'team', 'schedule', 'employeeShifts'],
     });
   }
 

@@ -156,7 +156,7 @@ export class ShiftManagementService {
     ]);
 
     // Получаем последнюю сохраненную смену в бд
-    const shift = await this.shiftService.getLastShift(
+    const shift = await this.shiftService.getShiftByDetails(
       workshop.id,
       team.id,
       schedule.id,
@@ -175,6 +175,7 @@ export class ShiftManagementService {
       shiftCode: shift.shiftCode,
       scheduleCode: shift.schedule.scheduleCode,
       scheduleName: shift.schedule.name,
+      isReady: shift.employeeShifts.every((es) => es.isReady === true),
     };
   }
 }

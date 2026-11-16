@@ -52,7 +52,7 @@ export class EmployeeShiftManagementService {
         dto.personalNumber,
       );
 
-    const shift = await this.shiftService.getShiftById(dto.shiftId);
+    const shift = await this.shiftService.getEntityById(dto.shiftId);
 
     const shiftProfession = await this.professionService.getProfessionByCode(
       employee.homeProfession.professionCode,

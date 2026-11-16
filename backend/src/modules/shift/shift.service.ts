@@ -12,8 +12,9 @@ import { ShiftIdDto } from './dto/shift-id.dto';
 export class ShiftService {
   constructor(private readonly shiftRepository: ShiftRepository) {}
 
-  async getShiftById(id: string): Promise<Shift> {
-    const shift = await this.shiftRepository.findById(id);
+  // Метод для внутренней логики в сервисе
+  async getEntityById(id: string): Promise<Shift> {
+    const shift = await this.shiftRepository.findEntityById(id);
 
     if (!shift) {
       throw new NotFoundException(`Смена с ID ${id} не найдена`);
@@ -22,12 +23,12 @@ export class ShiftService {
     return shift;
   }
 
-  async getLastShift(
+  async getShiftByDetails(
     workshopId: string,
     teamId: string,
     scheduleId: string,
   ): Promise<Shift | null> {
-    const shift = await this.shiftRepository.findLastShift(
+    const shift = await this.shiftRepository.findByDetails(
       workshopId,
       teamId,
       scheduleId,
@@ -40,8 +41,8 @@ export class ShiftService {
     return shift;
   }
 
-  async getShiftByIdWithEmployeesShifts(id: string): Promise<IShift> {
-    const shift = await this.shiftRepository.findByIdWithEmployeesShifts(id);
+  async getShiftById(id: string): Promise<IShift> {
+    const shift = await this.shiftRepository.findById(id);
 
     if (!shift) {
       throw new NotFoundException(`Смена с ID ${id} не найдена`);
