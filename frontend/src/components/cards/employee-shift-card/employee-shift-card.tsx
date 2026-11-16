@@ -36,7 +36,7 @@ export const EmployeeShiftCard = ({
         <div className={styles.fullname}>
           <div className={styles.lastName}>
             <span>{employeeShift.employee.lastName}</span>
-            {employeeShift?.workplaceName !== null && <SuccessIcon />}
+            {employeeShift.isReady === true && <SuccessIcon />}
           </div>
           <span className={styles.name}>
             {employeeShift.employee.firstName}

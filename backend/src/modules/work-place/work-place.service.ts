@@ -19,7 +19,7 @@ export class WorkplaceService {
         professionCode,
       );
 
-    if (workplace === null) {
+    if (!workplace) {
       throw new NotFoundException('Рабочее место не найдено');
     }
 

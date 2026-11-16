@@ -22,6 +22,24 @@ export class ShiftService {
     return shift;
   }
 
+  async getLastShift(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    const shift = await this.shiftRepository.findLastShift(
+      workshopId,
+      teamId,
+      scheduleId,
+    );
+
+    if (!shift) {
+      throw new NotFoundException('Смена не найдена');
+    }
+
+    return shift;
+  }
+
   async getShiftByIdWithEmployeesShifts(id: string): Promise<IShift> {
     const shift = await this.shiftRepository.findByIdWithEmployeesShifts(id);
 
@@ -30,52 +48,6 @@ export class ShiftService {
     }
 
     return this.mapToIShift(shift);
-  }
-
-  private mapToIShift(shift: Shift): IShift {
-    return {
-      id: shift.id,
-      date: shift.date, // формат YYYY-MM-DD
-      workshopCode: shift.workshop.workshopCode,
-      teamNumber: shift.team.teamNumber,
-      scheduleCode: shift.schedule.scheduleCode,
-      scheduleName: shift.schedule.name,
-      shiftCode: shift.shiftCode,
-      employeeShifts: shift.employeeShifts
-        .map((employeeShift) => this.mapEmployeeShift(employeeShift))
-        .sort(this.compareByProfession),
-    };
-  }
-
-  private compareByProfession(a: IEmployeeShift, b: IEmployeeShift): number {
-    const PROFESSIONS = Object.values(EProfessionCode);
-    const rank = (code: string) => PROFESSIONS.indexOf(code as EProfessionCode);
-
-    return (
-      rank(a.shiftProfessionCode) - rank(b.shiftProfessionCode) ||
-      a.employee.lastName.localeCompare(b.employee.lastName, 'ru') ||
-      a.employee.firstName.localeCompare(b.employee.firstName, 'ru') ||
-      a.employee.patronymic.localeCompare(b.employee.patronymic, 'ru')
-    );
-  }
-
-  private mapEmployeeShift(employeeShift: EmployeeShift): IEmployeeShift {
-    return {
-      id: employeeShift.id,
-      shiftProfessionCode: employeeShift.shiftProfession.professionCode,
-      shiftProfessionName: employeeShift.shiftProfession.name,
-      attendanceCode: employeeShift.attendanceType.attendanceCode,
-      workplaceName: employeeShift.workplace?.name ?? null,
-      employee: {
-        id: employeeShift.employee.id,
-        lastName: employeeShift.employee.lastName,
-        firstName: employeeShift.employee.firstName,
-        patronymic: employeeShift.employee.patronymic,
-        personalNumber: employeeShift.employee.personalNumber,
-        homeWorkshopCode: employeeShift.employee.homeWorkshop.workshopCode,
-        homeTeamNumber: employeeShift.employee.homeTeam.teamNumber,
-      },
-    };
   }
 
   async existsShift(
@@ -96,22 +68,51 @@ export class ShiftService {
     }
   }
 
-  async getLastShift(
-    workshopId: string,
-    teamId: string,
-    scheduleId: string,
-  ): Promise<Shift | null> {
-    const shift = await this.shiftRepository.findLastShift(
-      workshopId,
-      teamId,
-      scheduleId,
+  private mapToIShift(shift: Shift): IShift {
+    return {
+      id: shift.id,
+      date: shift.date, // формат YYYY-MM-DD
+      workshopCode: shift.workshop.workshopCode,
+      teamNumber: shift.team.teamNumber,
+      scheduleCode: shift.schedule.scheduleCode,
+      scheduleName: shift.schedule.name,
+      shiftCode: shift.shiftCode,
+      employeeShifts: shift.employeeShifts
+        .map((employeeShift) => this.mapEmployeeShift(employeeShift))
+        .sort(this.compareByProfession),
+    };
+  }
+
+  private mapEmployeeShift(employeeShift: EmployeeShift): IEmployeeShift {
+    return {
+      id: employeeShift.id,
+      isReady: employeeShift.isReady,
+      shiftProfessionCode: employeeShift.shiftProfession.professionCode,
+      shiftProfessionName: employeeShift.shiftProfession.name,
+      attendanceCode: employeeShift.attendanceType.attendanceCode,
+      workplaceName: employeeShift.workplace?.name ?? null,
+      employee: {
+        id: employeeShift.employee.id,
+        lastName: employeeShift.employee.lastName,
+        firstName: employeeShift.employee.firstName,
+        patronymic: employeeShift.employee.patronymic,
+        personalNumber: employeeShift.employee.personalNumber,
+        homeWorkshopCode: employeeShift.employee.homeWorkshop.workshopCode,
+        homeTeamNumber: employeeShift.employee.homeTeam.teamNumber,
+      },
+    };
+  }
+
+  private compareByProfession(a: IEmployeeShift, b: IEmployeeShift): number {
+    const PROFESSIONS = Object.values(EProfessionCode);
+    const rank = (code: string) => PROFESSIONS.indexOf(code as EProfessionCode);
+
+    return (
+      rank(a.shiftProfessionCode) - rank(b.shiftProfessionCode) ||
+      a.employee.lastName.localeCompare(b.employee.lastName, 'ru') ||
+      a.employee.firstName.localeCompare(b.employee.firstName, 'ru') ||
+      a.employee.patronymic.localeCompare(b.employee.patronymic, 'ru')
     );
-
-    if (!shift) {
-      throw new NotFoundException('Смена не найдена');
-    }
-
-    return shift;
   }
 
   // async getAllShiftByDate(

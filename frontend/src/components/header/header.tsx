@@ -25,7 +25,6 @@ export const Header = () => {
     setIsMenuOpen,
     setIsEmployeeCreateOpen,
     setIsEmployeeSearchOpen,
-    setIsShiftSearchOpen,
   } = useContext(LayerContext);
 
   const location = useLocation();
@@ -58,10 +57,6 @@ export const Header = () => {
 
     if (location.pathname === '/employee') {
       setIsEmployeeSearchOpen(true);
-    }
-
-    if (location.pathname === '/shift-search') {
-      setIsShiftSearchOpen(true);
     }
   };
 

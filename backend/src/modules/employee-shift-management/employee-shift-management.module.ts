@@ -5,7 +5,7 @@ import { EmployeeModule } from '../employee/employee.module';
 import { EmployeeShiftModule } from '../employee-shift/employee-shift.module';
 import { ProfessionModule } from '../profession/profession.module';
 import { ShiftModule } from '../shift/shift.module';
-// import { WorkplaceModule } from '../work-place/work-place.module';
+import { WorkplaceModule } from '../work-place/work-place.module';
 
 import { EmployeeShiftManagementController } from './employee-shift-management.controller';
 import { EmployeeShiftManagementService } from './employee-shift-management.service';
@@ -17,7 +17,7 @@ import { EmployeeShiftManagementService } from './employee-shift-management.serv
     EmployeeShiftModule,
     ProfessionModule,
     ShiftModule,
-    // WorkplaceModule,
+    WorkplaceModule,
   ],
   controllers: [EmployeeShiftManagementController],
   providers: [EmployeeShiftManagementService],

@@ -19,6 +19,14 @@ export class EmployeeShift {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  // Отмеченная смена - после обновления
+  @Column({
+    name: 'is_ready',
+    type: 'boolean',
+    default: false,
+  })
+  isReady: boolean;
+
   // Связь: много смен сотрудника — один сотрудник
   @ManyToOne(() => Employee, (employee) => employee.employeeShifts, {
     onDelete: 'CASCADE', // при удалении сотрудника — смены работника удаляются тоже

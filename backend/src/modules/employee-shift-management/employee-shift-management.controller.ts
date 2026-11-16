@@ -6,7 +6,7 @@ import { CreateEmployeeShiftDto } from './dto/create-employee-shift.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { EmployeeShiftManagementService } from './employee-shift-management.service';
 // import { DeleteEmployeeShiftDto } from './dto/delete-employee-shift.dto';
-// import { UpdateEmployeeShiftDto } from './dto/update-employee-shift.dto';
+import { UpdateEmployeeShiftDto } from './dto/update-employee-shift.dto';
 
 @Controller('employee-shift-management')
 export class EmployeeShiftManagementController {
@@ -24,11 +24,11 @@ export class EmployeeShiftManagementController {
     );
   }
 
-//   @Put()
-//   @UseGuards(AuthGuard)
-//   async updateEmployeeShift(
-//     @Body() dto: UpdateEmployeeShiftDto,
-//   ): Promise<ISuccess> {
-//     return this.employeeShiftManagementService.updateEmployeeShift(dto);
-//   }
+  @Put()
+  @UseGuards(AuthGuard)
+  async updateEmployeeShift(
+    @Body() dto: UpdateEmployeeShiftDto,
+  ): Promise<ISuccess> {
+    return this.employeeShiftManagementService.updateEmployeeShift(dto);
+  }
 }

@@ -1,7 +1,7 @@
 // import { QueryFailedError } from 'typeorm';
 
 import {
-  // ConflictException,
+  ConflictException,
   Injectable,
   // InternalServerErrorException,
   // NotFoundException,
@@ -16,7 +16,7 @@ import { ISuccess } from '../../shared/interfaces/api.interface';
 
 import { CreateEmployeeShiftDto } from './dto/create-employee-shift.dto';
 // import { DeleteEmployeeShiftDto } from './dto/delete-employee-shift.dto';
-// import { UpdateEmployeeShiftDto } from './dto/update-employee-shift.dto';
+import { UpdateEmployeeShiftDto } from './dto/update-employee-shift.dto';
 
 // import { AttendanceType } from '../attendance-type/entities/attendance-type.entity';
 // import { Employee } from '../employee/entities/employee.entity';
@@ -27,10 +27,10 @@ import { EmployeeShiftRepository } from '../employee-shift/employee-shift.reposi
 
 import { AttendanceTypeService } from '../attendance-type/attendance-type.service';
 import { EmployeeService } from '../employee/employee.service';
-// import { EmployeeShiftService } from '../employee-shift/employee-shift.service';
+import { EmployeeShiftService } from '../employee-shift/employee-shift.service';
 import { ProfessionService } from '../profession/profession.service';
 import { ShiftService } from '../shift/shift.service';
-// import { WorkplaceService } from '../work-place/work-place.service';
+import { WorkplaceService } from '../work-place/work-place.service';
 
 @Injectable()
 export class EmployeeShiftManagementService {
@@ -39,9 +39,9 @@ export class EmployeeShiftManagementService {
     private readonly attendanceTypeService: AttendanceTypeService,
     private readonly employeeService: EmployeeService,
     private readonly professionService: ProfessionService,
-    // private readonly employeeShiftService: EmployeeShiftService,
+    private readonly employeeShiftService: EmployeeShiftService,
     private readonly shiftService: ShiftService,
-    // private readonly workplaceService: WorkplaceService,
+    private readonly workplaceService: WorkplaceService,
   ) {}
 
   async createEmployeeShiftByPersonalNumber(
@@ -74,89 +74,50 @@ export class EmployeeShiftManagementService {
     };
   }
 
-  // async createEmployeesShift(
-  //   shift: Shift,
-  //   employees: Employee[],
-  //   attendanceType: AttendanceType,
-  // ): Promise<void> {
-  //   for (const employee of employees) {
-  //     await this.employeeShiftRepository.create({
-  //       employee,
-  //       shift,
-  //       attendanceType,
-  //     });
-  //   }
-  // }
+  async updateEmployeeShift(dto: UpdateEmployeeShiftDto): Promise<ISuccess> {
+    // Получаем сущности
+    const [employeeShift, shiftProfessionCode, attendanceType] =
+      await Promise.all([
+        this.employeeShiftService.getEmployeeShiftById(dto.id),
+        this.professionService.getProfessionByCode(dto.shiftProfessionCode),
+        this.attendanceTypeService.getAttendanceByCode(dto.attendanceCode),
+      ]);
 
-  //   async updateEmployeeShift(dto: UpdateEmployeeShiftDto): Promise<ISuccess> {
-  //     // Получаем смену сотрудника со всеми связями
-  //     const employeeShift = await this.employeeShiftService.getEmployeeShift(
-  //       dto.employeeShiftId,
-  //     );
+    // Валидация полей смены сотрудника
+    if (
+      (attendanceType.attendanceCode === EAttendanceCode.Y &&
+        dto.workplaceName === null) ||
+      (attendanceType.attendanceCode !== EAttendanceCode.Y &&
+        dto.workplaceName !== null)
+    ) {
+      throw new ConflictException('Измените статус или место');
+    }
 
-  //     // Получаем связанные сущности
-  //     const shift = employeeShift.shift;
-  //     const employee = employeeShift.employee;
+    // Обновляем поля смены сотрудника
+    employeeShift.isReady = true;
 
-  //     const attendanceType = await this.attendanceTypeService.getAttendanceType(
-  //       dto.attendanceCode,
-  //     );
+    // Обновляем связи смены сотрудника
+    employeeShift.shiftProfession = shiftProfessionCode;
+    employeeShift.attendanceType = attendanceType;
 
-  //     // Запускаем валидацию согласованности
-  //     this.validateShiftConsistency(employeeShift, dto);
+    if (dto.workplaceName) {
+      // Если рабочее место есть — ищем. Если не найдётся, тут вылетит NotFoundException (как и задумано)
+      employeeShift.workplace = await this.workplaceService.getWorkplace(
+        dto.workplaceName,
+        employeeShift.shift.workshop.workshopCode,
+        dto.shiftProfessionCode,
+      );
+    } else {
+      employeeShift.workplace = null;
+    }
 
-  //     // Проверяем, нужно ли создать уведомление о документе
-  //     const isCreateNotice = this.shouldCreateDocument(shift, employee, dto);
+    // Сохранение изменений
+    await this.employeeShiftRepository.save(employeeShift);
 
-  //     if (isCreateNotice) {
-  //       console.log('Создаём уведомление о документе');
-  //     }
-
-  //     if (dto.workplaceName) {
-  //       // Если рабочее место есть — ищем. Если не найдётся, тут вылетит NotFoundException (как и задумано)
-  //       // employeeShift.workplace = await this.workplaceService.getWorkplace(
-  //       //   dto.workplaceName,
-  //       //   shift.workshop.workshopCode,
-  //       //   dto.currentProfessionCode,
-  //       // );
-  //     } else {
-  //       employeeShift.workplace = null;
-  //     }
-
-  //     // Получаем минуты из расписания графика (справочник из таблицы бд)
-  //     const minutes = await this.getShiftDurationMinutes(shift);
-
-  //     // ВАЖНО!!! Нужно время брать из позиции которая выбрана, сейчас из смены - это не правильно
-  //     // Проверяем диапозон минут
-  //     if (dto.minutes < 0 || dto.minutes > minutes) {
-  //       throw new ConflictException('Введите другое время');
-  //     }
-
-  //     if (dto.minutes !== minutes) {
-  //       console.log('Заявление на часы');
-  //       // ВАЖНО!!! Логики нет, просто для теста
-  //       employeeShift.minutes = dto.minutes;
-  //     } else {
-  //       employeeShift.minutes = dto.minutes;
-  //     }
-
-  //     // Обновляем поля смены сотрудника (сущность EmployeeShift)
-  //     employeeShift.isPresent = dto.isPresent;
-
-  //     // Обновляем связи смены сотрудника (сущность EmployeeShift)
-  //     employeeShift.attendanceType = attendanceType;
-
-  //     // ВАЖНО!!! Логика проверки всех полей и всей связей сначала
-  //     // Если все проверки прошли, то перед сохраненинем меняем на true
-  //     employeeShift.isReady = true;
-
-  //     // Сохранение изменений
-  //     await this.employeeShiftRepository.save(employeeShift);
-
-  //     return {
-  //       message: 'Смена сотрудника обновлена успешно',
-  //     };
-  //   }
+    return {
+      message: 'Смена сотрудника обновлена успешно',
+    };
+  }
 
   //   private validateShiftConsistency(
   //     employeeShift: EmployeeShift,

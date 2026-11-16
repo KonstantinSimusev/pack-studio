@@ -99,16 +99,16 @@ export const ShiftPage = () => {
             <div className={styles.row}>
               <div className={styles.status}>
                 <span className={styles.text}>Отмечено работников</span>
-                {shift.employeeShifts.every(
-                  (es) => es.workplaceName !== null,
-                ) && <SuccessIcon />}
+                {shift.employeeShifts.every((es) => es.isReady === true) && (
+                  <SuccessIcon />
+                )}
               </div>
 
               <div className={styles.count}>
                 <span>
                   {
                     shift.employeeShifts.filter(
-                      (es) => es.workplaceName !== null,
+                      (es) => es.isReady === true,
                     ).length
                   }
                 </span>

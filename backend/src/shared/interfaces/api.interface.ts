@@ -138,6 +138,7 @@ export interface IShift {
 
 export interface IEmployeeShift {
   id: string;
+  isReady: boolean;
   shiftProfessionCode: string;
   shiftProfessionName: string;
   attendanceCode: string;

@@ -14,15 +14,15 @@ export class EmployeeShiftService {
     private readonly employeeShiftRepository: EmployeeShiftRepository,
   ) {}
 
-  //   async getEmployeeShift(id: string): Promise<EmployeeShift> {
-  //     const employeeShift = await this.employeeShiftRepository.findById(id);
+  async getEmployeeShiftById(id: string): Promise<EmployeeShift> {
+    const employeeShift = await this.employeeShiftRepository.findById(id);
 
-  //     if (!employeeShift) {
-  //       throw new NotFoundException(`Смена сотрудника с ID ${id} не найдена`);
-  //     }
+    if (!employeeShift) {
+      throw new NotFoundException(`Смена сотрудника с ID ${id} не найдена`);
+    }
 
-  //     return employeeShift;
-  //   }
+    return employeeShift;
+  }
 
   async deleteEmployeeShift(id: string): Promise<ISuccess> {
     const result = await this.employeeShiftRepository.deleteById(id);

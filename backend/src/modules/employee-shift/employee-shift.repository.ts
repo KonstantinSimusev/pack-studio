@@ -17,47 +17,23 @@ export class EmployeeShiftRepository {
     return this.employeeShiftRepository.save(employeeShift);
   }
 
-  //   // 2. CRUD: Read (общие методы поиска)
-  //   async findById(id: string): Promise<EmployeeShift | null> {
-  //     return this.employeeShiftRepository.findOne({
-  //       where: { id },
-  //       relations: [
-  //         'attendanceType',
-  //         'workplace',
-  //         'shift',
-  //         'shift.workshop',
-  //         'shift.team',
-  //         'shift.schedule',
-  //         'shift.shiftSchedule',
-  //         'shift.shiftSchedule.shiftType',
-  //         'shift.shiftSchedule.workshop',
-  //         'employee',
-  //         'employee.team',
-  //         'employee.position',
-  //         'employee.position.workshop',
-  //         'employee.position.profession',
-  //         'employee.position.grade',
-  //         'employee.position.schedule',
-  //         'employee.position.paymentSystem',
-  //         'employee.position.rateSystem',
-  //         'employee.position.role',
-  //         'currentPosition',
-  //         'currentPosition.workshop',
-  //         'currentPosition.profession',
-  //         'currentPosition.grade',
-  //         'currentPosition.schedule',
-  //         'currentPosition.paymentSystem',
-  //         'currentPosition.rateSystem',
-  //         'currentPosition.role',
-  //         'document',
-  //       ],
-  //     });
-  //   }
+  // 2. CRUD: Read (общие методы поиска)
+  async findById(id: string): Promise<EmployeeShift | null> {
+    return this.employeeShiftRepository.findOne({
+      where: { id },
+      relations: [
+        'shiftProfession',
+        'attendanceType',
+        'workplace',
+        'shift.workshop',
+      ],
+    });
+  }
 
-  //   // 3. CRUD: Update
-  //   async save(employeeShift: EmployeeShift): Promise<EmployeeShift> {
-  //     return this.employeeShiftRepository.save(employeeShift);
-  //   }
+  // 3. CRUD: Update
+  async save(employeeShift: EmployeeShift): Promise<EmployeeShift> {
+    return this.employeeShiftRepository.save(employeeShift);
+  }
 
   // 4. CRUD: Delete
   async deleteById(id: string): Promise<DeleteResult> {

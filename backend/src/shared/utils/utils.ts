@@ -77,14 +77,14 @@ export const toString = (value: unknown): string => {
 //   return `${yyyy}-${mm}-${dd}`;
 // };
 
-// export const toOptionalString = (value: unknown): string | null => {
-//   if (value == null) return null;
-//   if (typeof value === 'string') {
-//     const trimmed = value.trim();
-//     return trimmed === '' ? null : trimmed; // пустая строка → null
-//   }
-//   return null; // все остальные типы → null (не undefined!)
-// };
+export const toOptionalString = (value: unknown): string | null => {
+  if (value == null) return null;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed === '' ? null : trimmed; // пустая строка → null
+  }
+  return null; // все остальные типы → null (не undefined!)
+};
 
 export const toBoolean = (value: unknown): boolean => {
   if (value == null) return false;
