@@ -39,4 +39,16 @@ export class EmployeeShiftRepository {
   async deleteById(id: string): Promise<DeleteResult> {
     return this.employeeShiftRepository.delete(id);
   }
+
+  async countByShiftAndEmployee(
+    shiftId: string,
+    employeeId: string,
+  ): Promise<number> {
+    return await this.employeeShiftRepository.count({
+      where: {
+        shift: { id: shiftId },
+        employee: { id: employeeId },
+      },
+    });
+  }
 }

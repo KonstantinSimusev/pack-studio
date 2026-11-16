@@ -1,49 +1,64 @@
 .list {
-  /* position: relative; */
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 30px;
-  max-height: 500px;
-  overflow-y: auto;
-  margin-top: 30px;
+  margin-top: 40px;
+  gap: 20px;
+  width: 100%;
 }
 
-/* Блок-стекло: отдельный, поверх списка, не скроллится вместе с ним */
-.glassTop {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 2px; /* сдвиг внутрь, чтобы не было щели по краям */
-  right: 2px; /* сдвиг внутрь */
-  height: 50px; /* чуть меньше паддинга, чтобы стекло не «давило» на карточку */
+/* Лента карточек */
+.scroller {
+  display: flex;
+  gap: 16px; /* зазор между карточками */
+  width: 100%;
+  overflow-x: auto; /* горизонтальный скролл */
+  scroll-snap-type: x mandatory; /* доводчик: снап к ближайшему слайду */
+  overscroll-behavior-x: contain; /* чтобы свайп не срабатывал как «назад» в браузере */
 
-  /* Градиент: плотный сверху, к низу почти прозрачный */
-  background: linear-gradient(
-    to bottom,
-    rgba(28 28 28 / 0.5),
-    rgba(28 28 28 / 0)
-  );
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  pointer-events: none;
+  /* Боковые отступы, чтобы активная карточка вставала ровно по центру,
+     а соседняя выглядывала краем. max() защищает узкие экраны,
+     где расчёт даёт меньше 30px */
+  padding-inline: max(30px, calc((100% - 370px) / 2));
+  scrollbar-width: none; /* прячем скроллбар (Firefox) */
 }
 
-.glassBottom {
-  position: absolute;
-  z-index: 1;
-  bottom: -1px;
-  left: 2px;
-  right: 2px;
-  height: 50px;
+.scroller::-webkit-scrollbar {
+  display: none; /* прячем скроллбар (WebKit) */
+}
 
-  /* Градиент наоборот: плотный снизу, к верху прозрачный */
-  background: linear-gradient(
-    to top,
-    rgba(28 28 28 / 0.5),
-    rgba(28 28 28 / 0)
-  );
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  pointer-events: none;
+/* Слайд — точка прилипания; не сжимается, держит ширину карточки */
+.slide {
+  flex-shrink: 0;
+  scroll-snap-align: center; /* карточка останавливается по центру */
+  cursor: pointer;
+}
+
+/* Точки под списком */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Обычная точка: серая */
+.dot {
+  width: 5px;
+  height: 5px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255 255 255 / 0.25);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+/* Активная: чуть больше и ярче */
+.activeDot {
+  transform: scale(1.5);
+  background-color: rgba(255 255 255 / 0.9);
 }

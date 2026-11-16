@@ -44,15 +44,14 @@ export class EmployeeShiftManagementService {
     private readonly workplaceService: WorkplaceService,
   ) {}
 
-  async createEmployeeShiftByPersonalNumber(
-    dto: CreateEmployeeShiftDto,
-  ): Promise<ISuccess> {
+  async createByPersonalNumber(dto: CreateEmployeeShiftDto): Promise<ISuccess> {
+    // Получаем сущности
+    const shift = await this.shiftService.getEntityById(dto.shiftId);
+
     const employee =
       await this.employeeService.getEmployeeByPersonalNumberForAdd(
         dto.personalNumber,
       );
-
-    const shift = await this.shiftService.getEntityById(dto.shiftId);
 
     const shiftProfession = await this.professionService.getProfessionByCode(
       employee.homeProfession.professionCode,
@@ -60,6 +59,12 @@ export class EmployeeShiftManagementService {
 
     const attendanceType = await this.attendanceTypeService.getAttendanceByCode(
       EAttendanceCode.Y,
+    );
+
+    // Проверяем на уже добавленного сотрудника
+    await this.employeeShiftService.existsByShiftAndEmployee(
+      shift.id,
+      employee.id,
     );
 
     await this.employeeShiftRepository.create({

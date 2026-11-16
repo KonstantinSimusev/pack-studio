@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -34,5 +35,19 @@ export class EmployeeShiftService {
     }
 
     return { message: 'Смена сотрудника успешно удалена' };
+  }
+
+  async existsByShiftAndEmployee(
+    shiftId: string,
+    employeeId: string,
+  ): Promise<void> {
+    const count = await this.employeeShiftRepository.countByShiftAndEmployee(
+      shiftId,
+      employeeId,
+    );
+
+    if (count > 0) {
+      throw new ConflictException('Работник уже добавлен');
+    }
   }
 }

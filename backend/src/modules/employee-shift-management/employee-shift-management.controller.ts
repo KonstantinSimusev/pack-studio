@@ -19,7 +19,7 @@ export class EmployeeShiftManagementController {
   async createEmployeeShift(
     @Body() dto: CreateEmployeeShiftDto,
   ): Promise<ISuccess> {
-    return this.employeeShiftManagementService.createEmployeeShiftByPersonalNumber(
+    return this.employeeShiftManagementService.createByPersonalNumber(
       dto,
     );
   }
