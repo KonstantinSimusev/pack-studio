@@ -24,7 +24,6 @@
 }
 
 .date {
-  font-size: 18px;
   font-weight: 700;
 }
 
@@ -33,6 +32,8 @@
   flex-direction: column;
   width: 110px;
   gap: 10px;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 .raw {
