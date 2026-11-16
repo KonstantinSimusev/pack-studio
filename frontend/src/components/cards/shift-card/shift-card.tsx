@@ -20,7 +20,6 @@ export const ShiftCard = ({ shift, onClick }: IProps) => {
           {shift.isReady === true && <SuccessIcon width={16} height={16} />}
         </div>
         
-        <span className={styles.shift}>{`Смена ${shift.shiftCode}`}</span>
       </div>
 
       <div className={styles.rightContainer}>
@@ -28,6 +27,7 @@ export const ShiftCard = ({ shift, onClick }: IProps) => {
           <span className={styles.shift}>График</span>
           <span className={styles.shift}>{shift.scheduleName}</span>
         </div>
+        <span className={styles.shift}>{`Смена ${shift.shiftCode}`}</span>
       </div>
     </div>
   );

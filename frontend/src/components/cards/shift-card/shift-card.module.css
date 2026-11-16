@@ -1,7 +1,7 @@
 .card {
   display: flex;
   justify-content: space-between;
-  width: 330px;
+  width: 370px;
   margin: 0 auto;
   padding: 20px 30px;
   background-color: rgba(180 180 180 / 0.1);
@@ -23,22 +23,22 @@
   gap: 10px;
 }
 
-.shift {
-  opacity: 0.6;
-  font-size: 14px;
+.date {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .rightContainer {
   display: flex;
   flex-direction: column;
   width: 110px;
-  gap: 6px;
+  gap: 10px;
 }
 
 .raw {
   display: flex;
   gap: 10px;
-  justify-content: end;
+  /* justify-content: end; */
 }
 
 .container:hover {

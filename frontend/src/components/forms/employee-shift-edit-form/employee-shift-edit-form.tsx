@@ -65,19 +65,11 @@ export const EmployeeShiftEditForm = () => {
 
   const employee = employeeShift.employee;
 
-  const matchedProfession = PROFESSION_OPTIONS.find(
-    (opt) => opt.value === String(employeeShift.shiftProfessionCode),
-  );
-
-  const matchedWorkplace = WORK_PLACES_OPTIONS.find(
-    (opt) => opt.value === String(employeeShift.workplaceName),
-  );
-
   // Состояние для хранения значений полей формы
   const [formData, setFormData] = useState<IFormData>({
-    shiftProfessionCode: matchedProfession?.value ?? '',
+    shiftProfessionCode: employeeShift.shiftProfessionCode,
     attendanceCode: employeeShift.attendanceCode,
-    workplaceName: matchedWorkplace?.value ?? '',
+    workplaceName: employeeShift.workplaceName ?? '',
   });
 
   // Состояние для хранения ошибок валидации

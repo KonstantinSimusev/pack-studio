@@ -264,6 +264,7 @@ export const PROFESSION_OPTIONS = [
   { value: PROFESSION_CODE.STACKER, label: 'Штабелировщик' },
   { value: PROFESSION_CODE.DRIVER, label: 'Водитель погрузчика' },
   { value: PROFESSION_CODE.CUTTER, label: 'Резчик х/м' },
+  { value: PROFESSION_CODE.MASTER, label: 'Мастер' },
 ];
 
 export const SCHEDULE_OPTIONS = [

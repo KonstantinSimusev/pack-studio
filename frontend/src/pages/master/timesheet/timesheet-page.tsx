@@ -71,22 +71,24 @@ export const TimesheetPage = () => {
         />
         <InfoBlock title='Должность' text={profile.professionName} />
       </div>
+      
+      <div className={styles.main}>
+        {/* Ни кнопки, ни карточки, пока ответ не пришёл */}
+        {isLastShiftLoaded && lastShift !== null && (
+          <ShiftCard
+            shift={lastShift}
+            onClick={() => handleClick(lastShift.id)}
+          />
+        )}
 
-      {/* Ни кнопки, ни карточки, пока ответ не пришёл */}
-      {isLastShiftLoaded && lastShift !== null && (
-        <ShiftCard
-          shift={lastShift}
-          onClick={() => handleClick(lastShift.id)}
-        />
-      )}
-
-      {isLastShiftLoaded && lastShift === null && (
-        <div className={styles.buttonWrapper}>
-          <Button type='button' onClick={createShift}>
-            Создать смену
-          </Button>
-        </div>
-      )}
+        {isLastShiftLoaded && lastShift === null && (
+          <div className={styles.buttonWrapper}>
+            <Button type='button' onClick={createShift}>
+              Создать смену
+            </Button>
+          </div>
+        )}
+      </div>
     </>
   );
 };

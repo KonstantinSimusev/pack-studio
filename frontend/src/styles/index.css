@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100svh;
   color: var(--color-default);
   font-family: var(--font-family-default);
   background-color: var(--bg-color-default);
