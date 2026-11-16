@@ -18,7 +18,7 @@ export const Overlay = () => {
     isEmployeeDeleteOpen,
     isAccountInfoOpen,
     isPasswordUpdateOpen,
-    isShiftSearchOpen,
+    isShiftCreateOpen,
     isEmployeeAddOpen,
     isEmployeeShiftEditOpen,
     isEmployeeShiftDeleteOpen,
@@ -32,7 +32,7 @@ export const Overlay = () => {
     setIsEmployeeEditOpen,
     setIsEmployeeDeleteOpen,
     setIsPasswordUpdateOpen,
-    setIsShiftSearchOpen,
+    setIsShiftCreateOpen,
     setIsEmployeeAddOpen,
     setIsEmployeeShiftEditOpen,
     setIsEmployeeShiftDeleteOpen,
@@ -79,8 +79,8 @@ export const Overlay = () => {
       setIsPasswordUpdateOpen(false);
     }
 
-    if (isShiftSearchOpen) {
-      setIsShiftSearchOpen(false);
+    if (isShiftCreateOpen) {
+      setIsShiftCreateOpen(false);
     }
 
     if (isEmployeeAddOpen) {
@@ -112,7 +112,7 @@ export const Overlay = () => {
       setIsEmployeeEditOpen(false);
       setIsEmployeeDeleteOpen(false);
       setIsPasswordUpdateOpen(false);
-      setIsShiftSearchOpen(false);
+      setIsShiftCreateOpen(false);
       setIsEmployeeAddOpen(false);
       setIsEmployeeShiftEditOpen(false);
       setIsEmployeeShiftDeleteOpen(false);

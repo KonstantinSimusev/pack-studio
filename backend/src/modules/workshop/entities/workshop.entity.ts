@@ -2,6 +2,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Assignment } from '../../assignment/entities/assignment.entity';
 import { Employee } from '../../employee/entities/employee.entity';
+import { Shift } from '../../shift/entities/shift.entity';
+import { Workplace } from '../../work-place/entities/work-place.entity';
 
 @Entity({
   name: 'workshops',
@@ -35,4 +37,12 @@ export class Workshop {
   // Связь: один цех — много назначений
   @OneToMany(() => Assignment, (assignment) => assignment.currentWorkshop)
   assignments: Assignment[];
+
+  // Связь: один цех — много смен
+  @OneToMany(() => Shift, (shift) => shift.workshop)
+  shifts: Shift[];
+
+  // Связь: один цех — много рабочих мест
+  @OneToMany(() => Workplace, (workplace) => workplace.workshop)
+  workplaces: Workplace[];
 }

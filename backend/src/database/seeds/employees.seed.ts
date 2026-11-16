@@ -1,7 +1,8 @@
 import { ConflictException, INestApplicationContext } from '@nestjs/common';
+
 import { IAccountInfo } from '../../shared/interfaces/api.interface';
-import { EmployeeManagementService } from '../../modules/employee-management/employee-management.service';
 import { employees } from '../data/employees.data';
+import { EmployeeManagementService } from '../../modules/employee-management/employee-management.service';
 
 export const seedEmployees = async (
   app: INestApplicationContext,

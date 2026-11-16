@@ -1,5 +1,3 @@
-// import { PROFESSION_OPTIONS } from './constants';
-
 export const delay = (ms: number = 500): Promise<void> =>
   new Promise((resolve) => {
     setTimeout(() => {
@@ -10,47 +8,6 @@ export const delay = (ms: number = 500): Promise<void> =>
 export const toDateString = (value: string): string => {
   const [day, month, year] = value.split('.');
   return `${year}-${month}-${day}`;
-};
-
-export const formatNotificationDate = (isoString: string): string => {
-  const date = new Date(isoString);
-  const now = new Date();
-
-  // Обнуляем время для сравнения дат
-  const dateDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const diffDays = Math.round((today.getTime() - dateDay.getTime()) / 86400000);
-
-  // Сегодня — показываем время
-  if (diffDays === 0) {
-    return date.toLocaleTimeString('ru-RU', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  }
-
-  // Вчера
-  if (diffDays === 1) {
-    return 'вчера';
-  }
-
-  // От 2 до 7 дней назад — день недели (короткий формат: «пн», «ср»)
-  if (diffDays >= 2 && diffDays <= 7) {
-    return date.toLocaleDateString('ru-RU', { weekday: 'long' });
-  }
-
-  // Старше недели — полная дата: «23 авг»
-  // return date.toLocaleDateString('ru-RU', {
-  //   day: '2-digit',
-  //   month: 'short',
-  // });
-
-  // Старше недели — формат ДД.ММ.ГГГГ (например, 23.08.2026)
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${day}.${month}.${year}`;
 };
 
 export const formatDateForDayUI = (date: Date | string | null): string => {

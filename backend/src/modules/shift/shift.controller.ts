@@ -1,0 +1,27 @@
+import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+
+import { AuthGuard } from '../auth/guards/auth.guard';
+
+import { ShiftIdDto } from './dto/shift-id.dto';
+import { IShift } from '../../shared/interfaces/api.interface';
+
+import { ShiftService } from './shift.service';
+
+@Controller('shifts')
+export class ShiftController {
+  constructor(private readonly shiftService: ShiftService) {}
+
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  async getShiftByIdWithEmployeesShifts(
+    @Param() dto: ShiftIdDto,
+  ): Promise<IShift> {
+    return this.shiftService.getShiftByIdWithEmployeesShifts(dto.id);
+  }
+
+  // @Post(':id/check')
+  // @UseGuards(AuthGuard)
+  // async setChecked(@Param() dto: ShiftIdDto): Promise<ISuccess> {
+  //   return this.shiftService.setCheckedByShiftId(dto);
+  // }
+}

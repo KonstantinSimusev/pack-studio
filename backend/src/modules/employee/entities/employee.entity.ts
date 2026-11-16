@@ -10,7 +10,7 @@ import {
 
 import { Account } from '../../account/entities/account.entity';
 import { Assignment } from '../../assignment/entities/assignment.entity';
-// import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
+import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
 import { Profession } from '../../profession/entities/profession.entity';
 import { Schedule } from '../../schedule/entities/schedule.entity';
 import { Team } from '../../team/entities/team.entity';
@@ -89,7 +89,7 @@ export class Employee {
   @JoinColumn({ name: 'home_schedule_id' })
   homeSchedule: Schedule;
 
-  // // Связь: один сотрудник — много смен сотрудника
-  // @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)
-  // employeeShifts: EmployeeShift[];
+  // Связь: один сотрудник — много смен сотрудника
+  @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)
+  employeeShifts: EmployeeShift[];
 }

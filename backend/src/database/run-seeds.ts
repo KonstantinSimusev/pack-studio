@@ -5,11 +5,13 @@ import { DataSource } from 'typeorm';
 
 import { AppModule } from '../app.module';
 
+import { seedAttendanceTypes } from './seeds/attendance-type.seed';
+import { seedEmployees } from './seeds/employees.seed';
 import { seedProfessions } from './seeds/professions.seed';
 import { seedSchedules } from './seeds/schedules.seed';
 import { seedTeams } from './seeds/teams.seed';
+import { seedWorkplaces } from './seeds/workplaces.seed';
 import { seedWorkshops } from './seeds/workshops.seed';
-import { seedEmployees } from './seeds/employees.seed';
 
 const run = async (): Promise<void> => {
   // Поднимаем DI-контейнер без HTTP-сервера: сервисы, репозитории, конфиг — как в приложении
@@ -24,6 +26,8 @@ const run = async (): Promise<void> => {
   await seedTeams(dataSource);
   await seedProfessions(dataSource);
   await seedSchedules(dataSource);
+  await seedAttendanceTypes(dataSource);
+  await seedWorkplaces(dataSource);
 
   // Работники — через сервис, логика создания живёт в EmployeeManagementService
   await seedEmployees(app);

@@ -5,6 +5,12 @@
   padding: 0 30px 30px;
 }
 
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 60px 30px;
+}
+
 .empty {
   display: flex;
   justify-content: center;

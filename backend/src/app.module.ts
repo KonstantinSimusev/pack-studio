@@ -10,10 +10,10 @@ import { GlobalAuthModule } from './global/global-auth.module';
 
 import { EmployeeAccountModule } from './modules/employee-account/employee-account.module';
 import { EmployeeManagementModule } from './modules/employee-management/employee-management.module';
-// import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
-// import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
-// import { ShiftModule } from './modules/shift/shift.module';
-// import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
+import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
+import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
+import { ShiftModule } from './modules/shift/shift.module';
+import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
 
 @Module({
   imports: [
@@ -25,10 +25,10 @@ import { EmployeeManagementModule } from './modules/employee-management/employee
     GlobalAuthModule,
     EmployeeAccountModule,
     EmployeeManagementModule,
-    // EmployeeShiftManagementModule,
-    // EmployeeShiftModule,
-    // ShiftManagementModule,
-    // ShiftModule,
+    EmployeeShiftManagementModule,
+    EmployeeShiftModule,
+    ShiftManagementModule,
+    ShiftModule,
     ServeStaticModule.forRoot(
       {
         rootPath: path.join(__dirname, '..', 'dist', 'assets'),

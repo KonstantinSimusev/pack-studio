@@ -166,6 +166,6 @@ export class AccountService {
     }
 
     // Формируем логин в требуемом формате
-    return `GPS_${lastNameLatin}_${firstNameInitial}${patronymicInitial}_${randomSuffix}`;
+    return `PS_${lastNameLatin}_${firstNameInitial}${patronymicInitial}_${randomSuffix}`;
   }
 }

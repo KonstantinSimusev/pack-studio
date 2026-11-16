@@ -33,6 +33,17 @@ export class EmployeeService {
     return employee;
   }
 
+  async getEmployeeByPersonalNumberForAdd(personalNumber: number): Promise<Employee> {
+    const employee =
+      await this.employeeRepository.findByPersonalNumberForAdd(personalNumber);
+
+    if (!employee) {
+      throw new NotFoundException('Работник не найден');
+    }
+
+    return employee;
+  }
+
   async getEmployeeByPersonalNumber(personalNumber: number): Promise<Employee> {
     const employee =
       await this.employeeRepository.findByPersonalNumber(personalNumber);

@@ -5,7 +5,7 @@
 }
 
 .input {
-  margin: clamp(1.875rem, 1.5302rem + 1.7241vw, 2.5rem) 0 0;
+  margin: 30px 0 0;
 }
 
 .document {

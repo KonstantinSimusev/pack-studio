@@ -21,9 +21,7 @@
 .header {
   display: flex;
   justify-content: center;
-  font-size: 12px;
   gap: 10px;
-  opacity: 0.6;
 }
 
 .label {
@@ -51,10 +49,6 @@
   display: flex;
   align-items: end;
   gap: 12px;
-}
-
-.text {
-  font-size: 14px;
 }
 
 .count {

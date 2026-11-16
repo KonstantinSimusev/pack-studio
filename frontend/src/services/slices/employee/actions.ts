@@ -14,7 +14,7 @@ import {
   searchEmployeeApi,
   updateEmployeeApi,
 } from '../../../utils/api/employee.api';
-import { delay } from '../../../utils/utils';
+// import { delay } from '../../../utils/utils';
 
 export const createEmployee = createAsyncThunk(
   'employee/create',
@@ -79,10 +79,9 @@ export const deleteEmployee = createAsyncThunk(
     try {
       // Вызываем API функцию
       const response = await deleteEmployeeApi(id);
-      await delay(1000);
+
       return response;
     } catch (error) {
-      await delay(1000);
       if (error instanceof Error) {
         throw error; // передаём точное сообщение от бэкенда
       }

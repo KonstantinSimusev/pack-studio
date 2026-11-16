@@ -1,0 +1,42 @@
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
+import { Profession } from '../../profession/entities/profession.entity';
+import { Workshop } from '../../workshop/entities/workshop.entity';
+
+@Entity({
+  name: 'work_places',
+})
+export class Workplace {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({
+    name: 'name',
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+  })
+  name: string;
+
+  // Связь: много рабочих мест — один цех
+  @ManyToOne(() => Workshop, (workshop) => workshop.workplaces)
+  @JoinColumn({ name: 'workshop_id' })
+  workshop: Workshop;
+
+  // Связь: много рабочих мест — одна профессия
+  @ManyToOne(() => Profession, (profession) => profession.workplaces)
+  @JoinColumn({ name: 'profession_id' })
+  profession: Profession;
+
+  // Связь: одно рабочее место — много смен сотрудника
+  @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.workplace)
+  employeeShifts: EmployeeShift[];
+}

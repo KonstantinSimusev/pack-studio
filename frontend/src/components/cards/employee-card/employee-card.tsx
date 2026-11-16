@@ -63,11 +63,11 @@ export const EmployeeCard = ({
       <div className={styles.table}>
         <span className={styles.tableTitle}>Текущее назначение</span>
 
-        <TableBlock title='Цех' text={employee.currentWorkshopName ?? '-'} />
+        <TableBlock title='Цех' text={employee.currentWorkshopName} />
 
         <TableBlock
           title='Бригада №'
-          text={employee.currentTeamNumber ?? '-'}
+          text={employee.currentTeamNumber}
         />
 
         <TableBlock title='Профессия' text={employee.currentProfessionName} />

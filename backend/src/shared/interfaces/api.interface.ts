@@ -38,6 +38,17 @@ export interface IWorkshop {
   name: string;
 }
 
+export interface IAttendanceType {
+  attendanceCode: string;
+  description: string;
+}
+
+export interface IWorkplaceData {
+  name: string;
+  workshopCode: string;
+  professionCode: string;
+}
+
 export interface ICreateEmployee {
   lastName: string;
   firstName: string;
@@ -99,48 +110,47 @@ export interface IEmployeeInfo {
   homeScheduleName: string;
 }
 
-// export interface IShiftInfo {
-//   dayOfWeek: number;
-//   date: Date;
-//   shiftCode: number | null;
-//   teamNumber: number;
-// }
+export interface IShiftInfo {
+  dayOfWeek: number;
+  date: Date;
+  shiftCode: number | null;
+  teamNumber: number;
+}
 
-// export interface IShift {
-//   id: string;
-//   date: Date; // формат YYYY-MM-DD
-//   workshopCode: string;
-//   teamNumber: number;
-//   scheduleCode: string;
-//   dayOfWeek: number;
-//   shiftCode: number | null;
-//   employeeShifts: IEmployeeShift[];
-// }
+export interface ILastShift {
+  id: string;
+  date: Date; // формат YYYY-MM-DD
+  shiftCode: number;
+  scheduleCode: string;
+  scheduleName: string;
+}
 
-// export interface IEmployeeShift {
-//   id: string;
-//   currentPositionCode: number; // берем из распоряжения, если нет из КЛС
-//   currentProfessionName: string; // берем из распоряжения, если нет из КЛС
-//   currentPaymentCode: string; // берем из распоряжения, если нет из КЛС
-//   attendanceCode: string;
-//   minutes: number;
-//   isPresent: boolean | null;
-//   workplaceName: string | null;
-//   canDelete: boolean;
-//   isReady: boolean;
-//   employee: IEmployee;
-// }
+export interface IShift {
+  id: string;
+  date: Date; // формат YYYY-MM-DD
+  shiftCode: number;
+  workshopCode: string;
+  teamNumber: number;
+  scheduleCode: string;
+  scheduleName: string;
+  employeeShifts: IEmployeeShift[];
+}
 
-// export interface IEmployee {
-//   id: string;
-//   lastName: string;
-//   firstName: string;
-//   patronymic: string;
-//   personalNumber: number;
-//   workshopCode: string;
-//   teamNumber: number;
-//   positionCode: number;
-//   professionCode: string;
-//   professionName: string;
-//   scheduleCode: string;
-// }
+export interface IEmployeeShift {
+  id: string;
+  shiftProfessionCode: string;
+  shiftProfessionName: string;
+  attendanceCode: string;
+  workplaceName: string | null;
+  employee: IEmployee;
+}
+
+export interface IEmployee {
+  id: string;
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  personalNumber: number;
+  homeWorkshopCode: string;
+  homeTeamNumber: number;
+}

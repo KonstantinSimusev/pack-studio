@@ -18,25 +18,41 @@ export class EmployeeRepository {
   }
 
   // 2. CRUD: Read (общие методы поиска)
-  // async findByTeamAndSchedule(
-  //   teamNumber: number,
-  //   workshopCode: string,
-  //   scheduleCode: string,
-  // ): Promise<Employee[]> {
-  //   return this.employeeRepository.find({
-  //     where: {
-  //       homeWorkshop: { workshopCode },
-  //       homeTeam: { teamNumber },
-  //       homeSchedule: { scheduleCode },
-  //     },
-  //     relations: ['homeWorkshop', 'homeTeam', 'homeProfession', 'homeSchedule'],
-  //   });
-  // }
+  async findByWorkshopAndTeam(
+    workshopCode: string,
+    teamNumber: number,
+  ): Promise<Employee[]> {
+    return this.employeeRepository.find({
+      where: {
+        homeWorkshop: { workshopCode },
+        homeTeam: { teamNumber },
+      },
+      relations: [
+        'homeWorkshop',
+        'homeTeam',
+        'homeProfession',
+        'homeSchedule',
+        'assignment.currentWorkshop',
+        'assignment.currentTeam',
+        'assignment.currentProfession',
+        'assignment.currentSchedule',
+      ],
+    });
+  }
 
   async findById(id: string): Promise<Employee | null> {
     return this.employeeRepository.findOne({
       where: { id },
-      relations: this.EMPLOYEE_RELATIONS,
+      relations: [
+        'homeWorkshop',
+        'homeTeam',
+        'homeProfession',
+        'homeSchedule',
+        'assignment.currentWorkshop',
+        'assignment.currentTeam',
+        'assignment.currentProfession',
+        'assignment.currentSchedule',
+      ],
     });
   }
 
@@ -47,10 +63,28 @@ export class EmployeeRepository {
     });
   }
 
+  async findByPersonalNumberForAdd(
+    personalNumber: number,
+  ): Promise<Employee | null> {
+    return this.employeeRepository.findOne({
+      where: { personalNumber },
+      relations: ['homeProfession'],
+    });
+  }
+
   async findByPersonalNumber(personalNumber: number): Promise<Employee | null> {
     return this.employeeRepository.findOne({
       where: { personalNumber },
-      relations: this.EMPLOYEE_RELATIONS,
+      relations: [
+        'homeWorkshop',
+        'homeTeam',
+        'homeProfession',
+        'homeSchedule',
+        'assignment.currentWorkshop',
+        'assignment.currentTeam',
+        'assignment.currentProfession',
+        'assignment.currentSchedule',
+      ],
     });
   }
 
@@ -129,30 +163,4 @@ export class EmployeeRepository {
       },
     });
   }
-
-  // private EMPLOYEE_ACCOUNT_RELATIONS = [
-  //   'account',
-  //   'homeWorkshop',
-  //   'homeTeam',
-  //   'homeProfession',
-  //   'homeSchedule',
-  //   'assignment',
-  //   'assignment.currentWorkshop',
-  //   'assignment.currentTeam',
-  //   'assignment.currentProfession',
-  //   'assignment.currentSchedule',
-  //   // 'employeeShifts',
-  // ];
-
-  private EMPLOYEE_RELATIONS = [
-    'homeWorkshop',
-    'homeTeam',
-    'homeProfession',
-    'homeSchedule',
-    'assignment',
-    'assignment.currentWorkshop',
-    'assignment.currentTeam',
-    'assignment.currentProfession',
-    'assignment.currentSchedule',
-  ];
 }

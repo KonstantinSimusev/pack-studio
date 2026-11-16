@@ -51,7 +51,7 @@ export const professions: IProfession[] = [
     name: 'Бригадир на отделке, сортировке, приёмке, сдаче, пакетировке и упаковке металла и готовой продукции',
   },
   { professionCode: 'PACKER', name: 'Укладчик-упаковщик' },
-  { professionCode: 'UNIT_PACKER', name: 'Укладчик-упаковщик ЛУМ' },
+  { professionCode: 'PACKER_LUM', name: 'Укладчик-упаковщик ЛУМ' },
   { professionCode: 'PACKER_APR8', name: 'Укладчик-упаковщик АПР-8' },
   { professionCode: 'REPAIR_MECHANIC', name: 'Слесарь-ремонтник' },
   { professionCode: 'STACKER', name: 'Штабелировщик металла' },

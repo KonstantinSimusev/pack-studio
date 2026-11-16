@@ -88,66 +88,57 @@ export interface IEmployeeInfo {
   homeScheduleName: string;
 }
 
-// export interface IShift {
-//   id: string;
-//   date: string; // формат YYYY-MM-DD
-//   workshopCode: string;
-//   teamNumber: number;
-//   scheduleCode: string;
-//   dayOfWeek: number;
-//   shiftCode: number | null;
-//   employeeShifts: IEmployeeShift[];
-// }
+export interface ICreateShift {
+  date: string; // формат YYYY-MM-DD
+  shiftCode: number;
+}
 
-// export interface IEmployeeShift {
-//   id: string;
-//   currentPositionCode: number; // берем из распоряжения, если нет из КЛС
-//   currentProfessionName: string; // берем из распоряжения, если нет из КЛС
-//   currentPaymentCode: string; // берем из распоряжения, если нет из КЛС
-//   attendanceCode: string;
-//   minutes: number;
-//   isPresent: boolean | null;
-//   workplaceName: string | null;
-//   canDelete: boolean;
-//   isReady: boolean;
-//   employee: IEmployee;
-// }
+export interface ILastShift {
+  id: string;
+  date: string; // формат YYYY-MM-DD
+  shiftCode: number;
+  scheduleCode: string;
+  scheduleName: string;
+}
 
-// export interface IEmployee {
-//   id: string;
-//   lastName: string;
-//   firstName: string;
-//   patronymic: string;
-//   personalNumber: number;
-//   workshopCode: string;
-//   teamNumber: number;
-//   positionCode: number;
-//   professionCode: string;
-//   professionName: string;
-//   gradeCode: number;
-//   scheduleCode: string;
-//   paymentCode: string;
-// }
+export interface IShift {
+  id: string;
+  date: string; // формат YYYY-MM-DD
+  shiftCode: number;
+  workshopCode: string;
+  teamNumber: number;
+  scheduleCode: string;
+  scheduleName: string;
+  employeeShifts: IEmployeeShift[];
+}
 
-// export interface IUpdateEmployeeShift {
-//   shiftId: string;
-//   employeeShiftId: string;
-//   employeeId: string;
+export interface IEmployeeShift {
+  id: string;
+  shiftProfessionCode: string;
+  shiftProfessionName: string;
+  attendanceCode: string;
+  workplaceName: string | null;
+  employee: IEmployee;
+}
 
-//   currentPositionCode: number; // берем из распоряжения, если нет из КЛС
-//   currentPaymentCode: string; // берем из распоряжения, если нет из КЛС
-//   attendanceCode: string;
-//   minutes: number;
-//   isPresent: boolean | null;
-//   workplaceName: string | null;
-// }
+export interface IEmployee {
+  id: string;
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  personalNumber: number;
+  homeWorkshopCode: string;
+  homeTeamNumber: number;
+}
 
-// export interface ICreateEmployeeShift {
-//   shiftId: string;
-//   personalNumber: number;
-// }
+export interface ICreateEmployeeShift {
+  shiftId: string;
+  personalNumber: number;
+}
 
-// export interface IDeleteEmployeeShift {
-//   shiftId: string;
-//   employeeShiftId: string;
-// }
+export interface IUpdateEmployeeShift {
+  id: string;
+  shiftProfessionCode: string;
+  attendanceCode: string;
+  workplaceName: string | null;
+}

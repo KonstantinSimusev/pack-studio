@@ -1,147 +1,143 @@
-// import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-// import { IShift } from '../../../utils/api.interfaces';
+import { ILastShift, IShift } from '../../../utils/api.interfaces';
 
-// import { getShiftById, getShifts, getShiftsByDate } from './actions';
+import { createShift, getLastShift, getShiftById } from './actions';
 
-// interface IShiftState {
-//   shift: IShift | null;
-//   shifts: IShift[] | null;
-//   searchShifts: IShift[] | null;
+interface IShiftState {
+  // Смена по ID (детальная)
+  shift: IShift | null;
+  isGetShiftLoading: boolean;
+  getShiftError: string | null;
 
-//   isShiftLoading: boolean;
-//   shiftError: string | null;
+  // Последняя смена — свой домен со своими состояниями
+  lastShift: ILastShift | null;
+  isLastShiftLoaded: boolean; // ответ по последней смене получен (любой исход)
+  isGetLastShiftLoading: boolean;
+  getLastShiftError: string | null;
 
-//   isGetShiftsLoading: boolean;
-//   getShiftsError: string | null;
+  // Создание смены
+  isCreateShiftLoading: boolean;
+  createShiftError: string | null;
+}
 
-//   isSearchShiftsLoading: boolean;
-//   searchShiftsError: string | null;
-// }
+const initialState: IShiftState = {
+  shift: null,
+  isGetShiftLoading: false,
+  getShiftError: null,
 
-// const initialState: IShiftState = {
-//   shift: null,
-//   shifts: null,
-//   searchShifts: null,
+  lastShift: null,
+  isLastShiftLoaded: false,
+  isGetLastShiftLoading: false,
+  getLastShiftError: null,
 
-//   isShiftLoading: false,
-//   shiftError: null,
+  isCreateShiftLoading: false,
+  createShiftError: null,
+};
 
-//   isGetShiftsLoading: false,
-//   getShiftsError: null,
+export const shiftSlice = createSlice({
+  name: 'shift',
+  initialState,
+  reducers: {
+    clearShift: (state) => {
+      state.shift = null;
+    },
+    clearLastShift: (state) => {
+      state.lastShift = null;
+      state.isLastShiftLoaded = false; // вернулись в «неизвестно»
+    },
+    clearGetShiftError: (state) => {
+      state.getShiftError = null;
+    },
+    clearGetLastShiftError: (state) => {
+      state.getLastShiftError = null;
+    },
+    clearCreateShiftError: (state) => {
+      state.createShiftError = null;
+    },
+  },
+  selectors: {
+    selectShift: (state: IShiftState) => state.shift,
+    selectIsGetShiftLoading: (state: IShiftState) => state.isGetShiftLoading,
+    selectGetShiftError: (state: IShiftState) => state.getShiftError,
 
-//   isSearchShiftsLoading: false,
-//   searchShiftsError: null,
-// };
+    selectLastShift: (state: IShiftState) => state.lastShift,
+    selectIsLastShiftLoaded: (state: IShiftState) => state.isLastShiftLoaded,
+    selectIsGetLastShiftLoading: (state: IShiftState) =>
+      state.isGetLastShiftLoading,
+    selectGetLastShiftError: (state: IShiftState) => state.getLastShiftError,
 
-// export const shiftSlice = createSlice({
-//   name: 'shift',
-//   initialState,
-//   reducers: {
-//     clearShift: (state) => {
-//       state.shift = null;
-//     },
-//     clearShifts: (state) => {
-//       state.shifts = null;
-//     },
-//     clearSearchShifts: (state) => {
-//       state.searchShifts = null;
-//     },
-//     clearShiftError: (state) => {
-//       state.shiftError = null;
-//     },
-//     clearGetShiftsError: (state) => {
-//       state.getShiftsError = null;
-//     },
-//     clearSearchShiftsError: (state) => {
-//       state.searchShiftsError = null;
-//     },
-//   },
-//   selectors: {
-//     selectShift: (state: IShiftState) => state.shift,
-//     selectShifts: (state: IShiftState) => state.shifts,
-//     selectSearchShifts: (state: IShiftState) => state.searchShifts,
+    selectIsCreateShiftLoading: (state: IShiftState) =>
+      state.isCreateShiftLoading,
+    selectCreateShiftError: (state: IShiftState) => state.createShiftError,
+  },
+  extraReducers: (builder) => {
+    builder
+      // Создание смены
+      .addCase(createShift.pending, (state) => {
+        state.isCreateShiftLoading = true;
+        state.createShiftError = null;
+      })
+      .addCase(createShift.fulfilled, (state) => {
+        state.isCreateShiftLoading = false;
+        state.createShiftError = null;
+      })
+      .addCase(createShift.rejected, (state, action) => {
+        state.isCreateShiftLoading = false;
+        state.createShiftError =
+          action.error.message ?? 'Не удалось создать смену';
+      })
+      // Получение последней смены — пишет только в lastShift
+      .addCase(getLastShift.pending, (state) => {
+        state.isGetLastShiftLoading = true;
+        state.getLastShiftError = null;
+      })
+      .addCase(getLastShift.fulfilled, (state, action) => {
+        state.isGetLastShiftLoading = false;
+        state.getLastShiftError = null;
+        state.lastShift = action.payload; // смена или null, если актуальной нет
+        state.isLastShiftLoaded = true; // <- ключ
+      })
+      .addCase(getLastShift.rejected, (state, action) => {
+        state.isGetLastShiftLoading = false;
+        state.getLastShiftError =
+          action.error.message ?? 'Не удалось получить последнюю смену';
+        state.isLastShiftLoaded = true; // ошибка — тоже завершение
+      })
+      // Получение смены по ID — пишет только в shift
+      .addCase(getShiftById.pending, (state) => {
+        state.isGetShiftLoading = true;
+        state.getShiftError = null;
+      })
+      .addCase(getShiftById.fulfilled, (state, action) => {
+        state.isGetShiftLoading = false;
+        state.getShiftError = null;
+        state.shift = action.payload;
+      })
+      .addCase(getShiftById.rejected, (state, action) => {
+        state.isGetShiftLoading = false;
+        state.getShiftError =
+          action.error.message ?? 'Не удалось получить смену';
+      });
+  },
+});
 
-//     selectIsShiftLoading: (state: IShiftState) => state.isShiftLoading,
-//     selectShiftError: (state: IShiftState) => state.shiftError,
+export const {
+  clearShift,
+  clearLastShift,
+  clearGetShiftError,
+  clearGetLastShiftError,
+  clearCreateShiftError,
+} = shiftSlice.actions;
 
-//     selectIsGetShiftsLoading: (state: IShiftState) => state.isGetShiftsLoading,
-//     selectGetShiftsError: (state: IShiftState) => state.getShiftsError,
-
-//     selectIsSearchShiftsLoading: (state: IShiftState) =>
-//       state.isSearchShiftsLoading,
-//     selectSearchShiftsError: (state: IShiftState) => state.searchShiftsError,
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       // Обработчики для getShiftById
-//       .addCase(getShiftById.pending, (state) => {
-//         state.isShiftLoading = true;
-//         state.shiftError = null;
-//       })
-//       .addCase(getShiftById.fulfilled, (state, action) => {
-//         state.isShiftLoading = false;
-//         state.shiftError = null;
-//         state.shift = action.payload;
-//       })
-//       .addCase(getShiftById.rejected, (state, action) => {
-//         state.isShiftLoading = false;
-//         state.shiftError = action.error.message ?? 'Не удалось загрузить смену';
-//       })
-
-//       // Обработчики для getShifts
-//       .addCase(getShifts.pending, (state) => {
-//         state.isGetShiftsLoading = true;
-//         state.getShiftsError = null;
-//       })
-//       .addCase(getShifts.fulfilled, (state, action) => {
-//         state.isGetShiftsLoading = false;
-//         state.getShiftsError = null;
-//         state.shifts = action.payload;
-//       })
-//       .addCase(getShifts.rejected, (state, action) => {
-//         state.isGetShiftsLoading = false;
-//         state.getShiftsError =
-//           action.error.message ?? 'Не удалось загрузить смены';
-//       })
-
-//       // Обработчики для searchShifts
-//       .addCase(getShiftsByDate.pending, (state) => {
-//         state.isSearchShiftsLoading = true;
-//         state.searchShiftsError = null;
-//       })
-//       .addCase(getShiftsByDate.fulfilled, (state, action) => {
-//         state.isSearchShiftsLoading = false;
-//         state.searchShiftsError = null;
-//         state.searchShifts = action.payload; // пишем в searchShifts
-//       })
-//       .addCase(getShiftsByDate.rejected, (state, action) => {
-//         state.isSearchShiftsLoading = false;
-//         state.searchShiftsError =
-//           action.error.message ?? 'Не удалось загрузить смены по дате';
-//       });
-//   },
-// });
-
-// // Экспорт действий
-// export const {
-//   clearShift,
-//   clearShifts,
-//   clearSearchShifts,
-//   clearShiftError,
-//   clearGetShiftsError,
-//   clearSearchShiftsError,
-// } = shiftSlice.actions;
-
-// // Экспорт селекторов
-// export const {
-//   selectShift,
-//   selectShifts,
-//   selectSearchShifts,
-//   selectIsShiftLoading,
-//   selectShiftError,
-//   selectIsGetShiftsLoading,
-//   selectGetShiftsError,
-//   selectIsSearchShiftsLoading,
-//   selectSearchShiftsError,
-// } = shiftSlice.selectors;
+export const {
+  selectShift,
+  selectIsGetShiftLoading,
+  selectGetShiftError,
+  selectLastShift,
+  selectIsLastShiftLoaded,
+  selectIsGetLastShiftLoading,
+  selectGetLastShiftError,
+  selectIsCreateShiftLoading,
+  selectCreateShiftError,
+} = shiftSlice.selectors;
