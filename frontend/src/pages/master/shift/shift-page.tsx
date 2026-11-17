@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { formatDateForDayUI } from '../../../utils/utils';
+import { formatDayShortMonth } from '../../../utils/utils';
 
 import { LayerContext } from '../../../contexts/layer/layerContext';
 
@@ -87,10 +87,11 @@ export const ShiftPage = () => {
 
             <div className={styles.header}>
               <span className={styles.date}>
-                {formatDateForDayUI(shift.date)}
+                {formatDayShortMonth(shift.date)},
               </span>
 
-              <span>{`Смена ${shift.shiftCode}`}</span>
+              <span>{`см ${shift.shiftCode}`},</span>
+              <span>{`бр ${shift.teamNumber}`}</span>
             </div>
 
             <IconButton
@@ -106,8 +107,9 @@ export const ShiftPage = () => {
             <div className={styles.row}>
               <div className={styles.status}>
                 <span className={styles.text}>Отмечено работников</span>
+
                 {shift.employeeShifts.every((es) => es.isReady === true) && (
-                  <SuccessIcon />
+                  <SuccessIcon width={16} height={16} />
                 )}
               </div>
 
@@ -118,7 +120,7 @@ export const ShiftPage = () => {
                       .length
                   }
                 </span>
-                <span>из</span>
+                <span className={styles.smallText}>из</span>
                 <span>{shift.employeeShifts.length}</span>
               </div>
             </div>

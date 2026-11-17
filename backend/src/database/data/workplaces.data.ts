@@ -33,10 +33,10 @@ export const workplaces: IWorkplaceData[] = [
   },
 
   // Ж/д тупики
-  { name: 'Ж/д тупик 6', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
-  { name: 'Ж/д тупик 7', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
-  { name: 'Ж/д тупик 8', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
-  { name: 'Ж/д тупик 10', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
+  { name: 'Ж/д тупик № 6', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
+  { name: 'Ж/д тупик № 7', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
+  { name: 'Ж/д тупик № 8', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
+  { name: 'Ж/д тупик № 10', workshopCode: 'W_LPC11', professionCode: 'STACKER' },
 
   // Производство реквизитов
   {

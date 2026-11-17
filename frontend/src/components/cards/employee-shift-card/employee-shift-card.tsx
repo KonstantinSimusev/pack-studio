@@ -31,7 +31,7 @@ export const EmployeeShiftCard = ({
   const hasWrkplace =
     employeeShift.workplaceName === null &&
     employeeShift.attendanceCode === ATTENDANCE_TYPE.Y
-      ? 'Рабочее место не выбрано'
+      ? 'Табель не отмечен'
       : employeeShift.workplaceName === null &&
           employeeShift.attendanceCode !== ATTENDANCE_TYPE.Y
         ? 'Нет на работе'
@@ -70,13 +70,12 @@ export const EmployeeShiftCard = ({
         </div>
       </div>
 
-<span className={styles.infoBlock}>
-
+      <span className={styles.infoBlock}>
         <span className={styles.text}>Профессия в смене</span>
-      <span className={styles.profession}>
-        {employeeShift.shiftProfessionName}
+        <span className={styles.profession}>
+          {employeeShift.shiftProfessionName}
+        </span>
       </span>
-</span>
 
       <span className={styles.infoBlock}>
         <span className={styles.text}>Личный номер</span>
@@ -85,13 +84,12 @@ export const EmployeeShiftCard = ({
         </span>
       </span>
 
-      <div className={styles.statusWrapper}>
-        <span className={styles.workplaceName}>{hasWrkplace}</span>
-
+      <div className={styles.status}>
         <span className={styles.attendanceCode}>
-          {hasWrkplace !== 'Рабочее место не выбрано' &&
-            employeeShift.attendanceCode}
+          {hasWrkplace !== 'Табель не отмечен' && employeeShift.attendanceCode}
         </span>
+
+        <span className={styles.workplaceName}>{hasWrkplace}</span>
       </div>
     </div>
   );

@@ -128,7 +128,7 @@ export interface ILastShift {
   shiftCode: number;
   scheduleCode: string;
   scheduleName: string;
-  isReady: boolean;
+  isReady: boolean; // вычисляемое поле
 }
 
 export interface IShift {
@@ -150,7 +150,7 @@ export interface IEmployeeShift {
   attendanceCode: string;
   workplaceName: string | null;
   employee: IEmployee;
-  canDelete: boolean;
+  canDelete: boolean; // вычисляемое поле
 }
 
 export interface IEmployee {

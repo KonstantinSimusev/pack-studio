@@ -17,7 +17,7 @@ export const ShiftCard = ({ shift, onClick }: IProps) => {
       <div className={styles.leftContainer}>
         <div className={styles.wrapper}>
           <span className={styles.date}>{formatDateForDayUI(shift.date)}</span>
-          {shift.isReady === true && <SuccessIcon width={18} height={18} />}
+          {shift.isReady === true && <SuccessIcon width={20} height={20} />}
         </div>
       </div>
 

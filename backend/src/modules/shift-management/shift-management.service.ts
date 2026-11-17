@@ -9,6 +9,7 @@ import {
 
 import {
   getShiftFor2A,
+  hasManager,
   // getShiftFor5B1,
   // getShiftFor9,
   // isCondition_2A,
@@ -82,7 +83,7 @@ export class ShiftManagementService {
     const { workshopCode, teamNumber, scheduleCode } = profile;
 
     // Получаем связанные сущности по данным сотрудника, который сделал запрос
-    const [workshop, team, schedule, attendanceType, employees] =
+    const [workshop, team, schedule, attendanceType, allEmployees] =
       await Promise.all([
         this.workshopService.getWorkshopByCode(workshopCode),
         this.teamService.getTeamByNumber(teamNumber),
@@ -124,6 +125,12 @@ export class ShiftManagementService {
       team,
       schedule,
     });
+
+    // Руководители (HEAD, LEAD_MASTER, MASTER, DETAIL_MASTER)
+    // не попадают в смену сотрудников
+    const employees = allEmployees.filter(
+      (employee) => !hasManager(employee.homeProfession.professionCode),
+    );
 
     // Создаем смены сотрудников с типом посещаемости 'Я'
     for (const employee of employees) {
@@ -176,7 +183,7 @@ export class ShiftManagementService {
       shiftCode: shift.shiftCode,
       scheduleCode: shift.schedule.scheduleCode,
       scheduleName: shift.schedule.name,
-      isReady: shift.employeeShifts.every((es) => es.isReady === true),
+      isReady: shift.employeeShifts.every((es) => es.isReady === true), // вычисляемое поле
     };
   }
 }

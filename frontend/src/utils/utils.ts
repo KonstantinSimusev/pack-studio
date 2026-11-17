@@ -45,6 +45,41 @@ export const formatDateForDayUI = (date: Date | string | null): string => {
   return `${day} ${monthNames[monthIndex]}`;
 };
 
+export const formatDayShortMonth = (date: Date | string | null): string => {
+  if (date === null) {
+    return '-';
+  }
+
+  const parsedDate = date instanceof Date ? date : new Date(date);
+
+  if (
+    Number.isNaN(parsedDate.getTime()) ||
+    parsedDate.toString() === 'Invalid Date'
+  ) {
+    return '';
+  }
+
+  const monthNamesShort = [
+    'янв',
+    'фев',
+    'мар',
+    'апр',
+    'май',
+    'июн',
+    'июл',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+  ];
+
+  const day = parsedDate.getDate();
+  const monthIndex = parsedDate.getMonth();
+
+  return `${day} ${monthNamesShort[monthIndex]}`;
+};
+
 export const formatDateUI = (date: Date | string | null): string => {
   if (date === null) {
     return '';
