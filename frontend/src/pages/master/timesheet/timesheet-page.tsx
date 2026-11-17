@@ -71,7 +71,7 @@ export const TimesheetPage = () => {
         />
         <InfoBlock title='Должность' text={profile.professionName} />
       </div>
-      
+
       <div className={styles.main}>
         {/* Ни кнопки, ни карточки, пока ответ не пришёл */}
         {isLastShiftLoaded && lastShift !== null && (
@@ -82,11 +82,9 @@ export const TimesheetPage = () => {
         )}
 
         {isLastShiftLoaded && lastShift === null && (
-          <div className={styles.buttonWrapper}>
-            <Button type='button' onClick={createShift}>
-              Создать смену
-            </Button>
-          </div>
+          <Button type='button' onClick={createShift}>
+            Создать смену
+          </Button>
         )}
       </div>
     </>

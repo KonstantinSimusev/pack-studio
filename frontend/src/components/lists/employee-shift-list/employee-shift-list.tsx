@@ -85,7 +85,10 @@ export const EmployeeShiftList = ({ employeeShifts }: IProps) => {
           // Слайд — точка прилипания снапа. Карточку внутри не трогаем:
           // её ширина 370px задаёт ширину слайда сама
           <div
-            className={styles.slide}
+            className={clsx(
+              styles.slide,
+              i === activeIndex && styles.activeSlide,
+            )}
             onClick={(e) => {
               // Клик по кнопке внутри карточки (редактировать/удалить)
               // обрабатывают сами кнопки — до прокрутки не доходим

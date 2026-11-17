@@ -1,4 +1,9 @@
-import { EScheduleCode, EShiftCode, EWorkshopCode } from '../enums/enums';
+import {
+  EProfessionCode,
+  EScheduleCode,
+  EShiftCode,
+  EWorkshopCode,
+} from '../enums/enums';
 
 // Ключ даты: строка 'YYYY-MM-DD' без привязки к таймзоне
 export const toDateKey = (d: Date | string): string => {
@@ -416,6 +421,15 @@ export const isRelevantShift = (date: Date, shiftCode: number): boolean => {
     shiftCode === EShiftCode.DAY && getDateStr(date) === getDateStr(today);
 
   return isFirstShiftTomorrow || isFirstShiftToday || isSecondShiftToday;
+};
+
+export const hasManager = (professionCode: string): boolean => {
+  return [
+    EProfessionCode.HEAD,
+    EProfessionCode.LEAD_MASTER,
+    EProfessionCode.MASTER,
+    EProfessionCode.DETAIL_MASTER,
+  ].includes(professionCode as EProfessionCode);
 };
 
 // export const normalizeScheduleCode = (

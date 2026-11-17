@@ -145,6 +145,7 @@ export interface IEmployeeShift {
   attendanceCode: string;
   workplaceName: string | null;
   employee: IEmployee;
+  canDelete: boolean;
 }
 
 export interface IEmployee {

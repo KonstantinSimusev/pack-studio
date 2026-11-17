@@ -24,7 +24,7 @@ export class ShiftRepository {
     return this.shiftRepository.findOneBy({ id });
   }
 
-  // Метод для страницы смены
+  // Метод для ShiftPage
   async findById(id: string): Promise<Shift | null> {
     return this.shiftRepository.findOne({
       where: { id },
@@ -39,9 +39,19 @@ export class ShiftRepository {
         'employeeShifts.attendanceType',
         'employeeShifts.workplace',
       ],
+      order: {
+        employeeShifts: {
+          employee: {
+            lastName: 'ASC', // 3. Фамилия: по алфавиту
+            firstName: 'ASC', // 4. Имя: по алфавиту (если фамилии совпали)
+            patronymic: 'ASC', // 5. Отчество: по алфавиту (если фамилии совпали)
+          },
+        },
+      },
     });
   }
 
+  // Метод для TimesheetPage
   async findByDetails(
     workshopId: string,
     teamId: string,

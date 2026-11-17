@@ -144,6 +144,7 @@ export class ShiftManagementService {
     };
   }
 
+  // Метод для TimesheetPage
   async getLastShift(profile: IProfile): Promise<ILastShift | null> {
     // Получаем данные сотрудника, который сделал запрос
     const { workshopCode, teamNumber, scheduleCode } = profile;

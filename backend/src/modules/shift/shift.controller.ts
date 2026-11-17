@@ -11,15 +11,10 @@ import { ShiftService } from './shift.service';
 export class ShiftController {
   constructor(private readonly shiftService: ShiftService) {}
 
+  // Метод для ShiftPage
   @Get(':id')
   @UseGuards(AuthGuard)
   async getShiftById(@Param() dto: ShiftIdDto): Promise<IShift> {
     return this.shiftService.getShiftById(dto.id);
   }
-
-  // @Post(':id/check')
-  // @UseGuards(AuthGuard)
-  // async setChecked(@Param() dto: ShiftIdDto): Promise<ISuccess> {
-  //   return this.shiftService.setCheckedByShiftId(dto);
-  // }
 }

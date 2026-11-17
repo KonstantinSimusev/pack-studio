@@ -7,6 +7,8 @@ import {
   // NotFoundException,
 } from '@nestjs/common';
 
+import { hasManager } from '../../shared/utils/utils';
+
 // import { normalizeScheduleCode } from '../../shared/utils/utils';
 
 // import { EAttendanceCode } from '../../shared/enums/enums';
@@ -46,26 +48,31 @@ export class EmployeeShiftManagementService {
 
   async createByPersonalNumber(dto: CreateEmployeeShiftDto): Promise<ISuccess> {
     // Получаем сущности
-    const shift = await this.shiftService.getEntityById(dto.shiftId);
-
-    const employee =
-      await this.employeeService.getEmployeeByPersonalNumberForAdd(
+    const [shift, employee] = await Promise.all([
+      this.shiftService.getEntityById(dto.shiftId),
+      this.employeeService.getEmployeeByPersonalNumberForAdd(
         dto.personalNumber,
-      );
-
-    const shiftProfession = await this.professionService.getProfessionByCode(
-      employee.homeProfession.professionCode,
-    );
-
-    const attendanceType = await this.attendanceTypeService.getAttendanceByCode(
-      EAttendanceCode.Y,
-    );
+      ),
+    ]);
 
     // Проверяем на уже добавленного сотрудника
     await this.employeeShiftService.existsByShiftAndEmployee(
       shift.id,
       employee.id,
     );
+
+    // Проверяем должность руководителя
+    if (hasManager(employee.homeProfession.professionCode)) {
+      throw new ConflictException('Нельзя добавить руководителя');
+    }
+
+    // Получаем сущности
+    const [shiftProfession, attendanceType] = await Promise.all([
+      this.professionService.getProfessionByCode(
+        employee.homeProfession.professionCode,
+      ),
+      this.attendanceTypeService.getAttendanceByCode(EAttendanceCode.Y),
+    ]);
 
     await this.employeeShiftRepository.create({
       employee,

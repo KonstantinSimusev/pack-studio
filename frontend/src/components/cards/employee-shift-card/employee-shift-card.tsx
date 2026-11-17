@@ -26,10 +26,6 @@ export const EmployeeShiftCard = ({
     return null;
   }
 
-  const isShowDeleteButton =
-    shift.workshopCode !== employeeShift.employee.homeWorkshopCode ||
-    shift.teamNumber !== employeeShift.employee.homeTeamNumber;
-
   return (
     <div className={styles.card}>
       <div className={styles.topContainer}>
@@ -48,7 +44,7 @@ export const EmployeeShiftCard = ({
 
         <div className={styles.actions}>
           <div className={styles.actionsWrapper}>
-            {isShowDeleteButton && (
+            {employeeShift.canDelete === true && (
               <IconButton
                 type='button'
                 onClick={onDelete}
