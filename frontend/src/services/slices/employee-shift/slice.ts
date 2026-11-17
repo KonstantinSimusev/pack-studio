@@ -7,6 +7,8 @@ import {
 } from './actions';
 
 interface IEmployeeShiftState {
+  lastCreatedEmployeeShiftId: string | null;
+
   isCreateEmployeeShiftLoading: boolean;
   createEmployeeShiftError: string | null;
 
@@ -18,6 +20,8 @@ interface IEmployeeShiftState {
 }
 
 const initialState: IEmployeeShiftState = {
+  lastCreatedEmployeeShiftId: null,
+
   isCreateEmployeeShiftLoading: false,
   createEmployeeShiftError: null,
 
@@ -46,6 +50,9 @@ export const employeeShiftSlice = createSlice({
     },
   },
   selectors: {
+    selectLastCreatedEmployeeShiftId: (state: IEmployeeShiftState) =>
+      state.lastCreatedEmployeeShiftId,
+
     selectIsCreateEmployeeShiftLoading: (state: IEmployeeShiftState) =>
       state.isCreateEmployeeShiftLoading,
     selectCreateEmployeeShiftError: (state: IEmployeeShiftState) =>
@@ -68,9 +75,11 @@ export const employeeShiftSlice = createSlice({
         state.isCreateEmployeeShiftLoading = true;
         state.createEmployeeShiftError = null;
       })
-      .addCase(createEmployeeShift.fulfilled, (state) => {
+      .addCase(createEmployeeShift.fulfilled, (state, action) => {
         state.isCreateEmployeeShiftLoading = false;
         state.createEmployeeShiftError = null;
+        state.lastCreatedEmployeeShiftId =
+          action.payload.employeeShiftId ?? null;
       })
       .addCase(createEmployeeShift.rejected, (state, action) => {
         state.isCreateEmployeeShiftLoading = false;
@@ -119,6 +128,7 @@ export const {
 
 // Экспорт селекторов
 export const {
+  selectLastCreatedEmployeeShiftId,
   selectIsCreateEmployeeShiftLoading,
   selectCreateEmployeeShiftError,
   selectIsUpdateEmployeeShiftLoading,

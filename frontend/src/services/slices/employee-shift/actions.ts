@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
+  IAddSuccess,
   ICreateEmployeeShift,
   ISuccess,
   IUpdateEmployeeShift,
@@ -14,11 +15,11 @@ import {
 // import { delay } from '../../../utils/utils';
 
 export const createEmployeeShift = createAsyncThunk<
-  ISuccess,
+  IAddSuccess,
   ICreateEmployeeShift
 >(
   'employee-shift/create',
-  async (data: ICreateEmployeeShift): Promise<ISuccess> => {
+  async (data: ICreateEmployeeShift): Promise<IAddSuccess> => {
     try {
       const response = await createEmployeeShiftApi(data);
       // await delay(1000);

@@ -1,5 +1,6 @@
 import { BASE_PATH } from '../api.config';
 import {
+  IAddSuccess,
   ICreateEmployeeShift,
   ISuccess,
   IUpdateEmployeeShift,
@@ -7,7 +8,7 @@ import {
 
 export const createEmployeeShiftApi = async (
   data: ICreateEmployeeShift,
-): Promise<ISuccess> => {
+): Promise<IAddSuccess> => {
   try {
     const response = await fetch(`${BASE_PATH}/employee-shift-management`, {
       method: 'POST',

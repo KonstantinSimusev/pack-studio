@@ -14,7 +14,7 @@ import { hasManager } from '../../shared/utils/utils';
 // import { EAttendanceCode } from '../../shared/enums/enums';
 
 import { EAttendanceCode } from '../../shared/enums/enums';
-import { ISuccess } from '../../shared/interfaces/api.interface';
+import { IAddSuccess, ISuccess } from '../../shared/interfaces/api.interface';
 
 import { CreateEmployeeShiftDto } from './dto/create-employee-shift.dto';
 // import { DeleteEmployeeShiftDto } from './dto/delete-employee-shift.dto';
@@ -46,7 +46,9 @@ export class EmployeeShiftManagementService {
     private readonly workplaceService: WorkplaceService,
   ) {}
 
-  async createByPersonalNumber(dto: CreateEmployeeShiftDto): Promise<ISuccess> {
+  async createByPersonalNumber(
+    dto: CreateEmployeeShiftDto,
+  ): Promise<IAddSuccess> {
     // Получаем сущности
     const [shift, employee] = await Promise.all([
       this.shiftService.getEntityById(dto.shiftId),
@@ -74,7 +76,7 @@ export class EmployeeShiftManagementService {
       this.attendanceTypeService.getAttendanceByCode(EAttendanceCode.Y),
     ]);
 
-    await this.employeeShiftRepository.create({
+    const employeeShift = await this.employeeShiftRepository.create({
       employee,
       shift,
       shiftProfession,
@@ -83,6 +85,7 @@ export class EmployeeShiftManagementService {
 
     return {
       message: 'Смена работника создана успешно',
+      employeeShiftId: employeeShift.id,
     };
   }
 

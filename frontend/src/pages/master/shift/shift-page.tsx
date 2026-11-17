@@ -8,6 +8,11 @@ import { LayerContext } from '../../../contexts/layer/layerContext';
 import { useDispatch, useSelector } from '../../../services/store';
 
 import { getShiftById } from '../../../services/slices/shift/actions';
+import {
+  clearCreateEmployeeShift,
+  selectLastCreatedEmployeeShiftId,
+} from '../../../services/slices/employee-shift/slice';
+
 import { clearShift, selectShift } from '../../../services/slices/shift/slice';
 
 import { IconButton } from '../../../components/ui/buttons/icon-button/icon-button';
@@ -32,6 +37,7 @@ export const ShiftPage = () => {
   const dispatch = useDispatch();
 
   const shift = useSelector(selectShift);
+  const focusEmployeeShiftId = useSelector(selectLastCreatedEmployeeShiftId);
 
   useEffect(() => {
     // window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -45,6 +51,7 @@ export const ShiftPage = () => {
   useEffect(() => {
     return () => {
       dispatch(clearShift());
+      dispatch(clearCreateEmployeeShift());
     };
   }, []);
 
@@ -107,9 +114,8 @@ export const ShiftPage = () => {
               <div className={styles.count}>
                 <span>
                   {
-                    shift.employeeShifts.filter(
-                      (es) => es.isReady === true,
-                    ).length
+                    shift.employeeShifts.filter((es) => es.isReady === true)
+                      .length
                   }
                 </span>
                 <span>из</span>
@@ -118,7 +124,10 @@ export const ShiftPage = () => {
             </div>
           </div>
 
-          <EmployeeShiftList employeeShifts={shift.employeeShifts} />
+          <EmployeeShiftList
+            employeeShifts={shift.employeeShifts}
+            focusId={focusEmployeeShiftId}
+          />
         </>
       )}
     </>

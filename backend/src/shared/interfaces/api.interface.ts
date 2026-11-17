@@ -7,6 +7,11 @@ export interface ISuccess {
   message: string;
 }
 
+export interface IAddSuccess {
+  message: string;
+  employeeShiftId: string;
+}
+
 export interface ITokenOptions<T> {
   payload: T;
   secretKey: string; // ключ в конфиге для секрета

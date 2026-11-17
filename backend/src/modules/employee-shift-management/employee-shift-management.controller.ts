@@ -16,7 +16,7 @@ export class EmployeeShiftManagementController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async createEmployeeShift(
+  async createEmployeeShiftByPersonalNumber(
     @Body() dto: CreateEmployeeShiftDto,
   ): Promise<ISuccess> {
     return this.employeeShiftManagementService.createByPersonalNumber(

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -10,9 +10,10 @@ import styles from './employee-shift-list.module.css';
 
 interface IProps {
   employeeShifts: IEmployeeShift[];
+  focusId?: string | null; // id новой записи — к ней доезжаем после добавления
 }
 
-export const EmployeeShiftList = ({ employeeShifts }: IProps) => {
+export const EmployeeShiftList = ({ employeeShifts, focusId }: IProps) => {
   const {
     setSelectedId,
     setIsOverlayOpen,
@@ -24,6 +25,15 @@ export const EmployeeShiftList = ({ employeeShifts }: IProps) => {
 
   // индекс активной карточки — им подсвечивается точка
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (!focusId) return;
+    const index = employeeShifts.findIndex((es) => es.id === focusId);
+
+    if (index >= 0) {
+      goTo(index);
+    }
+  }, [focusId, employeeShifts]);
 
   // Активной считаем карточку, чей центр ближе всего к центру ленты.
   // offsetLeft слайдов учитывает боковые отступы, поэтому формула
@@ -39,6 +49,7 @@ export const EmployeeShiftList = ({ employeeShifts }: IProps) => {
     Array.from(el.children).forEach((child, i) => {
       const slide = child as HTMLElement;
       const diff = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
+
       if (diff < minDiff) {
         minDiff = diff;
         index = i;

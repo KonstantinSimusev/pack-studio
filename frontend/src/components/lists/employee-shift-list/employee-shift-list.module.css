@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 40px;
-  gap: 20px;
+  gap: 30px;
   width: 100%;
 }
 
@@ -21,7 +21,7 @@
   /* Запас под рост активной карточки при scale(1.04):
      иначе скейл обрезается overflow контейнера */
   padding-block: 20px;
-  margin-block: -20px; /* компенсируем паддинги, чтобы верстка не разъехалась */
+  margin-block: -20px; 
   scrollbar-width: none; /* прячем скроллбар (Firefox) */
 }
 

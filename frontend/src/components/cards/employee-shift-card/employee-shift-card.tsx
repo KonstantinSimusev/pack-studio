@@ -43,40 +43,40 @@ export const EmployeeShiftCard = ({
         </div>
 
         <div className={styles.actions}>
-          <div className={styles.actionsWrapper}>
-            {employeeShift.canDelete === true && (
-              <IconButton
-                type='button'
-                onClick={onDelete}
-                className={styles.button}
-              >
-                <DeleteIcon width={22} height={22} />
-              </IconButton>
-            )}
-
+          {employeeShift.canDelete === true && (
             <IconButton
               type='button'
-              onClick={onClick}
+              onClick={onDelete}
               className={styles.button}
             >
-              <EditIcon width={22} height={22} />
+              <DeleteIcon width={22} height={22} />
             </IconButton>
-          </div>
+          )}
 
-          <span className={styles.personalNumberWarpper}>
-            <span className={styles.personalNumberText}>№</span>
-            <span className={styles.personalNumber}>
-              {employeeShift.employee.personalNumber}
-            </span>
-          </span>
+          <IconButton type='button' onClick={onClick} className={styles.button}>
+            <EditIcon width={22} height={22} />
+          </IconButton>
         </div>
       </div>
 
-      <div className={styles.bottomContainer}>
-        <span className={styles.profession}>
-          {employeeShift.shiftProfessionName}
-        </span>
+      <span className={styles.profession}>
+        {employeeShift.shiftProfessionName}
+      </span>
 
+      <span className={styles.infoBlock}>
+        <span className={styles.personalNumberText}>Личный номер</span>
+        <span className={styles.personalNumber}>
+          {employeeShift.employee.personalNumber}
+        </span>
+      </span>
+
+      <div className={styles.statusWrapper}>
+        <span className={styles.workplaceName}>
+          {employeeShift.workplaceName === null
+            ? 'Не выбрано'
+            : employeeShift.workplaceName}
+        </span>
+        
         <span className={styles.attendanceCode}>
           {employeeShift.attendanceCode}
         </span>
