@@ -10,6 +10,7 @@ import {
   ATTENDANCE_OPTIONS,
   WORK_PLACES_OPTIONS,
   PROFESSION_OPTIONS,
+  ATTENDANCE_TYPE,
 } from '../../../utils/constants';
 
 import { IUpdateEmployeeShift } from '../../../utils/api.interfaces';
@@ -172,7 +173,11 @@ export const EmployeeShiftEditForm = () => {
   const isButtonDisabled =
     Object.values(errors).some(Boolean) ||
     !formData.shiftProfessionCode ||
-    !formData.attendanceCode;
+    !formData.attendanceCode ||
+    (formData.attendanceCode === ATTENDANCE_TYPE.Y &&
+      formData.workplaceName === '') ||
+    (formData.attendanceCode !== ATTENDANCE_TYPE.Y &&
+      formData.workplaceName !== '');
 
   return (
     <Form

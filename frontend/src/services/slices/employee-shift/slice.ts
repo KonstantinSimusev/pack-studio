@@ -7,7 +7,7 @@ import {
 } from './actions';
 
 interface IEmployeeShiftState {
-  lastCreatedEmployeeShiftId: string | null;
+  addedEmployeeShiftId: string | null;
 
   isCreateEmployeeShiftLoading: boolean;
   createEmployeeShiftError: string | null;
@@ -20,7 +20,7 @@ interface IEmployeeShiftState {
 }
 
 const initialState: IEmployeeShiftState = {
-  lastCreatedEmployeeShiftId: null,
+  addedEmployeeShiftId: null,
 
   isCreateEmployeeShiftLoading: false,
   createEmployeeShiftError: null,
@@ -36,6 +36,9 @@ export const employeeShiftSlice = createSlice({
   name: 'employeeShift',
   initialState,
   reducers: {
+    clearAddedEmployeeShiftId: (state) => {
+      state.addedEmployeeShiftId = null;
+    },
     clearCreateEmployeeShift: (state) => {
       state.isCreateEmployeeShiftLoading = false;
       state.createEmployeeShiftError = null;
@@ -50,8 +53,8 @@ export const employeeShiftSlice = createSlice({
     },
   },
   selectors: {
-    selectLastCreatedEmployeeShiftId: (state: IEmployeeShiftState) =>
-      state.lastCreatedEmployeeShiftId,
+    selectAddedEmployeeShiftId: (state: IEmployeeShiftState) =>
+      state.addedEmployeeShiftId,
 
     selectIsCreateEmployeeShiftLoading: (state: IEmployeeShiftState) =>
       state.isCreateEmployeeShiftLoading,
@@ -78,8 +81,7 @@ export const employeeShiftSlice = createSlice({
       .addCase(createEmployeeShift.fulfilled, (state, action) => {
         state.isCreateEmployeeShiftLoading = false;
         state.createEmployeeShiftError = null;
-        state.lastCreatedEmployeeShiftId =
-          action.payload.employeeShiftId ?? null;
+        state.addedEmployeeShiftId = action.payload.employeeShiftId ?? null;
       })
       .addCase(createEmployeeShift.rejected, (state, action) => {
         state.isCreateEmployeeShiftLoading = false;
@@ -121,6 +123,7 @@ export const employeeShiftSlice = createSlice({
 
 // Экспорт действий
 export const {
+  clearAddedEmployeeShiftId,
   clearCreateEmployeeShift,
   clearUpdateEmployeeShift,
   clearDeleteEmployeeShift,
@@ -128,7 +131,7 @@ export const {
 
 // Экспорт селекторов
 export const {
-  selectLastCreatedEmployeeShiftId,
+  selectAddedEmployeeShiftId,
   selectIsCreateEmployeeShiftLoading,
   selectCreateEmployeeShiftError,
   selectIsUpdateEmployeeShiftLoading,

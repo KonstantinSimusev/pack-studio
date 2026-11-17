@@ -1,7 +1,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   width: 300px;
   padding: 20px;
   background-color: rgba(180 180 180 / 0.1);
@@ -18,7 +18,6 @@
 .fullname {
   display: flex;
   flex-direction: column;
-  font-size: 18px;
   gap: 6px;
 }
 
@@ -26,11 +25,7 @@
   display: flex;
   align-items: end;
   gap: 10px;
-}
-
-.name {
-  font-size: 14px;
-  /* opacity: 0.6; */
+  font-size: 18px;
 }
 
 .status {
@@ -57,11 +52,11 @@
 .infoBlock {
   display: flex;
   flex-direction: column;
-  font-size: 12px;
-  gap: 6px;
+  gap: 4px;
 }
 
-.personalNumberText {
+.text {
+  font-size: 12px;
   opacity: 0.6;
 }
 
@@ -107,8 +102,6 @@
 
 .attendanceCode {
   line-height: 0.7;
-  font-weight: 800;
-  font-size: 18px;
 }
 
 .statusWrapper {

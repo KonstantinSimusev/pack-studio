@@ -11,9 +11,9 @@ export const workplaces: IWorkplaceData[] = [
   },
 
   // ЛУМ
-  { name: 'ЛУМ', workshopCode: 'W_LPC11', professionCode: 'PACKER_LUM' },
-  { name: 'ЛУМ', workshopCode: 'W_LPC11', professionCode: 'LEAD_OPERATOR' },
-  { name: 'ЛУМ', workshopCode: 'W_LPC11', professionCode: 'OPERATOR' },
+  { name: 'Линия упаковки рулонов', workshopCode: 'W_LPC11', professionCode: 'PACKER_LUR' },
+  { name: 'Линия упаковки рулонов', workshopCode: 'W_LPC11', professionCode: 'LEAD_OPERATOR' },
+  { name: 'Линия упаковки рулонов', workshopCode: 'W_LPC11', professionCode: 'OPERATOR' },
 
   // Очереди упаковки
   {

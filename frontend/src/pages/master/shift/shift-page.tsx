@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from '../../../services/store';
 import { getShiftById } from '../../../services/slices/shift/actions';
 import {
   clearCreateEmployeeShift,
-  selectLastCreatedEmployeeShiftId,
+  selectAddedEmployeeShiftId,
 } from '../../../services/slices/employee-shift/slice';
 
 import { clearShift, selectShift } from '../../../services/slices/shift/slice';
@@ -37,7 +37,7 @@ export const ShiftPage = () => {
   const dispatch = useDispatch();
 
   const shift = useSelector(selectShift);
-  const focusEmployeeShiftId = useSelector(selectLastCreatedEmployeeShiftId);
+  const focusEmployeeShiftId = useSelector(selectAddedEmployeeShiftId);
 
   useEffect(() => {
     // window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });

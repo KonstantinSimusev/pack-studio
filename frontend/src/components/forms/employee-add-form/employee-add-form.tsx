@@ -14,6 +14,7 @@ import { createEmployeeShift } from '../../../services/slices/employee-shift/act
 import { getShiftById } from '../../../services/slices/shift/actions';
 
 import {
+  clearAddedEmployeeShiftId,
   clearCreateEmployeeShift,
   selectCreateEmployeeShiftError,
 } from '../../../services/slices/employee-shift/slice';
@@ -113,6 +114,7 @@ export const EmployeeAddForm = () => {
     ).unwrap();
 
     await dispatch(getShiftById(selectedId)).unwrap();
+    dispatch(clearAddedEmployeeShiftId());
 
     setIsEmployeeAddOpen(false);
     setIsOverlayOpen(false);

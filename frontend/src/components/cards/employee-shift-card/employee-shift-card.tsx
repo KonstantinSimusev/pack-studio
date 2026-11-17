@@ -1,4 +1,6 @@
+import { ATTENDANCE_TYPE } from '../../../utils/constants';
 import { IEmployeeShift } from '../../../utils/api.interfaces';
+
 import { useSelector } from '../../../services/store';
 import { selectShift } from '../../../services/slices/shift/slice';
 
@@ -25,6 +27,15 @@ export const EmployeeShiftCard = ({
   if (!shift) {
     return null;
   }
+
+  const hasWrkplace =
+    employeeShift.workplaceName === null &&
+    employeeShift.attendanceCode === ATTENDANCE_TYPE.Y
+      ? 'Рабочее место не выбрано'
+      : employeeShift.workplaceName === null &&
+          employeeShift.attendanceCode !== ATTENDANCE_TYPE.Y
+        ? 'Нет на работе'
+        : employeeShift.workplaceName;
 
   return (
     <div className={styles.card}>
@@ -59,26 +70,27 @@ export const EmployeeShiftCard = ({
         </div>
       </div>
 
+<span className={styles.infoBlock}>
+
+        <span className={styles.text}>Профессия в смене</span>
       <span className={styles.profession}>
         {employeeShift.shiftProfessionName}
       </span>
+</span>
 
       <span className={styles.infoBlock}>
-        <span className={styles.personalNumberText}>Личный номер</span>
+        <span className={styles.text}>Личный номер</span>
         <span className={styles.personalNumber}>
           {employeeShift.employee.personalNumber}
         </span>
       </span>
 
       <div className={styles.statusWrapper}>
-        <span className={styles.workplaceName}>
-          {employeeShift.workplaceName === null
-            ? 'Не выбрано'
-            : employeeShift.workplaceName}
-        </span>
-        
+        <span className={styles.workplaceName}>{hasWrkplace}</span>
+
         <span className={styles.attendanceCode}>
-          {employeeShift.attendanceCode}
+          {hasWrkplace !== 'Рабочее место не выбрано' &&
+            employeeShift.attendanceCode}
         </span>
       </div>
     </div>

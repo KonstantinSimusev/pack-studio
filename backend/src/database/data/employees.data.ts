@@ -18,7 +18,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 207320,
     workshopCode: 'W_LPC11',
     teamNumber: 4,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -48,7 +48,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 189117,
     workshopCode: 'W_LPC11',
     teamNumber: 2,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -58,7 +58,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 193435,
     workshopCode: 'W_LPC11',
     teamNumber: 3,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -158,7 +158,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 208828,
     workshopCode: 'W_LPC11',
     teamNumber: 1,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -208,7 +208,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 132598,
     workshopCode: 'W_LPC11',
     teamNumber: 2,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -218,7 +218,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 169845,
     workshopCode: 'W_LPC11',
     teamNumber: 4,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -298,7 +298,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 211723,
     workshopCode: 'W_LPC11',
     teamNumber: 3,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -368,7 +368,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 212326,
     workshopCode: 'W_LPC11',
     teamNumber: 2,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -378,7 +378,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 198565,
     workshopCode: 'W_LPC11',
     teamNumber: 3,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -538,7 +538,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 197172,
     workshopCode: 'W_LPC11',
     teamNumber: 4,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -578,7 +578,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 207330,
     workshopCode: 'W_LPC11',
     teamNumber: 4,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -678,7 +678,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 211585,
     workshopCode: 'W_LPC11',
     teamNumber: 3,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -728,7 +728,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 206424,
     workshopCode: 'W_LPC11',
     teamNumber: 4,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -748,7 +748,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 148329,
     workshopCode: 'W_LPC11',
     teamNumber: 3,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -818,7 +818,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 139935,
     workshopCode: 'W_LPC11',
     teamNumber: 2,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -828,7 +828,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 103036,
     workshopCode: 'W_LPC11',
     teamNumber: 2,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -868,7 +868,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 145079,
     workshopCode: 'W_LPC11',
     teamNumber: 1,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -1028,7 +1028,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 186504,
     workshopCode: 'W_LPC11',
     teamNumber: 1,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {
@@ -1058,7 +1058,7 @@ export const employees: ICreateEmployee[] = [
     personalNumber: 208068,
     workshopCode: 'W_LPC11',
     teamNumber: 1,
-    professionCode: 'PACKER_LUM',
+    professionCode: 'PACKER_LUR',
     scheduleCode: 'S_2',
   },
   {

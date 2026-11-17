@@ -30,7 +30,7 @@ export const PROFESSION_CODE = {
   PRODUCTION_FOREMAN: 'PRODUCTION_FOREMAN', // Бригадир на УОП
   PACKING_FOREMAN: 'PACKING_FOREMAN', // Бригадир на ОГП
   PACKER: 'PACKER', // Укладчик-упаковщик
-  PACKER_LUM: 'PACKER_LUM', // Укладчик-упаковщик ЛУМ
+  PACKER_LUR: 'PACKER_LUR', // Укладчик-упаковщик ЛУР
   PACKER_APR8: 'PACKER_APR8', // Укладчик-упаковщик АПР-8
   REPAIR_MECHANIC: 'REPAIR_MECHANIC', // Слесарь-ремонтник
   STACKER: 'STACKER', // Штабелировщик
@@ -256,15 +256,15 @@ export const TEAM_OPTIONS = [
 
 export const PROFESSION_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  { value: PROFESSION_CODE.LEAD_OPERATOR, label: 'Старший оператор' },
-  { value: PROFESSION_CODE.OPERATOR, label: 'Оператор' },
+  { value: PROFESSION_CODE.LEAD_OPERATOR, label: 'Старший оператор ПУ' },
+  { value: PROFESSION_CODE.OPERATOR, label: 'Оператор ПУ' },
   { value: PROFESSION_CODE.PACKING_FOREMAN, label: 'Бригадир ОГП' },
   { value: PROFESSION_CODE.PACKER, label: 'Укладчик-упаковщик' },
-  { value: PROFESSION_CODE.PACKER_LUM, label: 'Укладчик-упаковщик ЛУМ' },
-  { value: PROFESSION_CODE.STACKER, label: 'Штабелировщик' },
+  { value: PROFESSION_CODE.PACKER_LUR, label: 'Укладчик-упаковщик ЛУР' },
+  { value: PROFESSION_CODE.STACKER, label: 'Штабелировщик металла' },
   { value: PROFESSION_CODE.DRIVER, label: 'Водитель погрузчика' },
   { value: PROFESSION_CODE.CUTTER, label: 'Резчик х/м' },
-  { value: PROFESSION_CODE.MASTER, label: 'Мастер' },
+  { value: PROFESSION_CODE.MASTER, label: 'Сменный мастер' },
 ];
 
 export const SCHEDULE_OPTIONS = [
@@ -347,8 +347,8 @@ export const ATTENDANCE_OPTIONS = [
 export const WORK_PLACES_OPTIONS = [
   { value: '', label: 'Не выбрано' },
   {
-    value: 'ЛУМ',
-    label: 'ЛУМ',
+    value: 'Линия упаковки рулонов',
+    label: 'ЛУР',
   },
   {
     value: '1 очередь: СТАН-2000',
@@ -380,10 +380,10 @@ export const WORK_PLACES_OPTIONS = [
   },
   {
     value: 'Производство реквизитов',
-    label: 'Реквизиты',
+    label: 'Производство реквизитов',
   },
-  {
-    value: 'ЛПЦ-11',
-    label: 'ЛПЦ-11',
-  },
+  // {
+  //   value: 'Организация работ ЛПЦ-11',
+  //   label: 'Организация работ ЛПЦ-11',
+  // },
 ];
