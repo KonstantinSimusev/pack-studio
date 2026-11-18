@@ -15,12 +15,11 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import {
   ILastShift,
   IProfile,
+  IShiftReport,
   ISuccess,
 } from '../../shared/interfaces/api.interface';
 
 import { CreateShiftDto } from './dto/create-shift.dto';
-// import { ShiftDateDto } from './dto/shift-date.dto';
-import { ShiftIdDto } from './dto/shift-id.dto';
 
 import { ShiftManagementService } from './shift-management.service';
 
@@ -47,12 +46,11 @@ export class ShiftManagementController {
     return this.shiftManagementService.getLastShift(req.profile);
   }
 
-  // @Get('shifts/date/:shiftDate')
-  // @UseGuards(AuthGuard)
-  // async getShiftsByDate(
-  //   @Param() dto: ShiftDateDto,
-  //   @Req() req: Request & { profile: IProfile },
-  // ): Promise<IShift[]> {
-  //   return this.shiftManagementService.getShiftsByDay(dto, req.profile);
-  // }
+  @Get('last-shift-reports')
+  @UseGuards(AuthGuard)
+  async getLastShiftWithReports(
+    @Req() req: Request & { profile: IProfile },
+  ): Promise<IShiftReport | null> {
+    return this.shiftManagementService.getLastShiftWithReports(req.profile);
+  }
 }

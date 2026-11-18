@@ -35,12 +35,31 @@ export class ShiftService {
   }
 
   // Метод для внутренней логики в сервисе - для TimesheetPage
-  async getShiftByDetails(
+  async getLastShiftWithEmployeeShifts(
     workshopId: string,
     teamId: string,
     scheduleId: string,
   ): Promise<Shift | null> {
-    const shift = await this.shiftRepository.findByDetails(
+    const shift = await this.shiftRepository.findLastWithEmployeeShifts(
+      workshopId,
+      teamId,
+      scheduleId,
+    );
+
+    if (!shift) {
+      throw new NotFoundException('Смена не найдена');
+    }
+
+    return shift;
+  }
+
+  // Метод для внутренней логики в сервисе - для ReportPage
+  async getLastShiftWithReports(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    const shift = await this.shiftRepository.findLastWithReports(
       workshopId,
       teamId,
       scheduleId,
@@ -77,8 +96,6 @@ export class ShiftService {
       date: shift.date, // формат YYYY-MM-DD
       workshopCode: shift.workshop.workshopCode,
       teamNumber: shift.team.teamNumber,
-      scheduleCode: shift.schedule.scheduleCode,
-      scheduleName: shift.schedule.name,
       shiftCode: shift.shiftCode,
       employeeShifts: shift.employeeShifts
         // Руководителей в списке работников не показываем:

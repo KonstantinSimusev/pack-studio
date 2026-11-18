@@ -16,6 +16,7 @@ interface ILayerContextValue {
   isEmployeeAddOpen: boolean;
   isEmployeeShiftEditOpen: boolean;
   isEmployeeShiftDeleteOpen: boolean;
+  isReportUpdateOpen: boolean;
 
   selectedId: string;
   selectedDate: string | null;
@@ -35,6 +36,7 @@ interface ILayerContextValue {
   setIsEmployeeAddOpen: (value: boolean) => void;
   setIsEmployeeShiftEditOpen: (value: boolean) => void;
   setIsEmployeeShiftDeleteOpen: (value: boolean) => void;
+  setIsReportUpdateOpen: (value: boolean) => void;
 
   setSelectedId: (value: string) => void;
   setSelectedDate: (value: string | null) => void;
@@ -56,6 +58,7 @@ export const LayerContext = createContext<ILayerContextValue>({
   isEmployeeAddOpen: false,
   isEmployeeShiftEditOpen: false,
   isEmployeeShiftDeleteOpen: false,
+  isReportUpdateOpen: false,
 
   selectedId: '',
   selectedDate: null,
@@ -75,6 +78,7 @@ export const LayerContext = createContext<ILayerContextValue>({
   setIsEmployeeAddOpen: () => {},
   setIsEmployeeShiftEditOpen: () => {},
   setIsEmployeeShiftDeleteOpen: () => {},
+  setIsReportUpdateOpen: () => {},
 
   setSelectedId: () => {},
   setSelectedDate: () => {},

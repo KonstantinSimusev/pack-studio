@@ -48,6 +48,18 @@ export interface IAttendanceType {
   description: string;
 }
 
+export interface IReportType {
+  typeCode: string;
+  name: string;
+}
+
+export interface IReportArea {
+  areaCode: string;
+  name: string;
+  workshopCode: string;
+  reportTypeCode: string; // production, shipment, pack, fix, residue
+}
+
 export interface IWorkplaceData {
   name: string;
   workshopCode: string;
@@ -122,6 +134,7 @@ export interface IShiftInfo {
   teamNumber: number;
 }
 
+// TimesheetPage
 export interface ILastShift {
   id: string;
   date: Date; // формат YYYY-MM-DD
@@ -131,14 +144,13 @@ export interface ILastShift {
   isReady: boolean; // вычисляемое поле
 }
 
+// ShiftPage
 export interface IShift {
   id: string;
   date: Date; // формат YYYY-MM-DD
   shiftCode: number;
   workshopCode: string;
   teamNumber: number;
-  scheduleCode: string;
-  scheduleName: string;
   employeeShifts: IEmployeeShift[];
 }
 
@@ -161,4 +173,22 @@ export interface IEmployee {
   personalNumber: number;
   homeWorkshopCode: string;
   homeTeamNumber: number;
+}
+
+// ReportPage
+export interface IShiftReport {
+  id: string;
+  date: Date; // формат YYYY-MM-DD
+  shiftCode: number;
+  workshopCode: string;
+  teamNumber: number;
+  reports: IReport[];
+}
+
+export interface IReport {
+  id: string;
+  type: string;
+  areaCode: string;
+  areaName: string;
+  count: number;
 }

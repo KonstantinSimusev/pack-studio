@@ -28,6 +28,15 @@ export class ShiftRepository {
   async findById(id: string): Promise<Shift | null> {
     return this.shiftRepository.findOne({
       where: { id },
+      order: {
+        employeeShifts: {
+          employee: {
+            lastName: 'ASC', // 3. Фамилия: по алфавиту
+            firstName: 'ASC', // 4. Имя: по алфавиту (если фамилии совпали)
+            patronymic: 'ASC', // 5. Отчество: по алфавиту (если фамилии совпали)
+          },
+        },
+      },
       relations: [
         'workshop',
         'team',
@@ -39,20 +48,11 @@ export class ShiftRepository {
         'employeeShifts.attendanceType',
         'employeeShifts.workplace',
       ],
-      order: {
-        employeeShifts: {
-          employee: {
-            lastName: 'ASC', // 3. Фамилия: по алфавиту
-            firstName: 'ASC', // 4. Имя: по алфавиту (если фамилии совпали)
-            patronymic: 'ASC', // 5. Отчество: по алфавиту (если фамилии совпали)
-          },
-        },
-      },
     });
   }
 
   // Метод для TimesheetPage
-  async findByDetails(
+  async findLastWithEmployeeShifts(
     workshopId: string,
     teamId: string,
     scheduleId: string,
@@ -65,6 +65,37 @@ export class ShiftRepository {
       },
       order: { date: 'DESC' },
       relations: ['workshop', 'team', 'schedule', 'employeeShifts'],
+    });
+  }
+
+  // Метод для ReportPage
+  async findLastWithReports(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      order: {
+        date: 'DESC',
+        reports: {
+          reportArea: {
+            areaCode: 'ASC', // стабильный порядок рапортов по участку
+          },
+        },
+      },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'reports',
+        'reports.reportArea',
+        'reports.reportArea.reportType',
+      ],
     });
   }
 

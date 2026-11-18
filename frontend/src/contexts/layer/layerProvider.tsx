@@ -23,6 +23,7 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
   const [isEmployeeShiftEditOpen, setIsEmployeeShiftEditOpen] = useState(false);
   const [isEmployeeShiftDeleteOpen, setIsEmployeeShiftDeleteOpen] =
     useState(false);
+  const [isReportUpdateOpen, setIsReportUpdateOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState('');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -45,6 +46,7 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       isEmployeeAddOpen,
       isEmployeeShiftEditOpen,
       isEmployeeShiftDeleteOpen,
+      isReportUpdateOpen,
 
       selectedId,
       selectedDate,
@@ -64,6 +66,7 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       setIsEmployeeAddOpen,
       setIsEmployeeShiftEditOpen,
       setIsEmployeeShiftDeleteOpen,
+      setIsReportUpdateOpen,
 
       setSelectedId,
       setSelectedDate,
@@ -84,6 +87,7 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       isEmployeeAddOpen,
       isEmployeeShiftEditOpen,
       isEmployeeShiftDeleteOpen,
+      isReportUpdateOpen,
 
       selectedId,
       selectedDate,

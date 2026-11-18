@@ -4,6 +4,7 @@ import { Assignment } from '../../assignment/entities/assignment.entity';
 import { Employee } from '../../employee/entities/employee.entity';
 import { Shift } from '../../shift/entities/shift.entity';
 import { Workplace } from '../../work-place/entities/work-place.entity';
+import { ReportArea } from '../../report-area/entities/report-area.entity';
 
 @Entity({
   name: 'workshops',
@@ -45,4 +46,8 @@ export class Workshop {
   // Связь: один цех — много рабочих мест
   @OneToMany(() => Workplace, (workplace) => workplace.workshop)
   workplaces: Workplace[];
+
+  // Связь: один цех — много участков
+  @OneToMany(() => ReportArea, (reportArea) => reportArea.workshop)
+  areas: ReportArea[];
 }

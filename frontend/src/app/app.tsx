@@ -24,6 +24,7 @@ import {
 import {
   selectIsCreateShiftLoading,
   selectIsGetLastShiftLoading,
+  selectIsGetLastShiftReportsLoading,
   selectIsGetShiftLoading,
 } from '../services/slices/shift/slice';
 
@@ -33,12 +34,18 @@ import {
   selectIsUpdateEmployeeShiftLoading,
 } from '../services/slices/employee-shift/slice';
 
+import { selectIsUpdateReportLoading } from '../services/slices/report/slice';
+
 import { DefaultPage } from '../pages/default/default-page';
+import { FixPage } from '../pages/master/fix/fix-page';
 import { HomePage } from '../pages/home/home-page';
 import { EmployeePage } from '../pages/employee/employee-page';
 import { NotFoundPage } from '../pages/not-found/not-found-page';
+import { PackPage } from '../pages/master/pack/pack-page';
 import { ProductionPage } from '../pages/master/production/production-page';
+import { ResiduePage } from '../pages/master/residue/residue-page';
 import { ShiftPage } from '../pages/master/shift/shift-page';
+import { ShipmentPage } from '../pages/master/shipment/shipment-page';
 import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
 
 import { BlockingLoader } from '../components/ui/blocking-loader/blocking-loader';
@@ -58,6 +65,7 @@ import { PasswordUpdateForm } from '../components/forms/password-update-form/pas
 import { EmployeeAddForm } from '../components/forms/employee-add-form/employee-add-form';
 import { EmployeeShiftEditForm } from '../components/forms/employee-shift-edit-form/employee-shift-edit-form';
 import { EmployeeShiftDeleteForm } from '../components/forms/employee-shift-delete-form/employee-shift-delete-form';
+import { ReportUpdateForm } from '../components/forms/report-update-form/report-update-form';
 import { ShiftCreateForm } from '../components/forms/shift-create-form/shift-create-form';
 
 import styles from './app.module.css';
@@ -77,6 +85,7 @@ const App = () => {
     isEmployeeAddOpen,
     isEmployeeShiftEditOpen,
     isEmployeeShiftDeleteOpen,
+    isReportUpdateOpen,
   } = useContext(LayerContext);
 
   const dispatch = useDispatch();
@@ -90,6 +99,11 @@ const App = () => {
   const isCreateShiftLoading = useSelector(selectIsCreateShiftLoading);
   const isGetLastShiftLoading = useSelector(selectIsGetLastShiftLoading);
   const isGetShiftLoading = useSelector(selectIsGetShiftLoading);
+  const isUpdateReportLoading = useSelector(selectIsUpdateReportLoading);
+
+  const isGetLastShiftReportsLoading = useSelector(
+    selectIsGetLastShiftReportsLoading,
+  );
 
   const isCreateEmployeeShiftLoading = useSelector(
     selectIsCreateEmployeeShiftLoading,
@@ -112,10 +126,12 @@ const App = () => {
     isDeleteEmployeeLoading ||
     isCreateShiftLoading ||
     isGetLastShiftLoading ||
+    isGetLastShiftReportsLoading ||
     isGetShiftLoading ||
     isCreateEmployeeShiftLoading ||
     isUpdateEmployeeShiftLoading ||
-    isDeleteEmployeeShiftLoading;
+    isDeleteEmployeeShiftLoading ||
+    isUpdateReportLoading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
   const showBlocker = useLoaderWithDelay(isLoading, 300, 300);
@@ -150,6 +166,10 @@ const App = () => {
               <Route path='/timesheet' element={<TimesheetPage />} />
               <Route path='/timesheet/:shiftId' element={<ShiftPage />} />
               <Route path='/production' element={<ProductionPage />} />
+              <Route path='/shipment' element={<ShipmentPage />} />
+              <Route path='/pack' element={<PackPage />} />
+              <Route path='/fix' element={<FixPage />} />
+              <Route path='/residue' element={<ResiduePage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>
           </Routes>
@@ -229,6 +249,12 @@ const App = () => {
       {isLogoutOpen && (
         <Modal>
           <LogoutForm />
+        </Modal>
+      )}
+
+      {isReportUpdateOpen && (
+        <Modal>
+          <ReportUpdateForm />
         </Modal>
       )}
     </div>

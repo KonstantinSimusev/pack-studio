@@ -1,77 +1,45 @@
-import { QueryFailedError } from 'typeorm';
-
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 
 import {
   getShiftFor2A,
   hasManager,
-  // getShiftFor5B1,
-  // getShiftFor9,
-  // isCondition_2A,
-  // isCondition_2A_9,
-  // isCondition_5B1,
-  // isCondition_5B1_9,
   isRelevantShift,
-  // normalizeScheduleCode,
   toDateKey,
 } from '../../shared/utils/utils';
 
-import {
-  EAttendanceCode,
-  EScheduleCode,
-  ETeamNumber,
-  EWorkshopCode,
-} from '../../shared/enums/enums';
-
+import { EAttendanceCode } from '../../shared/enums/enums';
 import { CreateShiftDto } from './dto/create-shift.dto';
-// import { ShiftDateDto } from './dto/shift-date.dto';
-import { ShiftIdDto } from './dto/shift-id.dto';
 
 import {
-  IEmployeeShift,
   ILastShift,
   IProfile,
-  IShift,
-  IShiftInfo,
+  IShiftReport,
   ISuccess,
 } from '../../shared/interfaces/api.interface';
 
-// import { AttendanceType } from '../attendance-type/entities/attendance-type.entity';
-// import { Employee } from '../employee/entities/employee.entity';
-// import { EmployeeShift } from '../employee-shift/entities/employee-shift.entity';
-// import { Schedule } from '../schedule/entities/schedule.entity';
-// import { Shift } from '../shift/entities/shift.entity';
-// import { Team } from '../team/entities/team.entity';
-// import { Workshop } from '../workshop/entities/workshop.entity';
-
 import { EmployeeRepository } from '../employee/employee.repository';
 import { EmployeeShiftRepository } from '../employee-shift/employee-shift.repository';
+import { ReportAreaRepository } from '../report-area/report-area.repository';
+import { ReportRepository } from '../report/report.repository';
 import { ShiftRepository } from '../shift/shift.repository';
 
 import { AttendanceTypeService } from '../attendance-type/attendance-type.service';
-// import { EmployeeShiftManagementService } from '../employee-shift-management/employee-shift-management.service';
 import { ProfessionService } from '../profession/profession.service';
 import { ScheduleService } from '../schedule/schedule.service';
 import { ShiftService } from '../shift/shift.service';
 import { TeamService } from '../team/team.service';
 import { WorkshopService } from '../workshop/workshop.service';
-// import { EmployeeManagementService } from '../employee-management/employee-management.service';
 
 @Injectable()
 export class ShiftManagementService {
   constructor(
     private readonly employeeRepository: EmployeeRepository,
     private readonly employeeShiftRepository: EmployeeShiftRepository,
+    private readonly reportAreaRepository: ReportAreaRepository,
+    private readonly reportRepository: ReportRepository,
     private readonly shiftRepository: ShiftRepository,
     private readonly attendanceTypeService: AttendanceTypeService,
     private readonly professionService: ProfessionService,
-    // private readonly employeeManagementService: EmployeeManagementService,
-    // private readonly employeeShiftManagementService: EmployeeShiftManagementService,
     private readonly scheduleService: ScheduleService,
     private readonly shiftService: ShiftService,
     private readonly teamService: TeamService,
@@ -83,14 +51,21 @@ export class ShiftManagementService {
     const { workshopCode, teamNumber, scheduleCode } = profile;
 
     // Получаем связанные сущности по данным сотрудника, который сделал запрос
-    const [workshop, team, schedule, attendanceType, allEmployees] =
-      await Promise.all([
-        this.workshopService.getWorkshopByCode(workshopCode),
-        this.teamService.getTeamByNumber(teamNumber),
-        this.scheduleService.getScheduleByCode(scheduleCode),
-        this.attendanceTypeService.getAttendanceByCode(EAttendanceCode.Y),
-        this.employeeRepository.findByWorkshopAndTeam(workshopCode, teamNumber),
-      ]);
+    const [
+      workshop,
+      team,
+      schedule,
+      attendanceType,
+      allEmployees,
+      reportAreas,
+    ] = await Promise.all([
+      this.workshopService.getWorkshopByCode(workshopCode),
+      this.teamService.getTeamByNumber(teamNumber),
+      this.scheduleService.getScheduleByCode(scheduleCode),
+      this.attendanceTypeService.getAttendanceByCode(EAttendanceCode.Y),
+      this.employeeRepository.findByWorkshopAndTeam(workshopCode, teamNumber),
+      this.reportAreaRepository.findByWorkshopCode(workshopCode),
+    ]);
 
     // Получаем смену по графику
     // ВАЖНО!!! Сейчас в проекте только график 2-А, иначе нужно логика выбора
@@ -146,6 +121,14 @@ export class ShiftManagementService {
       });
     }
 
+    // Создаем рапорты смены с count = 0
+    for (const reportArea of reportAreas) {
+      await this.reportRepository.create({
+        shift,
+        reportArea,
+      });
+    }
+
     return {
       message: 'Смена создана успешно',
     };
@@ -164,7 +147,7 @@ export class ShiftManagementService {
     ]);
 
     // Получаем последнюю сохраненную смену в бд
-    const shift = await this.shiftService.getShiftByDetails(
+    const shift = await this.shiftService.getLastShiftWithEmployeeShifts(
       workshop.id,
       team.id,
       schedule.id,
@@ -184,6 +167,48 @@ export class ShiftManagementService {
       scheduleCode: shift.schedule.scheduleCode,
       scheduleName: shift.schedule.name,
       isReady: shift.employeeShifts.every((es) => es.isReady === true), // вычисляемое поле
+    };
+  }
+
+  // Метод для ReportPage
+  async getLastShiftWithReports(profile: IProfile): Promise<IShiftReport | null> {
+    // Получаем данные сотрудника, который сделал запрос
+    const { workshopCode, teamNumber, scheduleCode } = profile;
+
+    // Получаем связянные сущности
+    const [workshop, team, schedule] = await Promise.all([
+      this.workshopService.getWorkshopByCode(workshopCode),
+      this.teamService.getTeamByNumber(teamNumber),
+      this.scheduleService.getScheduleByCode(scheduleCode),
+    ]);
+
+    // Получаем последнюю сохраненную смену в бд
+    const shift = await this.shiftService.getLastShiftWithReports(
+      workshop.id,
+      team.id,
+      schedule.id,
+    );
+
+    // Проверяем последнюю смену на актуальность
+    // Если смена старая, то выходим из метода - создаем новую смену
+    if (!isRelevantShift(shift.date, shift.shiftCode)) {
+      return null;
+    }
+
+    // Если смена актуальная, то возвращаем ее
+    return {
+      id: shift.id,
+      date: shift.date, // формат YYYY-MM-DD
+      shiftCode: shift.shiftCode,
+      workshopCode: shift.workshop.workshopCode,
+      teamNumber: shift.team.teamNumber,
+      reports: shift.reports.map((report) => ({
+        id: report.id,
+        type: report.reportArea.reportType.typeCode, // production, shipment, pack, fix, residue
+        areaCode: report.reportArea.areaCode,
+        areaName: report.reportArea.name,
+        count: report.count,
+      })),
     };
   }
 }

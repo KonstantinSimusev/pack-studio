@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 
 import { AttendanceType } from '../../modules/attendance-type/entities/attendance-type.entity';
-import { attendanceTypes } from '../data/attendance-type.data';
+import { attendanceTypes } from '../data/attendance-types.data';
 
 export const seedAttendanceTypes = async (ds: DataSource): Promise<void> => {
   const repo = ds.getRepository(AttendanceType);

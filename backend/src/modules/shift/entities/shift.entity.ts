@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
+import { Report } from '../../report/entities/report.entity';
 import { Schedule } from '../../schedule/entities/schedule.entity';
 import { Team } from '../../team/entities/team.entity';
 import { Workshop } from '../../workshop/entities/workshop.entity';
@@ -52,4 +53,8 @@ export class Shift {
   // Связь: одна смена — много смен сотрудника
   @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.shift)
   employeeShifts: EmployeeShift[];
+
+  // Связь: одна смена — много рапортов
+  @OneToMany(() => Report, (report) => report.shift)
+  reports: Report[];
 }

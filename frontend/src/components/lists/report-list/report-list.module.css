@@ -1,0 +1,70 @@
+.list {
+  /* flex: 1; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  gap: 36px;
+  width: 100%;
+}
+
+/* Лента карточек */
+.scroller {
+  display: flex;
+  gap: 16px; /* зазор между карточками */
+  width: 100%;
+  overflow-x: auto; /* горизонтальный скролл */
+  scroll-snap-type: x mandatory; /* доводчик: снап к ближайшему слайду */
+  overscroll-behavior-x: contain; /* чтобы свайп не срабатывал как «назад» в браузере */
+  padding-inline: max(30px, calc((100% - 370px) / 2));
+  /* Запас под рост активной карточки при scale(1.04):
+     иначе скейл обрезается overflow контейнера */
+  padding-block: 20px;
+  margin-block: -20px; 
+  scrollbar-width: none; /* прячем скроллбар (Firefox) */
+}
+
+.scroller::-webkit-scrollbar {
+  display: none; /* прячем скроллбар (WebKit) */
+}
+
+/* Слайд — точка прилипания; не сжимается, держит ширину карточки */
+.slide {
+  flex-shrink: 0;
+  scroll-snap-align: center; /* карточка останавливается по центру */
+  cursor: pointer;
+  transition: transform 0.2s; /* плавный выход из скейла, когда карточка уезжает */
+}
+
+/* Активная карточка: чуть крупнее, чтобы считывалась как главная */
+.activeSlide {
+  transform: scale(1.06);
+}
+
+/* Точки под списком */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Обычная точка: серая */
+.dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255 255 255 / 0.25);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+/* Активная: чуть больше и ярче */
+.activeDot {
+  transform: scale(1.5);
+  background-color: rgba(255 255 255 / 0.9);
+}

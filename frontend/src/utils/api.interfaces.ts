@@ -98,6 +98,7 @@ export interface ICreateShift {
   shiftCode: number;
 }
 
+// TimesheetPage
 export interface ILastShift {
   id: string;
   date: string; // формат YYYY-MM-DD
@@ -113,8 +114,6 @@ export interface IShift {
   shiftCode: number;
   workshopCode: string;
   teamNumber: number;
-  scheduleCode: string;
-  scheduleName: string;
   employeeShifts: IEmployeeShift[];
 }
 
@@ -149,4 +148,27 @@ export interface IUpdateEmployeeShift {
   shiftProfessionCode: string;
   attendanceCode: string;
   workplaceName: string | null;
+}
+
+// ReportPage
+export interface IShiftReport {
+  id: string;
+  date: Date; // формат YYYY-MM-DD
+  shiftCode: number;
+  workshopCode: string;
+  teamNumber: number;
+  reports: IReport[];
+}
+
+export interface IReport {
+  id: string;
+  type: string;
+  areaCode: string;
+  areaName: string;
+  count: number;
+}
+
+export interface IUpdateReport {
+  id: string;
+  count: number;
 }

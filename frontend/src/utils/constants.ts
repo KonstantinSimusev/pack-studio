@@ -54,6 +54,14 @@ export const SHIFT_CODE = {
   DAY: '2',
 };
 
+export const REPORT_TYPE_CODE = {
+  PRODUCTION: 'production',
+  SHIPMENT: 'shipment',
+  PACK: 'pack',
+  FIX: 'fix',
+  RESIDUE: 'residue',
+};
+
 // Динамичсекие пути
 export const DYNAMIC_PATHS = ['/timesheet'];
 
@@ -380,6 +388,6 @@ export const WORK_PLACES_OPTIONS = [
   },
   {
     value: 'Производство реквизитов',
-    label: 'Производство реквизитов',
+    label: 'Реквизиты',
   },
 ];

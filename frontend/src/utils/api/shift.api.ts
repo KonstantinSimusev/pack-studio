@@ -1,9 +1,13 @@
 import { BASE_PATH } from '../api.config';
-import { ICreateShift, ILastShift, IShift, ISuccess } from '../api.interfaces';
+import {
+  ICreateShift,
+  ILastShift,
+  IShift,
+  IShiftReport,
+  ISuccess,
+} from '../api.interfaces';
 
-export const createShiftApi = async (
-  data: ICreateShift,
-): Promise<ISuccess> => {
+export const createShiftApi = async (data: ICreateShift): Promise<ISuccess> => {
   try {
     const response = await fetch(`${BASE_PATH}/shift-management`, {
       method: 'POST',
@@ -51,6 +55,33 @@ export const getLastShiftApi = async (): Promise<ILastShift | null> => {
     throw new Error('Что-то пошло не так');
   }
 };
+
+export const getLastShiftReportsApi =
+  async (): Promise<IShiftReport | null> => {
+    try {
+      const response = await fetch(
+        `${BASE_PATH}/shift-management/last-shift-reports`,
+        {
+          method: 'GET',
+          credentials: 'include', // Важно добавить эту строку
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      // Правильно парсим JSON и возвращаем объект
+      return await response.json();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      throw new Error('Что-то пошло не так');
+    }
+  };
 
 export const getShiftByIdApi = async (id: string): Promise<IShift> => {
   try {

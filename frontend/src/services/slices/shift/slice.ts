@@ -1,10 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ILastShift, IShift } from '../../../utils/api.interfaces';
+import {
+  ILastShift,
+  IShift,
+  IShiftReport,
+} from '../../../utils/api.interfaces';
 
-import { createShift, getLastShift, getShiftById } from './actions';
+import {
+  createShift,
+  getLastShift,
+  getLastShiftReports,
+  getShiftById,
+} from './actions';
 
 interface IShiftState {
+  // Создание смены
+  isCreateShiftLoading: boolean;
+  createShiftError: string | null;
+
   // Смена по ID (детальная)
   shift: IShift | null;
   isGetShiftLoading: boolean;
@@ -16,12 +29,17 @@ interface IShiftState {
   isGetLastShiftLoading: boolean;
   getLastShiftError: string | null;
 
-  // Создание смены
-  isCreateShiftLoading: boolean;
-  createShiftError: string | null;
+  // Последняя смена с рапортами — свой домен со своими состояниями
+  lastShiftReports: IShiftReport | null;
+  isLastShiftReportsLoaded: boolean; // ответ по последней смене с рапортами получен (любой исход)
+  isGetLastShiftReportsLoading: boolean;
+  getLastShiftReportsError: string | null;
 }
 
 const initialState: IShiftState = {
+  isCreateShiftLoading: false,
+  createShiftError: null,
+
   shift: null,
   isGetShiftLoading: false,
   getShiftError: null,
@@ -31,14 +49,19 @@ const initialState: IShiftState = {
   isGetLastShiftLoading: false,
   getLastShiftError: null,
 
-  isCreateShiftLoading: false,
-  createShiftError: null,
+  lastShiftReports: null,
+  isLastShiftReportsLoaded: false,
+  isGetLastShiftReportsLoading: false,
+  getLastShiftReportsError: null,
 };
 
 export const shiftSlice = createSlice({
   name: 'shift',
   initialState,
   reducers: {
+    clearCreateShiftError: (state) => {
+      state.createShiftError = null;
+    },
     clearShift: (state) => {
       state.shift = null;
     },
@@ -52,11 +75,16 @@ export const shiftSlice = createSlice({
     clearGetLastShiftError: (state) => {
       state.getLastShiftError = null;
     },
-    clearCreateShiftError: (state) => {
-      state.createShiftError = null;
+    clearLastShiftReports: (state) => {
+      state.lastShiftReports = null;
+      state.isLastShiftReportsLoaded = false; // вернулись в «неизвестно»
     },
   },
   selectors: {
+    selectIsCreateShiftLoading: (state: IShiftState) =>
+      state.isCreateShiftLoading,
+    selectCreateShiftError: (state: IShiftState) => state.createShiftError,
+
     selectShift: (state: IShiftState) => state.shift,
     selectIsGetShiftLoading: (state: IShiftState) => state.isGetShiftLoading,
     selectGetShiftError: (state: IShiftState) => state.getShiftError,
@@ -67,9 +95,13 @@ export const shiftSlice = createSlice({
       state.isGetLastShiftLoading,
     selectGetLastShiftError: (state: IShiftState) => state.getLastShiftError,
 
-    selectIsCreateShiftLoading: (state: IShiftState) =>
-      state.isCreateShiftLoading,
-    selectCreateShiftError: (state: IShiftState) => state.createShiftError,
+    selectLastShiftReports: (state: IShiftState) => state.lastShiftReports,
+    selectIsLastShiftReportsLoaded: (state: IShiftState) =>
+      state.isLastShiftReportsLoaded,
+    selectIsGetLastShiftReportsLoading: (state: IShiftState) =>
+      state.isGetLastShiftReportsLoading,
+    selectGetLastShiftReportsError: (state: IShiftState) =>
+      state.getLastShiftReportsError,
   },
   extraReducers: (builder) => {
     builder
@@ -86,6 +118,21 @@ export const shiftSlice = createSlice({
         state.isCreateShiftLoading = false;
         state.createShiftError =
           action.error.message ?? 'Не удалось создать смену';
+      })
+      // Получение смены по ID — пишет только в shift
+      .addCase(getShiftById.pending, (state) => {
+        state.isGetShiftLoading = true;
+        state.getShiftError = null;
+      })
+      .addCase(getShiftById.fulfilled, (state, action) => {
+        state.isGetShiftLoading = false;
+        state.getShiftError = null;
+        state.shift = action.payload;
+      })
+      .addCase(getShiftById.rejected, (state, action) => {
+        state.isGetShiftLoading = false;
+        state.getShiftError =
+          action.error.message ?? 'Не удалось получить смену';
       })
       // Получение последней смены — пишет только в lastShift
       .addCase(getLastShift.pending, (state) => {
@@ -104,20 +151,23 @@ export const shiftSlice = createSlice({
           action.error.message ?? 'Не удалось получить последнюю смену';
         state.isLastShiftLoaded = true; // ошибка — тоже завершение
       })
-      // Получение смены по ID — пишет только в shift
-      .addCase(getShiftById.pending, (state) => {
-        state.isGetShiftLoading = true;
-        state.getShiftError = null;
+      // Получение последней смены с рапортами — пишет только в lastShiftReports
+      .addCase(getLastShiftReports.pending, (state) => {
+        state.isGetLastShiftReportsLoading = true;
+        state.getLastShiftReportsError = null;
       })
-      .addCase(getShiftById.fulfilled, (state, action) => {
-        state.isGetShiftLoading = false;
-        state.getShiftError = null;
-        state.shift = action.payload;
+      .addCase(getLastShiftReports.fulfilled, (state, action) => {
+        state.isGetLastShiftReportsLoading = false;
+        state.getLastShiftReportsError = null;
+        state.lastShiftReports = action.payload; // смена с рапортами или null, если актуальной нет
+        state.isLastShiftReportsLoaded = true; // <- ключ
       })
-      .addCase(getShiftById.rejected, (state, action) => {
-        state.isGetShiftLoading = false;
-        state.getShiftError =
-          action.error.message ?? 'Не удалось получить смену';
+      .addCase(getLastShiftReports.rejected, (state, action) => {
+        state.isGetLastShiftReportsLoading = false;
+        state.getLastShiftReportsError =
+          action.error.message ??
+          'Не удалось получить последнюю смену с рапортами';
+        state.isLastShiftReportsLoaded = true; // ошибка — тоже завершение
       });
   },
 });
@@ -125,12 +175,15 @@ export const shiftSlice = createSlice({
 export const {
   clearShift,
   clearLastShift,
+  clearLastShiftReports,
+  clearCreateShiftError,
   clearGetShiftError,
   clearGetLastShiftError,
-  clearCreateShiftError,
 } = shiftSlice.actions;
 
 export const {
+  selectIsCreateShiftLoading,
+  selectCreateShiftError,
   selectShift,
   selectIsGetShiftLoading,
   selectGetShiftError,
@@ -138,6 +191,8 @@ export const {
   selectIsLastShiftLoaded,
   selectIsGetLastShiftLoading,
   selectGetLastShiftError,
-  selectIsCreateShiftLoading,
-  selectCreateShiftError,
+  selectLastShiftReports,
+  selectIsLastShiftReportsLoaded,
+  selectIsGetLastShiftReportsLoading,
+  selectGetLastShiftReportsError,
 } = shiftSlice.selectors;

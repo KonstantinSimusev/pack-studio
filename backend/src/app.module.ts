@@ -10,10 +10,11 @@ import { GlobalAuthModule } from './global/global-auth.module';
 
 import { EmployeeAccountModule } from './modules/employee-account/employee-account.module';
 import { EmployeeManagementModule } from './modules/employee-management/employee-management.module';
+import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
 import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
+import { ReportModule } from './modules/report/report.module';
 import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
 import { ShiftModule } from './modules/shift/shift.module';
-import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EmployeeShiftManagementModule } from './modules/employee-shift-manageme
     EmployeeManagementModule,
     EmployeeShiftManagementModule,
     EmployeeShiftModule,
+    ReportModule,
     ShiftManagementModule,
     ShiftModule,
     ServeStaticModule.forRoot(

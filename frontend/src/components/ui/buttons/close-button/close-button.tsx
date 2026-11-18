@@ -27,6 +27,7 @@ export const CloseButton = ({ className }: IProps) => {
     setIsEmployeeAddOpen,
     setIsEmployeeShiftEditOpen,
     setIsEmployeeShiftDeleteOpen,
+    setIsReportUpdateOpen,
   } = useContext(LayerContext);
 
   const handleClick = () => {
@@ -47,6 +48,7 @@ export const CloseButton = ({ className }: IProps) => {
     setIsEmployeeAddOpen(false);
     setIsEmployeeShiftEditOpen(false);
     setIsEmployeeShiftDeleteOpen(false);
+    setIsReportUpdateOpen(false);
   };
 
   return (
