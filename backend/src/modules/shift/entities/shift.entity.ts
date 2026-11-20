@@ -36,17 +36,17 @@ export class Shift {
   shiftCode: number;
 
   // Связь: много смен — один цех
-  @ManyToOne(() => Workshop, (workshop) => workshop.shifts)
+  @ManyToOne(() => Workshop, (workshop) => workshop.shifts, { nullable: false })
   @JoinColumn({ name: 'workshop_id' })
   workshop: Workshop;
 
   // Связь: много смен — одна бригада
-  @ManyToOne(() => Team, (team) => team.shifts)
+  @ManyToOne(() => Team, (team) => team.shifts, { nullable: false })
   @JoinColumn({ name: 'team_id' })
   team: Team;
 
   // Связь: много расписаний смен - один график
-  @ManyToOne(() => Schedule, (schedule) => schedule.shifts)
+  @ManyToOne(() => Schedule, (schedule) => schedule.shifts, { nullable: false })
   @JoinColumn({ name: 'schedule_id' })
   schedule: Schedule;
 

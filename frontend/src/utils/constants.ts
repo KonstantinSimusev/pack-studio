@@ -1,6 +1,7 @@
 import { formatDateForDayUI } from './utils';
 
 export const WORKSHOP_CODE = {
+  W_ABK: 'W_ABK',
   W_LPC4: 'W_LPC4',
   W_LPC5: 'W_LPC5',
   W_LPC8_UGP: 'W_LPC8_UGP',
@@ -20,9 +21,7 @@ export const TEAM_NUMBER = {
 };
 
 export const PROFESSION_CODE = {
-  EXECUTIVE: 'EXECUTIVE', // Директор
-  HEAD_PRODUCTION: 'HEAD_PRODUCTION', // Начальник производства (в промышленности)
-  SENIOR_MANAGER: 'SENIOR_MANAGER', // Старший менеджер
+  MANAGER: 'MANAGER', // Руководитель
   HEAD: 'HEAD', // Начальник участка
   LEAD_MASTER: 'LEAD_MASTER', // Старший мастер
   MASTER: 'MASTER', // Сменный мастер
@@ -58,12 +57,11 @@ export const REPORT_TYPE_CODE = {
   PRODUCTION: 'production',
   SHIPMENT: 'shipment',
   PACK: 'pack',
-  FIX: 'fix',
   RESIDUE: 'residue',
 };
 
 // Динамичсекие пути
-export const DYNAMIC_PATHS = ['/timesheet'];
+export const DYNAMIC_PATHS = ['/home', '/timesheet'];
 
 // Конфигурация меню: путь, текст, роли и цеха, которым доступен пункт
 export const MENU_ITEMS = [
@@ -73,26 +71,14 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [
-          PROFESSION_CODE.EXECUTIVE,
-          PROFESSION_CODE.HEAD_PRODUCTION,
-          PROFESSION_CODE.SENIOR_MANAGER,
+          PROFESSION_CODE.MANAGER,
           PROFESSION_CODE.HEAD,
           PROFESSION_CODE.LEAD_MASTER,
           PROFESSION_CODE.MASTER,
           PROFESSION_CODE.DETAIL_MASTER,
           PROFESSION_CODE.PRODUCTION_FOREMAN,
-          PROFESSION_CODE.PACKER,
         ],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -101,21 +87,8 @@ export const MENU_ITEMS = [
     label: 'Табель',
     accessRules: [
       {
-        professions: [
-          PROFESSION_CODE.HEAD,
-          PROFESSION_CODE.LEAD_MASTER,
-          PROFESSION_CODE.MASTER,
-          PROFESSION_CODE.DETAIL_MASTER,
-        ],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-        ],
+        professions: [PROFESSION_CODE.LEAD_MASTER], // для примера
+        workshops: [WORKSHOP_CODE.W_LPC10], // для примера
       },
       {
         professions: [PROFESSION_CODE.MASTER, PROFESSION_CODE.DETAIL_MASTER],
@@ -129,16 +102,7 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -148,16 +112,7 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -167,35 +122,7 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
-      },
-    ],
-  },
-  {
-    path: '/fix',
-    label: 'Раскрепление',
-    accessRules: [
-      {
-        professions: [PROFESSION_CODE.MASTER],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -205,16 +132,7 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],
-        workshops: [
-          WORKSHOP_CODE.W_LPC4,
-          WORKSHOP_CODE.W_LPC5,
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
-          WORKSHOP_CODE.W_PMP_SOUTH,
-          WORKSHOP_CODE.W_PMP_NORTH,
-          WORKSHOP_CODE.W_LPC10,
-          WORKSHOP_CODE.W_LPC11,
-        ],
+        workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
   },
@@ -224,16 +142,16 @@ export const MENU_ITEMS = [
     accessRules: [
       {
         professions: [
-          PROFESSION_CODE.LEAD_MASTER,
-          PROFESSION_CODE.PRODUCTION_FOREMAN,
+          PROFESSION_CODE.LEAD_MASTER, // для примера
+          PROFESSION_CODE.PRODUCTION_FOREMAN, // для примера
         ],
-        workshops: [WORKSHOP_CODE.W_LPC10],
+        workshops: [WORKSHOP_CODE.W_LPC10], // для примера
       },
       {
         professions: [PROFESSION_CODE.HEAD, PROFESSION_CODE.PRODUCTION_FOREMAN],
         workshops: [
-          WORKSHOP_CODE.W_LPC8_UGP,
-          WORKSHOP_CODE.W_LPC8_UL,
+          WORKSHOP_CODE.W_LPC5, // для примера
+          WORKSHOP_CODE.W_PMP_SOUTH, // для примера
           WORKSHOP_CODE.W_LPC11,
         ],
       },

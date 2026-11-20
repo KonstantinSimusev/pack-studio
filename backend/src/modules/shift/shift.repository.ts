@@ -68,6 +68,29 @@ export class ShiftRepository {
     });
   }
 
+  // Метод для HomePage
+  async findLastWithAbsentEmployees(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      order: { date: 'DESC' },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'employeeShifts.attendanceType',
+        'employeeShifts.employee.homeProfession',
+      ],
+    });
+  }
+
   // Метод для ReportPage
   async findLastWithReports(
     workshopId: string,

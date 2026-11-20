@@ -2,6 +2,16 @@ import { ICreateEmployee } from '../../shared/interfaces/api.interface';
 
 export const employees: ICreateEmployee[] = [
   {
+    lastName: 'Admin',
+    firstName: 'Pack',
+    patronymic: 'Studio',
+    personalNumber: 777,
+    workshopCode: 'W_ABK',
+    teamNumber: 5,
+    professionCode: 'MANAGER',
+    scheduleCode: 'S_5B1',
+  },
+  {
     lastName: 'Абсадиев',
     firstName: 'Руслан',
     patronymic: 'Хайдарович',

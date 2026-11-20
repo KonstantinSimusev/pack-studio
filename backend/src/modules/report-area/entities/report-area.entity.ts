@@ -35,12 +35,12 @@ export class ReportArea {
   name: string; // СТАН-2000, Ж/д тупик № 6, 1 очередь, ЛУР
 
   // Связь: много участков — один тип
-  @ManyToOne(() => ReportType, (reportType) => reportType.reportAreas)
+  @ManyToOne(() => ReportType, (reportType) => reportType.reportAreas, { nullable: false })
   @JoinColumn({ name: 'report_type_id' })
   reportType: ReportType;
 
   // Связь: много участков — один цех
-  @ManyToOne(() => Workshop, (workshop) => workshop.areas)
+  @ManyToOne(() => Workshop, (workshop) => workshop.areas, { nullable: false })
   @JoinColumn({ name: 'workshop_id' })
   workshop: Workshop;
 

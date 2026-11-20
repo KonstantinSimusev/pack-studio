@@ -57,6 +57,7 @@ export class Employee {
 
   // Связь: один сотрудник — один аккаунт
   @OneToOne(() => Account, (account) => account.employee, {
+    nullable: false,
     onDelete: 'CASCADE', // при удалении сотрудника - связанный аккаунт удаляется тоже
   })
   @JoinColumn({ name: 'account_id' })
@@ -64,28 +65,35 @@ export class Employee {
 
   // Связь: один сотрудник — одно назначений
   @OneToOne(() => Assignment, (assignment) => assignment.employee, {
+    nullable: false,
     onDelete: 'CASCADE', // при удалении сотрудника - связанное назаначение удаляется тоже
   })
   @JoinColumn({ name: 'assignment_id' })
   assignment: Assignment;
 
   // Связь: много много сотрудников — один цех
-  @ManyToOne(() => Workshop, (workshop) => workshop.employees)
+  @ManyToOne(() => Workshop, (workshop) => workshop.employees, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'home_workshop_id' })
   homeWorkshop: Workshop;
 
   // Связь: много сотрудников — одна бригада
-  @ManyToOne(() => Team, (team) => team.employees)
+  @ManyToOne(() => Team, (team) => team.employees, { nullable: false })
   @JoinColumn({ name: 'home_team_id' })
   homeTeam: Team;
 
   // Связь: много сотрудников — одна профессия
-  @ManyToOne(() => Profession, (profession) => profession.employees)
+  @ManyToOne(() => Profession, (profession) => profession.employees, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'home_profession_id' })
   homeProfession: Profession;
 
   // Связь: много сотрудников — один график
-  @ManyToOne(() => Schedule, (schedule) => schedule.employees)
+  @ManyToOne(() => Schedule, (schedule) => schedule.employees, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'home_schedule_id' })
   homeSchedule: Schedule;
 

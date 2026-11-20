@@ -88,13 +88,6 @@ export class EmployeeRepository {
     });
   }
 
-  // async findWithWorkshopById(id: string): Promise<Employee | null> {
-  //   return this.employeeRepository.findOne({
-  //     where: { id },
-  //     relations: ['homeWorkshop'],
-  //   });
-  // }
-
   // 3. CRUD: Update
   async save(employee: Employee): Promise<Employee> {
     return this.employeeRepository.save(employee);

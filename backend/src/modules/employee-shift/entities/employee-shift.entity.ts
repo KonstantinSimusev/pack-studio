@@ -29,18 +29,21 @@ export class EmployeeShift {
 
   // Связь: много смен сотрудника — один сотрудник
   @ManyToOne(() => Employee, (employee) => employee.employeeShifts, {
+    nullable: false, // без этого колонка будет nullable
     onDelete: 'CASCADE', // при удалении сотрудника — смены работника удаляются тоже
   })
   @JoinColumn({ name: 'employee_id' })
   employee: Employee;
 
   // Связь: много смен сотрудника — одна смена
-  @ManyToOne(() => Shift, (shift) => shift.employeeShifts)
+  @ManyToOne(() => Shift, (shift) => shift.employeeShifts, { nullable: false })
   @JoinColumn({ name: 'shift_id' })
   shift: Shift;
 
   // Связь: много сотрудников — одна профессия
-  @ManyToOne(() => Profession, (profession) => profession.employeeShifts)
+  @ManyToOne(() => Profession, (profession) => profession.employeeShifts, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'shift_profession_id' })
   shiftProfession: Profession;
 
@@ -48,6 +51,7 @@ export class EmployeeShift {
   @ManyToOne(
     () => AttendanceType,
     (attendanceType) => attendanceType.employeeShifts,
+    { nullable: false },
   )
   @JoinColumn({ name: 'attendance_type_id' })
   attendanceType: AttendanceType;

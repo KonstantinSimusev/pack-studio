@@ -27,12 +27,16 @@ export class Workplace {
   name: string;
 
   // Связь: много рабочих мест — один цех
-  @ManyToOne(() => Workshop, (workshop) => workshop.workplaces)
+  @ManyToOne(() => Workshop, (workshop) => workshop.workplaces, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'workshop_id' })
   workshop: Workshop;
 
   // Связь: много рабочих мест — одна профессия
-  @ManyToOne(() => Profession, (profession) => profession.workplaces)
+  @ManyToOne(() => Profession, (profession) => profession.workplaces, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'profession_id' })
   profession: Profession;
 

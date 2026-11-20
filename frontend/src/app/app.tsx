@@ -35,9 +35,9 @@ import {
 } from '../services/slices/employee-shift/slice';
 
 import { selectIsUpdateReportLoading } from '../services/slices/report/slice';
+import { selectIsGetAbsenceSummaryLoading } from '../services/slices/dashboard/slice';
 
 import { DefaultPage } from '../pages/default/default-page';
-import { FixPage } from '../pages/master/fix/fix-page';
 import { HomePage } from '../pages/home/home-page';
 import { EmployeePage } from '../pages/employee/employee-page';
 import { NotFoundPage } from '../pages/not-found/not-found-page';
@@ -46,6 +46,7 @@ import { ProductionPage } from '../pages/master/production/production-page';
 import { ResiduePage } from '../pages/master/residue/residue-page';
 import { ShiftPage } from '../pages/master/shift/shift-page';
 import { ShipmentPage } from '../pages/master/shipment/shipment-page';
+import { TeamPage } from '../pages/team/team-page';
 import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
 
 import { BlockingLoader } from '../components/ui/blocking-loader/blocking-loader';
@@ -117,6 +118,10 @@ const App = () => {
     selectIsDeleteEmployeeShiftLoading,
   );
 
+  const isGetAbsenceSummaryLoading = useSelector(
+    selectIsGetAbsenceSummaryLoading,
+  );
+
   const isLoading =
     isAuthLoading ||
     isUpdateAccountLoading ||
@@ -131,10 +136,11 @@ const App = () => {
     isCreateEmployeeShiftLoading ||
     isUpdateEmployeeShiftLoading ||
     isDeleteEmployeeShiftLoading ||
-    isUpdateReportLoading;
+    isUpdateReportLoading ||
+    isGetAbsenceSummaryLoading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
-  const showBlocker = useLoaderWithDelay(isLoading, 300, 300);
+  const showBlocker = useLoaderWithDelay(isLoading, 0, 1000);
 
   const lastScrollY = useRef(0);
 
@@ -162,13 +168,13 @@ const App = () => {
             <Route path='/' element={<DefaultPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/home' element={<HomePage />} />
+              <Route path='/home/:teamId' element={<TeamPage />} />
               <Route path='/employee' element={<EmployeePage />} />
               <Route path='/timesheet' element={<TimesheetPage />} />
               <Route path='/timesheet/:shiftId' element={<ShiftPage />} />
               <Route path='/production' element={<ProductionPage />} />
               <Route path='/shipment' element={<ShipmentPage />} />
               <Route path='/pack' element={<PackPage />} />
-              <Route path='/fix' element={<FixPage />} />
               <Route path='/residue' element={<ResiduePage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>

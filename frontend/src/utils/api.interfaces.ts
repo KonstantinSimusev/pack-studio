@@ -172,3 +172,24 @@ export interface IUpdateReport {
   id: string;
   count: number;
 }
+
+export interface IHomeTeam {
+  id: string;
+  workshopName: string;
+  teamNumber: number;
+  managerLastName: string;
+  managerFirstName: string;
+  managerPatronymic: string;
+  workersCount: number;
+}
+
+export interface IChart {
+  id: string;
+  title: string;
+  count: number;
+}
+
+export interface IAbsence {
+  name: string;
+  count: number;
+}

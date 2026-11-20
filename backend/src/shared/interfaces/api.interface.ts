@@ -192,3 +192,8 @@ export interface IReport {
   areaName: string;
   count: number;
 }
+
+export interface IAbsence {
+  name: string;
+  count: number;
+}

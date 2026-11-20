@@ -41,8 +41,4 @@ export class Schedule {
   // Связь: один график — много смен
   @OneToMany(() => Shift, (shift) => shift.schedule)
   shifts: Shift[];
-
-  // // Связь: один график — много расписаний смен
-  // @OneToMany(() => ShiftSchedule, (shiftSchedule) => shiftSchedule.schedule)
-  // shiftSchedules: ShiftSchedule[];
 }

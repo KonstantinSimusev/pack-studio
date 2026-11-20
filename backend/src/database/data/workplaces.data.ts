@@ -54,21 +54,4 @@ export const workplaces: IWorkplaceData[] = [
     workshopCode: 'W_LPC11',
     professionCode: 'CUTTER',
   },
-
-  // Прочее
-  {
-    name: 'Документация',
-    workshopCode: 'W_LPC11',
-    professionCode: 'PRODUCTION_FOREMAN',
-  },
-  {
-    name: 'Инвентаризация',
-    workshopCode: 'W_LPC11',
-    professionCode: 'PRODUCTION_FOREMAN',
-  },
-  {
-    name: 'Обработка данных',
-    workshopCode: 'W_LPC11',
-    professionCode: 'PACKING_FOREMAN',
-  },
 ];

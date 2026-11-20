@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { AuthGuard } from '../auth/guards/auth.guard';
 
 import {
+  IAbsence,
   ILastShift,
   IProfile,
   IShiftReport,
@@ -52,5 +53,13 @@ export class ShiftManagementController {
     @Req() req: Request & { profile: IProfile },
   ): Promise<IShiftReport | null> {
     return this.shiftManagementService.getLastShiftWithReports(req.profile);
+  }
+
+  @Get('absence-summary')
+  @UseGuards(AuthGuard)
+  async getAbsenceSummary(
+    @Req() req: Request & { profile: IProfile },
+  ): Promise<IAbsence[]> {
+    return this.shiftManagementService.getAbsenceSummary(req.profile);
   }
 }

@@ -30,25 +30,25 @@ export class Assignment {
 
   // Связь: много назначений — один цех
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Workshop, (workshop) => workshop.assignments)
+  @ManyToOne(() => Workshop, (workshop) => workshop.assignments, { nullable: false })
   @JoinColumn({ name: 'current_workshop_id' })
   currentWorkshop: Workshop;
 
   // Связь: много назначений — одна бригада
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Team, (team) => team.assignments)
+  @ManyToOne(() => Team, (team) => team.assignments, { nullable: false })
   @JoinColumn({ name: 'current_team_id' })
   currentTeam: Team;
 
   // Связь: много назначений — одна профессия
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Profession, (profession) => profession.assignments)
+  @ManyToOne(() => Profession, (profession) => profession.assignments, { nullable: false })
   @JoinColumn({ name: 'current_profession_id' })
   currentProfession: Profession;
 
   // Связь: много назначений — один график
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Schedule, (schedule) => schedule.assignments)
+  @ManyToOne(() => Schedule, (schedule) => schedule.assignments, { nullable: false })
   @JoinColumn({ name: 'current_schedule_id' })
   currentSchedule: Schedule;
 

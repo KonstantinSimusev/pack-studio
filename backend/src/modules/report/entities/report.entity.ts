@@ -26,12 +26,17 @@ export class Report {
   count: number;
 
   // Связь: много рапортов — один участок
-  @ManyToOne(() => ReportArea, (reportArea) => reportArea.reports)
+  @ManyToOne(() => ReportArea, (reportArea) => reportArea.reports, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'report_area_id' })
   reportArea: ReportArea;
 
   // Связь: много репортов — одна смена
-  @ManyToOne(() => Shift, (shift) => shift.reports)
+  @ManyToOne(() => Shift, (shift) => shift.reports, {
+    nullable: false,
+    onDelete: 'CASCADE', // при удалении смены - удаляться все рапорта этой смены
+  })
   @JoinColumn({ name: 'shift_id' })
   shift: Shift;
 }

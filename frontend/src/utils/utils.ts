@@ -5,6 +5,10 @@ export const delay = (ms: number = 500): Promise<void> =>
     }, ms);
   });
 
+export function getCount(array: any[]): number {
+  return array.reduce((total, item) => total + item.count, 0);
+}
+
 export const toDateString = (value: string): string => {
   const [day, month, year] = value.split('.');
   return `${year}-${month}-${day}`;

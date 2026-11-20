@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0 30px;
+}
+
+.button {
+  display: flex;
+  padding: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255 255 255 / 0.1);
+  background-color: rgba(129 129 129 / 0.1);
+}
+
+.icon {
+  fill: #007dff;
+  stroke: #007dff;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  /* background-color: #3b5d80; */
+  background-color: rgb(40 40 40);
+  border: 1px solid rgba(255 255 255 / 0.1);
+  border-radius: 4px;
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  color: #7bc8f6;
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0.9;
+}
+
+.empty {
+  font-size: 14px;
+}

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { EAttendanceCode } from '../../shared/enums/enums';
 import { IEmployeeShift, IShift } from '../../shared/interfaces/api.interface';
 
 import { EmployeeShift } from '../employee-shift/entities/employee-shift.entity';
@@ -68,6 +69,31 @@ export class ShiftService {
     if (!shift) {
       throw new NotFoundException('Смена не найдена');
     }
+
+    return shift;
+  }
+
+  // Метод для внутренней логики в сервисе - для HomePage
+  async getLastShiftAbsentEmployees(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    const shift = await this.shiftRepository.findLastWithAbsentEmployees(
+      workshopId,
+      teamId,
+      scheduleId,
+    );
+
+    if (!shift) {
+      return null; // смены нет — это состояние данных, а не ошибка
+    }
+
+    // Оставляем только отсутствующих по болезни (код «Б»)
+    shift.employeeShifts = shift.employeeShifts.filter(
+      (employeeShift) =>
+        employeeShift.attendanceType.attendanceCode === EAttendanceCode.B,
+    );
 
     return shift;
   }

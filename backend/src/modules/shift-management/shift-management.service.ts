@@ -11,6 +11,7 @@ import { EAttendanceCode } from '../../shared/enums/enums';
 import { CreateShiftDto } from './dto/create-shift.dto';
 
 import {
+  IAbsence,
   ILastShift,
   IProfile,
   IShiftReport,
@@ -171,7 +172,9 @@ export class ShiftManagementService {
   }
 
   // Метод для ReportPage
-  async getLastShiftWithReports(profile: IProfile): Promise<IShiftReport | null> {
+  async getLastShiftWithReports(
+    profile: IProfile,
+  ): Promise<IShiftReport | null> {
     // Получаем данные сотрудника, который сделал запрос
     const { workshopCode, teamNumber, scheduleCode } = profile;
 
@@ -210,5 +213,48 @@ export class ShiftManagementService {
         count: report.count,
       })),
     };
+  }
+
+  // Метод для HomePage
+  async getAbsenceSummary(profile: IProfile): Promise<IAbsence[]> {
+    // Получаем данные сотрудника, который сделал запрос
+    const { workshopCode, scheduleCode } = profile;
+
+    // Получаем связянные сущности
+    const [workshop, schedule] = await Promise.all([
+      this.workshopService.getWorkshopByCode(workshopCode),
+      this.scheduleService.getScheduleByCode(scheduleCode),
+    ]);
+
+    const teamNumbers = [1, 2, 3, 4];
+    const absences: IAbsence[] = [];
+
+    for (const teamNumber of teamNumbers) {
+      const team = await this.teamService.getTeamByNumber(teamNumber);
+
+      const shift = await this.shiftService.getLastShiftAbsentEmployees(
+        workshop.id,
+        team.id,
+        schedule.id,
+      );
+
+      if (!shift) continue; // у этой бригады смен ещё нет — пропускаем
+
+      for (const employeeShift of shift.employeeShifts) {
+        const professionName = employeeShift.employee.homeProfession.name;
+
+        const existing = absences.find(
+          (absence) => absence.name === professionName,
+        );
+
+        if (existing) {
+          existing.count += 1;
+        } else {
+          absences.push({ name: professionName, count: 1 });
+        }
+      }
+    }
+
+    return absences;
   }
 }
