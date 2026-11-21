@@ -134,7 +134,14 @@ export class ShiftRepository {
         team: { id: teamId },
         schedule: { id: scheduleId },
       },
-      order: { date: 'DESC' },
+      order: {
+        date: 'DESC',
+        reports: {
+          reportArea: {
+            areaCode: 'ASC', // стабильный порядок рапортов по участку
+          },
+        },
+      },
       relations: [
         'workshop',
         'team',

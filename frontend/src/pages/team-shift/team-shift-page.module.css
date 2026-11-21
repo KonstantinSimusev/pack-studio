@@ -54,14 +54,18 @@
   color: #7bc8f6;
 }
 
+.wrapper {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+
 .tableWrapper {
   display: flex;
   flex-direction: column;
   gap: 30px;
   opacity: 0.9;
 }
-
-
 
 .empty {
   font-size: 14px;

@@ -241,4 +241,5 @@ export interface IChartReportList {
   fixLocations: IChartLocationItem[];
   detailLocations: IChartLocationItem[];
   professions: IChartProfessionItem[];
+  isReady: boolean;
 }

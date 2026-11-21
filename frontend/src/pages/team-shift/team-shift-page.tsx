@@ -15,6 +15,7 @@ import {
   clearLastShiftWithChartReport,
   selectLastShiftWithChartReport,
 } from '../../services/slices/dashboard/slice';
+import { SuccessIcon } from '../../components/ui/icons/success/success';
 
 export const TeamShiftPage = () => {
   const { teamNumber } = useParams();
@@ -94,9 +95,13 @@ export const TeamShiftPage = () => {
           </div>
 
           <div className={styles.header}>
-            <span
-              className={styles.workshopName}
-            >{`УУМ ${list.workshopName}`}</span>
+            <div className={styles.wrapper}>
+              <span
+                className={styles.workshopName}
+              >{`УУМ ${list.workshopName}`}</span>
+              {list.isReady && <SuccessIcon width={16} height={16} />}
+            </div>
+
             <div className={styles.shift}>
               <span>{formatDayShortMonth(list.shiftDate)},</span>
               <span>{`см ${list.shiftCode}`},</span>
