@@ -11,7 +11,7 @@ import { ShiftService } from './shift.service';
 export class ShiftController {
   constructor(private readonly shiftService: ShiftService) {}
 
-  // Метод для ShiftPage
+  // Shift Page
   @Get(':id')
   @UseGuards(AuthGuard)
   async getShiftById(@Param() dto: ShiftIdDto): Promise<IShift> {

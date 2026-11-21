@@ -26,8 +26,14 @@
 
 .header {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: end;
   font-size: 18px;
+}
+
+.shift {
+  display: flex;
+  gap: 6px;
 }
 
 .chart {

@@ -23,8 +23,8 @@ export class EmployeeService {
     return employee;
   }
 
-  async getEmployeeByIdFromAccount(id: string): Promise<Employee> {
-    const employee = await this.employeeRepository.findByIdFromAccount(id);
+  async getEmployeeByIdWithAccount(id: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findByIdWithAccount(id);
 
     if (!employee) {
       throw new NotFoundException('Работник не найден');

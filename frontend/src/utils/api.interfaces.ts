@@ -174,22 +174,32 @@ export interface IUpdateReport {
 }
 
 export interface IHomeTeam {
-  id: string;
   workshopName: string;
   teamNumber: number;
   managerLastName: string;
   managerFirstName: string;
   managerPatronymic: string;
-  workersCount: number;
-}
-
-export interface IChart {
-  id: string;
-  title: string;
-  count: number;
+  teamEmployeesTotal: number;
 }
 
 export interface IAbsence {
   name: string;
   count: number;
+}
+
+export interface IChartReportItem {
+  id: string;
+  title: string;
+  count: number;
+}
+
+export interface IChartReportList {
+  workshopName: string;
+  shiftDate: Date;
+  shiftCode: number;
+  teamNumber: number;
+  production: IChartReportItem[];
+  shipment: IChartReportItem[];
+  pack: IChartReportItem[];
+  residue: IChartReportItem[];
 }

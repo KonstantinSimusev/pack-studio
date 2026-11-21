@@ -60,9 +60,9 @@ export const TeamList = ({ list }: IProps) => {
     });
   };
 
-  const handleClick = (teamId: string) => {
-    setSelectedId(teamId);
-    navigate(`/home/${teamId}`);
+  const handleClick = (teamNumber: number) => {
+    setSelectedId(String(teamNumber));
+    navigate(`/home/${teamNumber}`);
   };
 
   return (
@@ -90,9 +90,12 @@ export const TeamList = ({ list }: IProps) => {
               // плавно доезжаем до неё с центрированием
               goTo(i);
             }}
-            key={item.id}
+            key={item.teamNumber}
           >
-            <TeamCard team={item} onClick={() => handleClick(item.id)} />
+            <TeamCard
+              team={item}
+              onClick={() => handleClick(item.teamNumber)}
+            />
           </div>
         ))}
       </div>
@@ -101,7 +104,7 @@ export const TeamList = ({ list }: IProps) => {
       <div className={styles.dots}>
         {list.map((item, i) => (
           <button
-            key={item.id}
+            key={item.teamNumber}
             type='button'
             className={clsx(styles.dot, i === activeIndex && styles.activeDot)}
             onClick={() => goTo(i)}

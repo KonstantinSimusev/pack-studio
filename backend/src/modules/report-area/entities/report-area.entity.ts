@@ -27,6 +27,14 @@ export class ReportArea {
   areaCode: string; // STAN_2000, GD_6, OCH_1, LUR
 
   @Column({
+    name: 'short_name',
+    type: 'varchar',
+    length: 50,
+    nullable: false,
+  })
+  shortName: string; // СТАН, Ж/д, 1 оч., ЛУР — сокращение для интерфейса
+
+  @Column({
     name: 'name',
     type: 'varchar',
     length: 255,
@@ -35,7 +43,9 @@ export class ReportArea {
   name: string; // СТАН-2000, Ж/д тупик № 6, 1 очередь, ЛУР
 
   // Связь: много участков — один тип
-  @ManyToOne(() => ReportType, (reportType) => reportType.reportAreas, { nullable: false })
+  @ManyToOne(() => ReportType, (reportType) => reportType.reportAreas, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'report_type_id' })
   reportType: ReportType;
 

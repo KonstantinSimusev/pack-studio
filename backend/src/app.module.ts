@@ -15,6 +15,7 @@ import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.mod
 import { ReportModule } from './modules/report/report.module';
 import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
 import { ShiftModule } from './modules/shift/shift.module';
+import { TeamManagementModule } from './modules/team-management/team-management.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ShiftModule } from './modules/shift/shift.module';
     ReportModule,
     ShiftManagementModule,
     ShiftModule,
+    TeamManagementModule,
     ServeStaticModule.forRoot(
       {
         rootPath: path.join(__dirname, '..', 'dist', 'assets'),

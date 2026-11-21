@@ -35,7 +35,11 @@ import {
 } from '../services/slices/employee-shift/slice';
 
 import { selectIsUpdateReportLoading } from '../services/slices/report/slice';
-import { selectIsGetAbsenceSummaryLoading } from '../services/slices/dashboard/slice';
+import {
+  selectIsGetAbsenceSummaryLoading,
+  selectIsGetHomeTeamsLoading,
+  selectIsGetLastShiftWithChartReportLoading,
+} from '../services/slices/dashboard/slice';
 
 import { DefaultPage } from '../pages/default/default-page';
 import { HomePage } from '../pages/home/home-page';
@@ -46,7 +50,7 @@ import { ProductionPage } from '../pages/master/production/production-page';
 import { ResiduePage } from '../pages/master/residue/residue-page';
 import { ShiftPage } from '../pages/master/shift/shift-page';
 import { ShipmentPage } from '../pages/master/shipment/shipment-page';
-import { TeamPage } from '../pages/team/team-page';
+import { TeamShiftPage } from '../pages/team-shift/team-shift-page';
 import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
 
 import { BlockingLoader } from '../components/ui/blocking-loader/blocking-loader';
@@ -122,6 +126,12 @@ const App = () => {
     selectIsGetAbsenceSummaryLoading,
   );
 
+  const isGetHomeTeamsLoading = useSelector(selectIsGetHomeTeamsLoading);
+
+  const isGetLastShiftWithChartReportLoading = useSelector(
+    selectIsGetLastShiftWithChartReportLoading,
+  );
+
   const isLoading =
     isAuthLoading ||
     isUpdateAccountLoading ||
@@ -137,7 +147,9 @@ const App = () => {
     isUpdateEmployeeShiftLoading ||
     isDeleteEmployeeShiftLoading ||
     isUpdateReportLoading ||
-    isGetAbsenceSummaryLoading;
+    isGetAbsenceSummaryLoading ||
+    isGetHomeTeamsLoading ||
+    isGetLastShiftWithChartReportLoading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
   const showBlocker = useLoaderWithDelay(isLoading, 0, 1000);
@@ -168,7 +180,7 @@ const App = () => {
             <Route path='/' element={<DefaultPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/home' element={<HomePage />} />
-              <Route path='/home/:teamId' element={<TeamPage />} />
+              <Route path='/home/:teamNumber' element={<TeamShiftPage />} />
               <Route path='/employee' element={<EmployeePage />} />
               <Route path='/timesheet' element={<TimesheetPage />} />
               <Route path='/timesheet/:shiftId' element={<ShiftPage />} />

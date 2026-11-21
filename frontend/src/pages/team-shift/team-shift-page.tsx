@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { BackIcon } from '../../components/ui/icons/back/back';
-import { IconButton } from '../../components/ui/buttons/icon-button/icon-button';
-
-import styles from './team-page.module.css';
-import { Chart } from '../../components/ui/chart/chart';
 import { formatDayShortMonth } from '../../utils/utils';
+
+import { BackIcon } from '../../components/ui/icons/back/back';
+import { Chart } from '../../components/ui/chart/chart';
+import { IconButton } from '../../components/ui/buttons/icon-button/icon-button';
 import { ReportTable } from '../../components/ui/report-table/report-table';
-// import { ProductionChart } from '../../components/charts/production-chart/production-chart';
+
+import styles from './team-shift-page.module.css';
+import { useDispatch, useSelector } from '../../services/store';
+import { getLastShiftWithChartReport } from '../../services/slices/dashboard/actions';
+import {
+  clearLastShiftWithChartReport,
+  selectLastShiftWithChartReport,
+} from '../../services/slices/dashboard/slice';
 
 // мок — ручная упаковка
 const packLocations: { name: string; count: number }[] = [
@@ -57,108 +63,11 @@ const professions: {
   },
 ];
 
-const list = {
-  production: [
-    {
-      id: '1',
-      title: 'СТАН',
-      count: 0,
-    },
-    {
-      id: '2',
-      title: 'АНГЦ',
-      count: 85,
-    },
-    {
-      id: '3',
-      title: 'АНО',
-      count: 34,
-    },
-    {
-      id: '4',
-      title: 'АИ',
-      count: 13,
-    },
-    {
-      id: '5',
-      title: 'АНГЦ-3',
-      count: 110,
-    },
-  ],
-  shipment: [
-    {
-      id: '1',
-      title: 'Туп 6',
-      count: 2,
-    },
-    {
-      id: '2',
-      title: 'Туп 7',
-      count: 21,
-    },
-    {
-      id: '3',
-      title: 'Туп 8',
-      count: 0,
-    },
-    {
-      id: '4',
-      title: 'Туп 10',
-      count: 10,
-    },
-  ],
-  pack: [
-    {
-      id: '1',
-      title: 'ЛУР',
-      count: 100,
-    },
-    {
-      id: '2',
-      title: '1 оч',
-      count: 0,
-    },
-    {
-      id: '3',
-      title: '2 оч',
-      count: 73,
-    },
-    {
-      id: '4',
-      title: '3 оч',
-      count: 113,
-    },
-  ],
-  residue: [
-    {
-      id: '2',
-      title: '1 оч',
-      count: 0,
-    },
-    {
-      id: '3',
-      title: '2 оч',
-      count: 0,
-    },
-    {
-      id: '4',
-      title: '3 оч',
-      count: 0,
-    },
-  ],
-};
-
-// const residueCount = 0;
-
-export const TeamPage = () => {
+export const TeamShiftPage = () => {
   // const {setSelectedId} = useContext(LayerContext);
 
-  const { teamId } = useParams();
+  const { teamNumber } = useParams();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-
-  // const shift = useSelector(selectShift);
-  // const focusEmployeeShiftId = useSelector(selectAddedEmployeeShiftId);
 
   // ВАЖНО!!! Это данные из слайса - сейчас мок - NULL параметр из слайса должен приходить
   const isPack: boolean | null = packLocations.length > 0;
@@ -166,17 +75,27 @@ export const TeamPage = () => {
   const isFix: boolean | null = fixLocations.length > 0;
   const hasProfessions: boolean | null = professions.length > 0;
 
-  useEffect(() => {
-    if (teamId) {
-      // dispatch(getShiftById(shiftId));
-    }
-  }, []);
+  const dispatch = useDispatch();
+  const list = useSelector(selectLastShiftWithChartReport);
 
-  // 2. Очистка при уходе со страницы
+  // Обновление данных 1 раз в сутки и приоткрытие вкладки браузера вновь
   useEffect(() => {
+    if (teamNumber) {
+      dispatch(getLastShiftWithChartReport(Number(teamNumber)));
+    }
+
+    // Мгновенное обновление при возврате на вкладку
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        dispatch(getLastShiftWithChartReport(Number(teamNumber)));
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // Очистка при уходе со страницы
     return () => {
-      // dispatch(clearShift());
-      // dispatch(clearCreateEmployeeShift());
+      document.removeEventListener('visibilitychange', handleVisibility);
+      dispatch(clearLastShiftWithChartReport()); // Гарантированно сбросит в null
     };
   }, []);
 
@@ -194,33 +113,40 @@ export const TeamPage = () => {
         <BackIcon className={styles.icon} />
       </IconButton>
 
-      <div className={styles.chartContainer}>
-        <div className={styles.header}>
-          <span>{formatDayShortMonth(new Date())},</span>
-          <span>{`см ${1}`},</span>
-          <span>{`бр ${3}`}</span>
-        </div>
+      {list && (
+        <div className={styles.chartContainer}>
+          <div className={styles.header}>
+            <span
+              className={styles.workshopName}
+            >{`УУМ ${list.workshopName}`}</span>
+            <div className={styles.shift}>
+              <span>{formatDayShortMonth(list.shiftDate)},</span>
+              <span>{`см ${list.shiftCode}`},</span>
+              <span>{`бр ${list.teamNumber}`}</span>
+            </div>
+          </div>
 
-        <div className={styles.chart}>
-          <span className={styles.title}>Производство, шт</span>
-          <Chart list={list.production} emptyLabel='Нет производства' />
-        </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Производство, шт</span>
+            <Chart list={list.production} emptyLabel='Нет производства' />
+          </div>
 
-        <div className={styles.chart}>
-          <span className={styles.title}>Отгрузка, ваг</span>
-          <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
-        </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Отгрузка, ваг</span>
+            <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
+          </div>
 
-        <div className={styles.chart}>
-          <span className={styles.title}>Упаковка, шт</span>
-          <Chart list={list.pack} emptyLabel='Нет упаковки' />
-        </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Упаковка, шт</span>
+            <Chart list={list.pack} emptyLabel='Нет упаковки' />
+          </div>
 
-        <div className={styles.chart}>
-          <span className={styles.title}>Остаток, шт</span>
-          <Chart list={list.residue} emptyLabel='Нет остатка' />
+          <div className={styles.chart}>
+            <span className={styles.title}>Остатки, шт</span>
+            <Chart list={list.residue} emptyLabel='Нет остатков' />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className={styles.tableWrapper}>
         {isPack ? (

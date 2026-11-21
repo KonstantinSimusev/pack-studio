@@ -51,7 +51,7 @@ export const ResiduePage = () => {
       {isLastShiftReportsLoaded && lastShiftReports !== null && (
         <>
           <div className={styles.header}>
-            <h1 className={styles.title}>Остаток</h1>
+            <h1 className={styles.title}>Остатки</h1>
             <div className={styles.shiftInfo}>
               <span className={styles.date}>
                 {formatDayShortMonth(lastShiftReports.date)},

@@ -1,10 +1,10 @@
 import styles from './chart.module.css';
 
 import { Border } from '../border/border';
-import { IChart } from '../../../utils/api.interfaces';
+import { IChartReportItem } from '../../../utils/api.interfaces';
 
 interface IProps {
-  list: IChart[];
+  list: IChartReportItem[];
   emptyLabel: string;
 }
 

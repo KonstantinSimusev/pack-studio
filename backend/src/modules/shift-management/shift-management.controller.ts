@@ -14,6 +14,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 
 import {
   IAbsence,
+  IChartReportList,
   ILastShift,
   IProfile,
   IShiftReport,
@@ -23,6 +24,7 @@ import {
 import { CreateShiftDto } from './dto/create-shift.dto';
 
 import { ShiftManagementService } from './shift-management.service';
+import { GetTeamShiftDto } from './dto/get-team-shift.dto';
 
 @Controller('shift-management')
 export class ShiftManagementController {
@@ -30,6 +32,7 @@ export class ShiftManagementController {
     private readonly shiftManagementService: ShiftManagementService,
   ) {}
 
+  // Timesheet Page
   @Post()
   @UseGuards(AuthGuard)
   async createShift(
@@ -39,6 +42,7 @@ export class ShiftManagementController {
     return this.shiftManagementService.createShift(dto, req.profile);
   }
 
+  // Timesheet Page
   @Get('last-shift')
   @UseGuards(AuthGuard)
   async getLastShift(
@@ -47,6 +51,7 @@ export class ShiftManagementController {
     return this.shiftManagementService.getLastShift(req.profile);
   }
 
+  // Report Page
   @Get('last-shift-reports')
   @UseGuards(AuthGuard)
   async getLastShiftWithReports(
@@ -55,11 +60,21 @@ export class ShiftManagementController {
     return this.shiftManagementService.getLastShiftWithReports(req.profile);
   }
 
+  // Home Page
   @Get('absence-summary')
   @UseGuards(AuthGuard)
-  async getAbsenceSummary(
-    @Req() req: Request & { profile: IProfile },
-  ): Promise<IAbsence[]> {
-    return this.shiftManagementService.getAbsenceSummary(req.profile);
+  async getAbsenceSummary(): Promise<IAbsence[]> {
+    return this.shiftManagementService.getAbsenceSummary();
+  }
+
+  // Team Shift Page
+  @Get(':teamNumber')
+  @UseGuards(AuthGuard)
+  async getLastShiftWithChartReport(
+    @Param() dto: GetTeamShiftDto,
+  ): Promise<IChartReportList | null> {
+    return this.shiftManagementService.getLastShiftWithChartReport(
+      dto.teamNumber,
+    );
   }
 }

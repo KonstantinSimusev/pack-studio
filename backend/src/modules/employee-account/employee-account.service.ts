@@ -19,7 +19,7 @@ export class EmployeeAccountService {
 
   async updateLoginAndPassword(id: string): Promise<IAccountInfo> {
     // Находим работника по ID
-    const employee = await this.employeeService.getEmployeeByIdFromAccount(id);
+    const employee = await this.employeeService.getEmployeeByIdWithAccount(id);
 
     // Генерируем новый логин
     const newLogin = this.accountService.generateLogin(

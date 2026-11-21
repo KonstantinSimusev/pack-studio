@@ -1,52 +1,43 @@
-import { IHomeTeam } from '../../utils/api.interfaces';
-import { AbsenceBoard } from '../../components/absence-board/absence-board';
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from '../../services/store';
+
 import { TeamList } from '../../components/lists/team-list/team-list';
+import { AbsenceBoard } from '../../components/absence-board/absence-board';
 
 import styles from './home-page.module.css';
-
-const list: IHomeTeam[] = [
-  {
-    id: '1',
-    workshopName: 'ЛПЦ-11',
-    teamNumber: 1,
-    managerLastName: 'Иванов',
-    managerFirstName: 'Иван',
-    managerPatronymic: 'Иванович',
-    workersCount: 23,
-  },
-  {
-    id: '2',
-    workshopName: 'ЛПЦ-11',
-    teamNumber: 2,
-    managerLastName: 'Иванов',
-    managerFirstName: 'Иван',
-    managerPatronymic: 'Иванович',
-    workersCount: 24,
-  },
-  {
-    id: '3',
-    workshopName: 'ЛПЦ-11',
-    teamNumber: 3,
-    managerLastName: 'Иванов',
-    managerFirstName: 'Иван',
-    managerPatronymic: 'Иванович',
-    workersCount: 25,
-  },
-  {
-    id: '4',
-    workshopName: 'ЛПЦ-11',
-    teamNumber: 4,
-    managerLastName: 'Иванов',
-    managerFirstName: 'Иван',
-    managerPatronymic: 'Иванович',
-    workersCount: 21,
-  },
-];
+import {
+  clearHomeTeams,
+  selectHomeTeams,
+} from '../../services/slices/dashboard/slice';
+import { getHomeTeams } from '../../services/slices/dashboard/actions';
 
 export const HomePage = () => {
+  const dispatch = useDispatch();
+  const teams = useSelector(selectHomeTeams);
+
+  // Обновление данных 1 раз в сутки и приоткрытие вкладки браузера вновь
+  useEffect(() => {
+    dispatch(getHomeTeams());
+
+    // Мгновенное обновление при возврате на вкладку
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        dispatch(getHomeTeams());
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // Очистка при уходе со страницы
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      dispatch(clearHomeTeams()); // Гарантированно сбросит в null
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
-      <TeamList list={list} />
+      <TeamList list={teams ?? []} />
       <AbsenceBoard />
     </div>
   );

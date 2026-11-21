@@ -7,11 +7,17 @@ import {
   toDateKey,
 } from '../../shared/utils/utils';
 
-import { EAttendanceCode } from '../../shared/enums/enums';
+import {
+  EAttendanceCode,
+  EScheduleCode,
+  EWorkshopCode,
+} from '../../shared/enums/enums';
 import { CreateShiftDto } from './dto/create-shift.dto';
 
 import {
   IAbsence,
+  IChartReportItem,
+  IChartReportList,
   ILastShift,
   IProfile,
   IShiftReport,
@@ -47,6 +53,7 @@ export class ShiftManagementService {
     private readonly workshopService: WorkshopService,
   ) {}
 
+  // Timesheet Page
   async createShift(dto: CreateShiftDto, profile: IProfile): Promise<ISuccess> {
     // Получаем данные сотрудника, который сделал запрос
     const { workshopCode, teamNumber, scheduleCode } = profile;
@@ -135,7 +142,7 @@ export class ShiftManagementService {
     };
   }
 
-  // Метод для TimesheetPage
+  // Timesheet Page
   async getLastShift(profile: IProfile): Promise<ILastShift | null> {
     // Получаем данные сотрудника, который сделал запрос
     const { workshopCode, teamNumber, scheduleCode } = profile;
@@ -171,7 +178,7 @@ export class ShiftManagementService {
     };
   }
 
-  // Метод для ReportPage
+  // Pages: Production, Shipment, Pack
   async getLastShiftWithReports(
     profile: IProfile,
   ): Promise<IShiftReport | null> {
@@ -215,10 +222,14 @@ export class ShiftManagementService {
     };
   }
 
-  // Метод для HomePage
-  async getAbsenceSummary(profile: IProfile): Promise<IAbsence[]> {
-    // Получаем данные сотрудника, который сделал запрос
-    const { workshopCode, scheduleCode } = profile;
+  // Home Page
+  async getAbsenceSummary(): Promise<IAbsence[]> {
+    // ВАЖНО!!! Не использовать profile: IProfile
+    // Сейчас только один цех в разарботке
+    // Ручками назначил цех и график (Enum)
+    // При маштабировании эти данные берем с клиента
+    const workshopCode = EWorkshopCode.W_LPC11;
+    const scheduleCode = EScheduleCode.S_2A;
 
     // Получаем связянные сущности
     const [workshop, schedule] = await Promise.all([
@@ -254,7 +265,76 @@ export class ShiftManagementService {
         }
       }
     }
-
+    
     return absences;
+  }
+
+  // Team Shift Page
+  async getLastShiftWithChartReport(
+    teamNumber: number,
+  ): Promise<IChartReportList | null> {
+    // ВАЖНО!!! Не использовать profile: IProfile
+    // Сейчас только один цех в разработке
+    // Ручками назначил цех и график (Enum)
+    // При масштабировании эти данные берем с клиента
+    const workshopCode = EWorkshopCode.W_LPC11;
+    const scheduleCode = EScheduleCode.S_2A;
+
+    // Получаем связанные сущности
+    const [workshop, team, schedule] = await Promise.all([
+      this.workshopService.getWorkshopByCode(workshopCode),
+      this.teamService.getTeamByNumber(teamNumber),
+      this.scheduleService.getScheduleByCode(scheduleCode),
+    ]);
+
+    const shift = await this.shiftService.getLastShiftWithChartReport(
+      workshop.id,
+      team.id,
+      schedule.id,
+    );
+
+    // Смены нет (старт проекта, бд пустая) — шапка есть, группы пустые
+    if (!shift) {
+      return null;
+    }
+
+    const production: IChartReportItem[] = [];
+    const shipment: IChartReportItem[] = [];
+    const pack: IChartReportItem[] = [];
+    const residue: IChartReportItem[] = [];
+
+    for (const report of shift.reports) {
+      const item: IChartReportItem = {
+        id: report.id,
+        title: report.reportArea.shortName,
+        count: report.count,
+      };
+
+      switch (report.reportArea.reportType.typeCode) {
+        case 'production':
+          production.push(item);
+          break;
+        case 'shipment':
+          shipment.push(item);
+          break;
+        case 'pack':
+          pack.push(item);
+          break;
+        case 'residue':
+          residue.push(item);
+          break;
+      }
+    }
+
+    return {
+      workshopName: workshop.name,
+      shiftDate: shift.date,
+      shiftCode: shift.shiftCode,
+      teamNumber: team.teamNumber,
+      production,
+      shipment,
+      pack,
+      residue,
+    };
   }
 }

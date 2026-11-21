@@ -33,6 +33,7 @@ export const seedReportAreas = async (ds: DataSource): Promise<void> => {
 
     await repo.save({
       areaCode: area.areaCode,
+      shortName: area.shortName,
       name: area.name,
       workshop,
       reportType,

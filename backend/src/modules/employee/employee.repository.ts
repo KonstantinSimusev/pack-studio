@@ -56,7 +56,7 @@ export class EmployeeRepository {
     });
   }
 
-  async findByIdFromAccount(id: string): Promise<Employee | null> {
+  async findByIdWithAccount(id: string): Promise<Employee | null> {
     return this.employeeRepository.findOne({
       where: { id },
       relations: ['account'],
@@ -85,6 +85,30 @@ export class EmployeeRepository {
         'assignment.currentProfession',
         'assignment.currentSchedule',
       ],
+    });
+  }
+
+  // Home Page
+  async findAllByWorkshop(workshopId: string): Promise<Employee[]> {
+    return this.employeeRepository.find({
+      where: {
+        homeWorkshop: { id: workshopId },
+      },
+      relations: ['assignment.currentProfession', 'assignment.currentTeam'],
+    });
+  }
+
+  // Home Page
+  async findAllByWorkshopAndTeam(
+    workshopId: string,
+    teamId: string,
+  ): Promise<Employee[]> {
+    return this.employeeRepository.find({
+      where: {
+        homeWorkshop: { id: workshopId },
+        homeTeam: { id: teamId },
+      },
+      relations: ['homeProfession'],
     });
   }
 

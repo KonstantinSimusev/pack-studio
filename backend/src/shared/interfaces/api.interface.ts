@@ -55,6 +55,7 @@ export interface IReportType {
 
 export interface IReportArea {
   areaCode: string;
+  shortName: string;
   name: string;
   workshopCode: string;
   reportTypeCode: string; // production, shipment, pack, fix, residue
@@ -193,7 +194,33 @@ export interface IReport {
   count: number;
 }
 
+export interface IHomeTeam {
+  workshopName: string;
+  teamNumber: number;
+  managerLastName: string;
+  managerFirstName: string;
+  managerPatronymic: string;
+  teamEmployeesTotal: number;
+}
+
 export interface IAbsence {
   name: string;
   count: number;
+}
+
+export interface IChartReportItem {
+  id: string;
+  title: string;
+  count: number;
+}
+
+export interface IChartReportList {
+  workshopName: string;
+  shiftDate: Date;
+  shiftCode: number;
+  teamNumber: number;
+  production: IChartReportItem[];
+  shipment: IChartReportItem[];
+  pack: IChartReportItem[];
+  residue: IChartReportItem[];
 }

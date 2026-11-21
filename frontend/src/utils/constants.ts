@@ -128,7 +128,7 @@ export const MENU_ITEMS = [
   },
   {
     path: '/residue',
-    label: 'Остаток',
+    label: 'Остатки',
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],

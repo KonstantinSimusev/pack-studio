@@ -18,13 +18,22 @@ export const AbsenceBoard = () => {
   const dispatch = useDispatch();
   const absences = useSelector(selectAbsenceSummary);
 
+  // Обновление данных 1 раз в сутки и приоткрытие вкладки браузера вновь
   useEffect(() => {
     dispatch(getAbsenceSummary());
-  }, []);
 
-  // Очистка при уходе со страницы
-  useEffect(() => {
+    // Мгновенное обновление при возврате на вкладку
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        dispatch(getAbsenceSummary());
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // Очистка при уходе со страницы
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
       dispatch(clearAbsenceSummary()); // Гарантированно сбросит в null
     };
   }, []);

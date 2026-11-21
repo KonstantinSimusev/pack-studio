@@ -24,7 +24,24 @@ export class ShiftRepository {
     return this.shiftRepository.findOneBy({ id });
   }
 
-  // Метод для ShiftPage
+  // Timesheet Page
+  async findLastWithEmployeeShifts(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      order: { date: 'DESC' },
+      relations: ['workshop', 'team', 'schedule', 'employeeShifts'],
+    });
+  }
+
+  // Shift Page
   async findById(id: string): Promise<Shift | null> {
     return this.shiftRepository.findOne({
       where: { id },
@@ -51,47 +68,7 @@ export class ShiftRepository {
     });
   }
 
-  // Метод для TimesheetPage
-  async findLastWithEmployeeShifts(
-    workshopId: string,
-    teamId: string,
-    scheduleId: string,
-  ): Promise<Shift | null> {
-    return await this.shiftRepository.findOne({
-      where: {
-        workshop: { id: workshopId },
-        team: { id: teamId },
-        schedule: { id: scheduleId },
-      },
-      order: { date: 'DESC' },
-      relations: ['workshop', 'team', 'schedule', 'employeeShifts'],
-    });
-  }
-
-  // Метод для HomePage
-  async findLastWithAbsentEmployees(
-    workshopId: string,
-    teamId: string,
-    scheduleId: string,
-  ): Promise<Shift | null> {
-    return await this.shiftRepository.findOne({
-      where: {
-        workshop: { id: workshopId },
-        team: { id: teamId },
-        schedule: { id: scheduleId },
-      },
-      order: { date: 'DESC' },
-      relations: [
-        'workshop',
-        'team',
-        'schedule',
-        'employeeShifts.attendanceType',
-        'employeeShifts.employee.homeProfession',
-      ],
-    });
-  }
-
-  // Метод для ReportPage
+  // Pages: Production, Shipment, Pack
   async findLastWithReports(
     workshopId: string,
     teamId: string,
@@ -122,6 +99,51 @@ export class ShiftRepository {
     });
   }
 
+  // Home Page
+  async findLastWithAbsentEmployees(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      order: { date: 'DESC' },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'employeeShifts.attendanceType',
+        'employeeShifts.employee.homeProfession',
+      ],
+    });
+  }
+
+  // Team Shift Page
+  async findLastWithChartReport(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      order: { date: 'DESC' },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'reports.reportArea.reportType',
+      ],
+    });
+  }
+
   async countByProfile(
     date: Date,
     shiftCode: number,
@@ -137,96 +159,6 @@ export class ShiftRepository {
       },
     });
   }
-
-  // async findOneByDate(
-  //   date: Date,
-  //   workshopId: string,
-  //   teamId: string,
-  //   scheduleId: string,
-  // ): Promise<Shift | null> {
-  //   return this.shiftRepository.findOne({
-  //     where: {
-  //       date,
-  //       workshop: { id: workshopId },
-  //       team: { id: teamId },
-  //       schedule: { id: scheduleId },
-  //     },
-  //     relations: this.SHIFT_RELATIONS,
-  //     order: this.EMPLOYEE_SHIFTS_ORDER,
-  //   });
-  // }
-
-  // async findAllByDate(
-  //   date: Date,
-  //   workshopId: string,
-  //   teamId: string,
-  //   scheduleId: string,
-  // ): Promise<Shift[]> {
-  //   return this.shiftRepository.find({
-  //     where: {
-  //       date,
-  //       workshop: { id: workshopId },
-  //       team: { id: teamId },
-  //       schedule: { id: scheduleId },
-  //     },
-  //     relations: this.SHIFT_RELATIONS,
-  //     order: {
-  //       date: 'DESC',
-  //       ...this.EMPLOYEE_SHIFTS_ORDER,
-  //     },
-  //   });
-  // }
-
-  // async findAllInRange(
-  //   workshopId: string,
-  //   teamId: string,
-  //   scheduleId: string,
-  //   startDate: Date,
-  //   endDate: Date,
-  // ): Promise<Shift[]> {
-  //   // Нормализуем границы диапазона в UTC
-  //   const start = new Date(startDate);
-  //   start.setUTCHours(0, 0, 0, 0);
-
-  //   const end = new Date(endDate);
-  //   end.setUTCHours(0, 0, 0, 0);
-
-  //   return this.shiftRepository.find({
-  //     where: {
-  //       date: Between(start, end),
-  //       workshop: { id: workshopId },
-  //       team: { id: teamId },
-  //       schedule: { id: scheduleId },
-  //     },
-  //     relations: [
-  //       'workshop',
-  //       'team',
-  //       'schedule',
-  //       // 'employeeShifts',
-  //       // 'employeeShifts.attendanceType',
-  //       // 'employeeShifts.workplace',
-  //     ],
-  //     order: {
-  //       date: 'DESC',
-  //     },
-  //   });
-  // }
-
-  // async countShifts(
-  //   date: Date,
-  //   workshopId: string,
-  //   teamId: string,
-  //   scheduleId: string,
-  // ): Promise<number> {
-  //   return this.shiftRepository.count({
-  //     where: {
-  //       date,
-  //       workshop: { id: workshopId },
-  //       team: { id: teamId },
-  //       schedule: { id: scheduleId },
-  //     },
-  //   });
-  // }
 
   // 3. CRUD: Update
   async save(shift: Shift): Promise<Shift> {

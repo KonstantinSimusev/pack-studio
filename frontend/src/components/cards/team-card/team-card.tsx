@@ -18,7 +18,7 @@ export const TeamCard = ({ team, onClick }: IProps) => {
       </div>
 
       <span className={styles.infoBlock}>
-        <span className={styles.text}>Сменный мастер</span>
+        <span className={styles.text}>Руководитель</span>
         <span className={styles.fullname}>
           <span className={styles.lastName}>{team.managerLastName}</span>
           <span
@@ -28,7 +28,7 @@ export const TeamCard = ({ team, onClick }: IProps) => {
       </span>
       <span className={styles.infoBlock}>
         <span className={styles.text}>Состав бригады</span>
-        <span className={styles.count}>{team.workersCount}</span>
+        <span className={styles.count}>{team.teamEmployeesTotal}</span>
       </span>
 
       <button type='button' className={styles.button} onClick={onClick}>

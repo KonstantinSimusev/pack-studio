@@ -1,12 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { EAttendanceCode } from '../../shared/enums/enums';
+import {
+  EAttendanceCode,
+  EScheduleCode,
+  EWorkshopCode,
+} from '../../shared/enums/enums';
 import { IEmployeeShift, IShift } from '../../shared/interfaces/api.interface';
 
 import { EmployeeShift } from '../employee-shift/entities/employee-shift.entity';
 import { Shift } from './entities/shift.entity';
 import { ShiftRepository } from './shift.repository';
-import { ShiftIdDto } from './dto/shift-id.dto';
 import { hasManager } from '../../shared/utils/utils';
 
 @Injectable()
@@ -24,18 +27,7 @@ export class ShiftService {
     return shift;
   }
 
-  // Метод для ShiftPage
-  async getShiftById(id: string): Promise<IShift> {
-    const shift = await this.shiftRepository.findById(id);
-
-    if (!shift) {
-      throw new NotFoundException(`Смена с ID ${id} не найдена`);
-    }
-
-    return this.mapToIShift(shift);
-  }
-
-  // Метод для внутренней логики в сервисе - для TimesheetPage
+  // Timesheet Page
   async getLastShiftWithEmployeeShifts(
     workshopId: string,
     teamId: string,
@@ -54,7 +46,18 @@ export class ShiftService {
     return shift;
   }
 
-  // Метод для внутренней логики в сервисе - для ReportPage
+  // Shift Page
+  async getShiftById(id: string): Promise<IShift> {
+    const shift = await this.shiftRepository.findById(id);
+
+    if (!shift) {
+      throw new NotFoundException(`Смена с ID ${id} не найдена`);
+    }
+
+    return this.mapToIShift(shift);
+  }
+
+  // Pages: Production, Shipment, Pack
   async getLastShiftWithReports(
     workshopId: string,
     teamId: string,
@@ -73,7 +76,7 @@ export class ShiftService {
     return shift;
   }
 
-  // Метод для внутренней логики в сервисе - для HomePage
+  // Home Page
   async getLastShiftAbsentEmployees(
     workshopId: string,
     teamId: string,
@@ -86,7 +89,7 @@ export class ShiftService {
     );
 
     if (!shift) {
-      return null; // смены нет — это состояние данных, а не ошибка
+      return null; // смены нет — это состояние данных, а не ошибка (старт проекта - бд пустая)
     }
 
     // Оставляем только отсутствующих по болезни (код «Б»)
@@ -94,6 +97,25 @@ export class ShiftService {
       (employeeShift) =>
         employeeShift.attendanceType.attendanceCode === EAttendanceCode.B,
     );
+
+    return shift;
+  }
+
+  // Team Shift Page
+  async getLastShiftWithChartReport(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    const shift = await this.shiftRepository.findLastWithChartReport(
+      workshopId,
+      teamId,
+      scheduleId,
+    );
+
+    if (!shift) {
+      return null; // смены нет — это состояние данных, а не ошибка (старт проекта - бд пустая)
+    }
 
     return shift;
   }
