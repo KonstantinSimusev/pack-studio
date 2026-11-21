@@ -57,9 +57,11 @@
 .tableWrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 30px;
   opacity: 0.9;
 }
+
+
 
 .empty {
   font-size: 14px;

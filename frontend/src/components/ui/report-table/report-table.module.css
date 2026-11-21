@@ -40,7 +40,17 @@
 
 .wrapper {
   display: flex;
-  gap: 6px;
+  gap: 12px;
+}
+
+.statusOk {
+  font-size: 14px;
+  color: #4ade80;
+}
+
+.statusNo {
+  font-size: 14px;
+  color: #56bcf7;
 }
 
 .footer {

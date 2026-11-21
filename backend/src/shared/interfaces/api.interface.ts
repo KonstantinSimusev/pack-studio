@@ -214,6 +214,19 @@ export interface IChartReportItem {
   count: number;
 }
 
+// места (упаковка, ЛУР, раскрепление): name + count
+export interface IChartLocationItem {
+  name: string;
+  count: number;
+}
+
+// профессии отсутствующих: name + reason + count
+export interface IChartProfessionItem {
+  name: string;
+  reason: string;
+  count: number;
+}
+
 export interface IChartReportList {
   workshopName: string;
   shiftDate: Date;
@@ -223,4 +236,9 @@ export interface IChartReportList {
   shipment: IChartReportItem[];
   pack: IChartReportItem[];
   residue: IChartReportItem[];
+  packLocations: IChartLocationItem[];
+  lurLocations: IChartLocationItem[];
+  fixLocations: IChartLocationItem[];
+  detailLocations: IChartLocationItem[];
+  professions: IChartProfessionItem[];
 }

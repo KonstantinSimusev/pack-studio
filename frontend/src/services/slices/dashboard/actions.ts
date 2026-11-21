@@ -11,7 +11,7 @@ import {
   getHomeTeamsApi,
   getLastShiftWithChartReportApi,
 } from '../../../utils/api/dashboard.api';
-import { delay } from '../../../utils/utils';
+// import { delay } from '../../../utils/utils';
 
 export const getHomeTeams = createAsyncThunk<IHomeTeam[], void>(
   'dashboard/get-home-teams',
@@ -57,10 +57,10 @@ export const getLastShiftWithChartReport = createAsyncThunk<
   async (teamNumber: number): Promise<IChartReportList | null> => {
     try {
       const response = await getLastShiftWithChartReportApi(teamNumber);
-      await delay(1000);
+      // await delay(1000);
       return response;
     } catch (error) {
-      await delay(1000);
+      // await delay(1000);
       if (error instanceof Error) {
         throw error; // передаём точное сообщение от бэкенда
       }

@@ -1,5 +1,8 @@
+import clsx from 'clsx';
+
 import { getCount } from '../../../utils/utils';
 import { Border } from '../border/border';
+
 import styles from './report-table.module.css';
 
 interface IItem {
@@ -10,18 +13,30 @@ interface IItem {
 
 interface IProps {
   title: string;
+  status?: string;
   label: string;
   list: IItem[];
 }
 
-export const ReportTable = ({ title, label, list }: IProps) => {
+export const ReportTable = ({ title, status, label, list }: IProps) => {
   const total = getCount(list);
 
   return (
     <section className={styles.container}>
       <div className={styles.header}>
         <span className={styles.title}>{title}</span>
-        <span className={styles.label}>{label}</span>
+        <div className={styles.wrapper}>
+          <span
+            className={clsx(
+              styles.status,
+              status === 'явка' && styles.statusOk,
+              status === 'нет на работе' && styles.statusNo,
+            )}
+          >
+            {status}
+          </span>
+          <span className={styles.label}>{label}</span>
+        </div>
       </div>
       <Border />
       <ul className={styles.list}>

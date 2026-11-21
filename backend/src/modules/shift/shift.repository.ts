@@ -140,6 +140,9 @@ export class ShiftRepository {
         'team',
         'schedule',
         'reports.reportArea.reportType',
+        'employeeShifts.attendanceType',
+        'employeeShifts.shiftProfession',
+        'employeeShifts.workplace',
       ],
     });
   }

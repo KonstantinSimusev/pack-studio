@@ -16,6 +16,8 @@ import { CreateShiftDto } from './dto/create-shift.dto';
 
 import {
   IAbsence,
+  IChartLocationItem,
+  IChartProfessionItem,
   IChartReportItem,
   IChartReportList,
   ILastShift,
@@ -265,7 +267,7 @@ export class ShiftManagementService {
         }
       }
     }
-    
+
     return absences;
   }
 
@@ -302,7 +304,13 @@ export class ShiftManagementService {
     const shipment: IChartReportItem[] = [];
     const pack: IChartReportItem[] = [];
     const residue: IChartReportItem[] = [];
+    const packLocations: IChartLocationItem[] = [];
+    const lurLocations: IChartLocationItem[] = [];
+    const fixLocations: IChartLocationItem[] = [];
+    const detailLocations: IChartLocationItem[] = [];
+    const professions: IChartProfessionItem[] = [];
 
+    // Рапорта производства — по типу рапорта
     for (const report of shift.reports) {
       const item: IChartReportItem = {
         id: report.id,
@@ -326,6 +334,140 @@ export class ShiftManagementService {
       }
     }
 
+    // добавляет запись в список мест: есть — увеличивает count, нет — добавляет новую
+    const addToLocation = (locations: IChartLocationItem[], name: string) => {
+      const existing = locations.find((location) => location.name === name);
+
+      if (existing) {
+        existing.count += 1;
+      } else {
+        locations.push({ name, count: 1 });
+      }
+    };
+
+    // ЛУР: место определяется по коду профессии
+    const LUR_PROFESSION_TO_LOCATION: Record<string, string> = {
+      LEAD_OPERATOR: 'Пост управления', // Старший оператор ПУ
+      OPERATOR: 'Пост управления', // Оператор ПУ
+      PACKER_LUR: 'Упаковка', // Укладчик-упаковщик ЛУР
+    };
+
+    // Упаковка: профессия одна — PACKER, место берем по рабочему месту.
+    // Ключ — полное название из таблицы рабочих мест, значение — короткое для вывода
+    const PACK_WORKPLACE_TO_NAME: Record<string, string> = {
+      '1 очередь: СТАН-2000': '1 очередь',
+      '2 очередь: АНГЦ + АНО-ГЦ + АИ': '2 очередь',
+      '3 очередь: АНГЦ-3': '3 очередь',
+    };
+
+    // Явка и отсутствия — из смен сотрудников
+    for (const employeeShift of shift.employeeShifts) {
+      const code = employeeShift.attendanceType.attendanceCode;
+
+      switch (code) {
+        // Явка — раскладываем по участкам
+        case EAttendanceCode.Y: {
+          const workplaceName = employeeShift.workplace?.name;
+          const professionCode = employeeShift.shiftProfession.professionCode;
+
+          switch (professionCode) {
+            // ЛУР: место определяется профессией
+            case 'LEAD_OPERATOR':
+            case 'OPERATOR':
+            case 'PACKER_LUR': {
+              const lurLocation = LUR_PROFESSION_TO_LOCATION[professionCode];
+
+              if (workplaceName && lurLocation) {
+                addToLocation(lurLocations, lurLocation);
+              }
+
+              break;
+            }
+
+            // Упаковка: короткое имя очереди из карты
+            case 'PACKER': {
+              const packName = workplaceName
+                ? PACK_WORKPLACE_TO_NAME[workplaceName]
+                : undefined;
+
+              if (packName) {
+                addToLocation(packLocations, packName);
+              }
+
+              break;
+            }
+
+            // Раскрепление: тупики — место как есть
+            case 'STACKER': {
+              if (workplaceName) {
+                addToLocation(fixLocations, workplaceName);
+              }
+
+              break;
+            }
+
+            // Производство реквизитов: каждая профессия — отдельная строка
+            case 'DRIVER':
+            case 'CUTTER':
+            case 'PACKING_FOREMAN': {
+              const professionName = employeeShift.shiftProfession.name;
+
+              if (workplaceName) {
+                addToLocation(detailLocations, professionName);
+              }
+
+              break;
+            }
+
+            // Остальные профессии (руководство, мастера...) — вне чарта
+            default:
+              break;
+          }
+
+          break;
+        }
+
+        // Всё, кроме явки — по профессии и коду ('Б' / 'НБ' / 'ОТ' / 'Д' ...)
+        default: {
+          const name = employeeShift.shiftProfession.name;
+          const existing = professions.find(
+            (profession) =>
+              profession.name === name && profession.reason === code,
+          );
+
+          if (existing) {
+            existing.count += 1;
+          } else {
+            professions.push({ name, reason: code, count: 1 });
+          }
+
+          break;
+        }
+      }
+    }
+
+    // Профессии отсутствующих — по алфавиту
+    professions.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+
+    // Упаковка — очереди по возрастанию (1, 2, 3)
+    packLocations.sort((a, b) =>
+      a.name.localeCompare(b.name, 'ru', { numeric: true }),
+    );
+
+    // ЛУР — по алфавиту («Пост управления» < «Упаковка»)
+    lurLocations.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+
+    // Раскрепление — тупики по номеру (№ 6, № 7, № 8, № 10)
+    fixLocations.sort((a, b) => {
+      const numA = Number(a.name.match(/\d+/)?.[0] ?? 0);
+      const numB = Number(b.name.match(/\d+/)?.[0] ?? 0);
+
+      return numA - numB;
+    });
+
+    // Производство реквизитов — по алфавиту
+    detailLocations.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+
     return {
       workshopName: workshop.name,
       shiftDate: shift.date,
@@ -335,6 +477,11 @@ export class ShiftManagementService {
       shipment,
       pack,
       residue,
+      packLocations,
+      lurLocations,
+      fixLocations,
+      detailLocations,
+      professions,
     };
   }
 }

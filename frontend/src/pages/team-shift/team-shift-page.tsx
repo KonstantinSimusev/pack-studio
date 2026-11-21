@@ -16,64 +16,9 @@ import {
   selectLastShiftWithChartReport,
 } from '../../services/slices/dashboard/slice';
 
-// мок — ручная упаковка
-const packLocations: { name: string; count: number }[] = [
-  { name: '1 очередь', count: 0 },
-  { name: '2 очередь', count: 4 },
-  { name: '3 очередь', count: 3 },
-];
-
-// мок — ЛУР
-const lurLocations: { name: string; count: number }[] = [
-  { name: 'Пост управления', count: 3 },
-  { name: 'Упаковка', count: 4 },
-];
-
-// мок — раскрепление
-const fixLocations: { name: string; count: number }[] = [
-  { name: 'Ж/д тупик № 7', count: 3 },
-  { name: 'Ж/д тупик № 10', count: 2 },
-];
-
-// мок — профессия отсутствие на работе
-const professions: {
-  name: string;
-  reason: string;
-  count: number;
-}[] = [
-  {
-    name: 'Укладчик-упаковщик ЛУР',
-    reason: 'Б',
-    count: 1,
-  },
-  {
-    name: 'Штабелировщик металла',
-    reason: 'НБ',
-    count: 3,
-  },
-  {
-    name: 'Резчик холодного металла',
-    reason: 'ОТ',
-    count: 1,
-  },
-  {
-    name: 'Мастер участка реквизитов',
-    reason: 'Д',
-    count: 1,
-  },
-];
-
 export const TeamShiftPage = () => {
-  // const {setSelectedId} = useContext(LayerContext);
-
   const { teamNumber } = useParams();
   const navigate = useNavigate();
-
-  // ВАЖНО!!! Это данные из слайса - сейчас мок - NULL параметр из слайса должен приходить
-  const isPack: boolean | null = packLocations.length > 0;
-  const isLur: boolean | null = lurLocations.length > 0;
-  const isFix: boolean | null = fixLocations.length > 0;
-  const hasProfessions: boolean | null = professions.length > 0;
 
   const dispatch = useDispatch();
   const list = useSelector(selectLastShiftWithChartReport);
@@ -114,7 +59,40 @@ export const TeamShiftPage = () => {
       </IconButton>
 
       {list && (
-        <div className={styles.chartContainer}>
+        <>
+          <div className={styles.chartContainer}>
+            <div className={styles.header}>
+              <span
+                className={styles.workshopName}
+              >{`УУМ ${list.workshopName}`}</span>
+              <div className={styles.shift}>
+                <span>{formatDayShortMonth(list.shiftDate)},</span>
+                <span>{`см ${list.shiftCode}`},</span>
+                <span>{`бр ${list.teamNumber}`}</span>
+              </div>
+            </div>
+
+            <div className={styles.chart}>
+              <span className={styles.title}>Производство, шт</span>
+              <Chart list={list.production} emptyLabel='Нет производства' />
+            </div>
+
+            <div className={styles.chart}>
+              <span className={styles.title}>Отгрузка, ваг</span>
+              <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
+            </div>
+
+            <div className={styles.chart}>
+              <span className={styles.title}>Упаковка, шт</span>
+              <Chart list={list.pack} emptyLabel='Нет упаковки' />
+            </div>
+
+            <div className={styles.chart}>
+              <span className={styles.title}>Остатки, шт</span>
+              <Chart list={list.residue} emptyLabel='Нет остатков' />
+            </div>
+          </div>
+
           <div className={styles.header}>
             <span
               className={styles.workshopName}
@@ -126,63 +104,68 @@ export const TeamShiftPage = () => {
             </div>
           </div>
 
-          <div className={styles.chart}>
-            <span className={styles.title}>Производство, шт</span>
-            <Chart list={list.production} emptyLabel='Нет производства' />
-          </div>
+          <div className={styles.tableWrapper}>
+            {list.packLocations.length > 0 ? (
+              <ReportTable
+                title='Ручная упаковка'
+                status='явка'
+                label='Чел'
+                list={list.packLocations}
+              />
+            ) : (
+              <span className={styles.empty}>Ручная упаковка отдыхает...</span>
+            )}
 
-          <div className={styles.chart}>
-            <span className={styles.title}>Отгрузка, ваг</span>
-            <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
-          </div>
+            {list.lurLocations.length > 0 ? (
+              <ReportTable
+                title='Линия упаковки рулонов'
+                status='явка'
+                label='Чел'
+                list={list.lurLocations}
+              />
+            ) : (
+              <span className={styles.empty}>
+                Линия упаковки рулонов отдыхает...
+              </span>
+            )}
 
-          <div className={styles.chart}>
-            <span className={styles.title}>Упаковка, шт</span>
-            <Chart list={list.pack} emptyLabel='Нет упаковки' />
-          </div>
+            {list.fixLocations.length > 0 ? (
+              <ReportTable
+                title='Раскрепление'
+                status='явка'
+                label='Чел'
+                list={list.fixLocations}
+              />
+            ) : (
+              <span className={styles.empty}>Отгрузка отдыхает...</span>
+            )}
 
-          <div className={styles.chart}>
-            <span className={styles.title}>Остатки, шт</span>
-            <Chart list={list.residue} emptyLabel='Нет остатков' />
+            {list.detailLocations.length > 0 ? (
+              <ReportTable
+                title='Производство реквизитов'
+                status='явка'
+                label='Чел'
+                list={list.detailLocations}
+              />
+            ) : (
+              <span className={styles.empty}>
+                Производство реквизитов отдыхает...
+              </span>
+            )}
+
+            {list.professions.length > 0 ? (
+              <ReportTable
+                title='Профессия'
+                status='нет на работе'
+                label='Чел'
+                list={list.professions}
+              />
+            ) : (
+              <span className={styles.empty}>Все на работе...</span>
+            )}
           </div>
-        </div>
+        </>
       )}
-
-      <div className={styles.tableWrapper}>
-        {isPack ? (
-          <ReportTable
-            title='Ручная упаковка'
-            label='Чел'
-            list={packLocations}
-          />
-        ) : (
-          <span className={styles.empty}>Ручная упаковка отдыхает...</span>
-        )}
-
-        {isLur ? (
-          <ReportTable
-            title='Линия упаковки рулонов'
-            label='Чел'
-            list={lurLocations}
-          />
-        ) : (
-          <span className={styles.empty}>
-            Линия упаковки рулонов отдыхает...
-          </span>
-        )}
-
-        {isFix ? (
-          <ReportTable title='Раскрепление' label='Чел' list={fixLocations} />
-        ) : (
-          <span className={styles.empty}>Отгрузка отдыхает...</span>
-        )}
-
-        {hasProfessions ? (
-          <ReportTable title='Профессия' label='Чел' list={professions} />
-        ) : (
-          <span className={styles.empty}>Все на работе...</span>
-        )}
-      </div>
     </div>
   );
 };
