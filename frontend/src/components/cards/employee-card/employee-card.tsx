@@ -1,6 +1,5 @@
 import { IEmployeeInfo } from '../../../utils/api.interfaces';
 
-import { CardContainer } from '../../ui/card-container/card-container';
 import { IconButton } from '../../ui/buttons/icon-button/icon-button';
 import { TableBlock } from '../../ui/table-block/table-block';
 
@@ -25,7 +24,7 @@ export const EmployeeCard = ({
   onDeleteEmployee,
 }: IProps) => {
   return (
-    <CardContainer className={styles.container}>
+    <div className={styles.card}>
       <div className={styles.profile}>
         <ProfileIcon width={68} height={68} />
         <span className={styles.fullname}>
@@ -88,6 +87,6 @@ export const EmployeeCard = ({
         <TableBlock title='График' text={employee.homeScheduleName} />
         <TableBlock title='Личный №' text={employee.personalNumber} />
       </div>
-    </CardContainer>
+    </div>
   );
 };
