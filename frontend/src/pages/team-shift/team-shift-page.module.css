@@ -5,6 +5,12 @@
   margin: 0 30px;
 }
 
+.main {
+display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
 .button {
   display: flex;
   width: 44px;
@@ -67,6 +73,12 @@
   flex-direction: column;
   gap: 30px;
   opacity: 0.9;
+}
+
+.downloadButton {
+  margin: 0 auto;
+  color: #fff;
+  background-color: #007dff;
 }
 
 .empty {

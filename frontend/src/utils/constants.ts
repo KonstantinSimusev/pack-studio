@@ -49,8 +49,8 @@ export const SCHEDULE_CODE = {
 };
 
 export const SHIFT_CODE = {
-  NIGHT: '1',
-  DAY: '2',
+  NIGHT: 1,
+  DAY: 2,
 };
 
 export const REPORT_TYPE_CODE = {
