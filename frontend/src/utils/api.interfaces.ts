@@ -187,38 +187,38 @@ export interface IAbsence {
   count: number;
 }
 
-export interface IChartReportItem {
+export interface IReportChart {
   id: string;
   title: string;
   count: number;
 }
 
 // места (упаковка, ЛУР, раскрепление): name + count
-export interface IChartLocationItem {
+export interface IReportLocation {
   name: string;
   count: number;
 }
 
 // профессии отсутствующих: name + reason + count
-export interface IChartProfessionItem {
+export interface IReportProfession {
   name: string;
   reason: string;
   count: number;
 }
 
-export interface IChartReportList {
+export interface IReportList {
   workshopName: string;
   shiftDate: Date;
   shiftCode: number;
   teamNumber: number;
-  production: IChartReportItem[];
-  shipment: IChartReportItem[];
-  pack: IChartReportItem[];
-  residue: IChartReportItem[];
-  packLocations: IChartLocationItem[];
-  lurLocations: IChartLocationItem[];
-  fixLocations: IChartLocationItem[];
-  detailLocations: IChartLocationItem[];
-  professions: IChartProfessionItem[];
+  production: IReportChart[];
+  shipment: IReportChart[];
+  pack: IReportChart[];
+  residue: IReportChart[];
+  packLocations: IReportLocation[];
+  lurLocations: IReportLocation[];
+  fixLocations: IReportLocation[];
+  detailLocations: IReportLocation[];
+  professions: IReportProfession[];
   isReady: boolean;
 }

@@ -12,16 +12,17 @@ import {
   EScheduleCode,
   EWorkshopCode,
 } from '../../shared/enums/enums';
+
 import { CreateShiftDto } from './dto/create-shift.dto';
 
 import {
   IAbsence,
-  IChartLocationItem,
-  IChartProfessionItem,
-  IChartReportItem,
-  IChartReportList,
+  IReportChart,
   ILastShift,
+  IReportLocation,
   IProfile,
+  IReportList,
+  IReportProfession,
   IShiftReport,
   ISuccess,
 } from '../../shared/interfaces/api.interface';
@@ -274,7 +275,7 @@ export class ShiftManagementService {
   // Team Shift Page
   async getLastShiftWithChartReport(
     teamNumber: number,
-  ): Promise<IChartReportList | null> {
+  ): Promise<IReportList | null> {
     // ВАЖНО!!! Не использовать profile: IProfile
     // Сейчас только один цех в разработке
     // Ручками назначил цех и график (Enum)
@@ -300,19 +301,19 @@ export class ShiftManagementService {
       return null;
     }
 
-    const production: IChartReportItem[] = [];
-    const shipment: IChartReportItem[] = [];
-    const pack: IChartReportItem[] = [];
-    const residue: IChartReportItem[] = [];
-    const packLocations: IChartLocationItem[] = [];
-    const lurLocations: IChartLocationItem[] = [];
-    const fixLocations: IChartLocationItem[] = [];
-    const detailLocations: IChartLocationItem[] = [];
-    const professions: IChartProfessionItem[] = [];
+    const production: IReportChart[] = [];
+    const shipment: IReportChart[] = [];
+    const pack: IReportChart[] = [];
+    const residue: IReportChart[] = [];
+    const packLocations: IReportLocation[] = [];
+    const lurLocations: IReportLocation[] = [];
+    const fixLocations: IReportLocation[] = [];
+    const detailLocations: IReportLocation[] = [];
+    const professions: IReportProfession[] = [];
 
     // Рапорта производства — по типу рапорта
     for (const report of shift.reports) {
-      const item: IChartReportItem = {
+      const item: IReportChart = {
         id: report.id,
         title: report.reportArea.shortName,
         count: report.count,
@@ -335,7 +336,7 @@ export class ShiftManagementService {
     }
 
     // добавляет запись в список мест: есть — увеличивает count, нет — добавляет новую
-    const addToLocation = (locations: IChartLocationItem[], name: string) => {
+    const addToLocation = (locations: IReportLocation[], name: string) => {
       const existing = locations.find((location) => location.name === name);
 
       if (existing) {

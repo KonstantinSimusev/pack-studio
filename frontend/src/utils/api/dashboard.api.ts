@@ -1,5 +1,5 @@
 import { BASE_PATH } from '../api.config';
-import { IAbsence, IChartReportList, IHomeTeam } from '../api.interfaces';
+import { IAbsence, IReportList, IHomeTeam } from '../api.interfaces';
 
 export const getHomeTeamsApi = async (): Promise<IHomeTeam[]> => {
   try {
@@ -50,7 +50,7 @@ export const getAbsenceSummaryApi = async (): Promise<IAbsence[]> => {
 
 export const getLastShiftWithChartReportApi = async (
   teamNumber: number,
-): Promise<IChartReportList | null> => {
+): Promise<IReportList | null> => {
   try {
     const url = `${BASE_PATH}/shift-management/${teamNumber}`;
 

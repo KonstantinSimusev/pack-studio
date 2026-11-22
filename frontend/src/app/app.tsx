@@ -35,11 +35,14 @@ import {
 } from '../services/slices/employee-shift/slice';
 
 import { selectIsUpdateReportLoading } from '../services/slices/report/slice';
+
 import {
   selectIsGetAbsenceSummaryLoading,
   selectIsGetHomeTeamsLoading,
   selectIsGetLastShiftWithChartReportLoading,
 } from '../services/slices/dashboard/slice';
+
+import { selectIsReportDownloading } from '../services/slices/excel/slice';
 
 import { DefaultPage } from '../pages/default/default-page';
 import { HomePage } from '../pages/home/home-page';
@@ -105,6 +108,7 @@ const App = () => {
   const isGetLastShiftLoading = useSelector(selectIsGetLastShiftLoading);
   const isGetShiftLoading = useSelector(selectIsGetShiftLoading);
   const isUpdateReportLoading = useSelector(selectIsUpdateReportLoading);
+  const isReportDownloading = useSelector(selectIsReportDownloading);
 
   const isGetLastShiftReportsLoading = useSelector(
     selectIsGetLastShiftReportsLoading,
@@ -149,10 +153,11 @@ const App = () => {
     isUpdateReportLoading ||
     isGetAbsenceSummaryLoading ||
     isGetHomeTeamsLoading ||
-    isGetLastShiftWithChartReportLoading;
+    isGetLastShiftWithChartReportLoading ||
+    isReportDownloading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
-  const showBlocker = useLoaderWithDelay(isLoading, 300, 300);
+  const showBlocker = useLoaderWithDelay(isLoading, 0, 1000);
 
   const lastScrollY = useRef(0);
 

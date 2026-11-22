@@ -10,6 +10,7 @@ import { authSlice } from './slices/auth/slice';
 import { dashboardSlice } from './slices/dashboard/slice';
 import { employeeShiftSlice } from './slices/employee-shift/slice';
 import { employeeSlice } from './slices/employee/slice';
+import { excelSlice } from './slices/excel/slice';
 import { reportSlice } from './slices/report/slice';
 import { shiftSlice } from './slices/shift/slice';
 
@@ -19,6 +20,7 @@ export const rootReducer = combineSlices(
   dashboardSlice,
   employeeShiftSlice,
   employeeSlice,
+  excelSlice,
   reportSlice,
   shiftSlice,
 );

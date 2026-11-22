@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   IAbsence,
-  IChartReportList,
+  IReportList,
   IHomeTeam,
 } from '../../../utils/api.interfaces';
 
@@ -50,11 +50,11 @@ export const getAbsenceSummary = createAsyncThunk<IAbsence[], void>(
 );
 
 export const getLastShiftWithChartReport = createAsyncThunk<
-  IChartReportList | null,
+  IReportList | null,
   number
 >(
   'team-shift/get-last-shift-with-chart-report',
-  async (teamNumber: number): Promise<IChartReportList | null> => {
+  async (teamNumber: number): Promise<IReportList | null> => {
     try {
       const response = await getLastShiftWithChartReportApi(teamNumber);
       // await delay(1000);

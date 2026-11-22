@@ -14,7 +14,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 
 import {
   IAbsence,
-  IChartReportList,
+  IReportList,
   ILastShift,
   IProfile,
   IShiftReport,
@@ -72,7 +72,7 @@ export class ShiftManagementController {
   @UseGuards(AuthGuard)
   async getLastShiftWithChartReport(
     @Param() dto: GetTeamShiftDto,
-  ): Promise<IChartReportList | null> {
+  ): Promise<IReportList | null> {
     return this.shiftManagementService.getLastShiftWithChartReport(
       dto.teamNumber,
     );

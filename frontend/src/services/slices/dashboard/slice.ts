@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import {
   IAbsence,
-  IChartReportList,
+  IReportList,
   IHomeTeam,
 } from '../../../utils/api.interfaces';
 
@@ -19,7 +19,7 @@ interface IDashboardState {
   absenceSummary: IAbsence[] | null;
   isGetAbsenceSummaryLoading: boolean;
 
-  lastShiftWithChartReport: IChartReportList | null;
+  lastShiftWithChartReport: IReportList | null;
   isGetLastShiftWithChartReportLoading: boolean;
 }
 
@@ -100,7 +100,7 @@ export const dashboardSlice = createSlice({
       })
       .addCase(
         getLastShiftWithChartReport.fulfilled,
-        (state, action: PayloadAction<IChartReportList | null>) => {
+        (state, action: PayloadAction<IReportList | null>) => {
           state.lastShiftWithChartReport = action.payload;
           state.isGetLastShiftWithChartReportLoading = false;
         },

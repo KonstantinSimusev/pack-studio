@@ -6,6 +6,7 @@ import { SHIFT_CODE } from '../../utils/constants';
 
 import { useDispatch, useSelector } from '../../services/store';
 import { getLastShiftWithChartReport } from '../../services/slices/dashboard/actions';
+import { downloadExcelReport } from '../../services/slices/excel/actions';
 
 import {
   clearLastShiftWithChartReport,
@@ -178,7 +179,11 @@ export const TeamShiftPage = () => {
             </div>
 
             {list.shiftCode === SHIFT_CODE.NIGHT && (
-              <Button type='button' className={styles.downloadButton}>
+              <Button
+                type='button'
+                className={styles.downloadButton}
+                onClick={() => dispatch(downloadExcelReport())}
+              >
                 Скачать рапорт
               </Button>
             )}
