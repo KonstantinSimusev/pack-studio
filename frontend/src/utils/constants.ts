@@ -169,6 +169,7 @@ export const WORKSHOP_OPTIONS = [
   { value: WORKSHOP_CODE.W_LPC11, label: 'ЛПЦ-11' },
   { value: WORKSHOP_CODE.W_PMP_NORTH, label: 'ПМП (СБ)' },
   { value: WORKSHOP_CODE.W_PMP_SOUTH, label: 'ПМП (ЮБ)' },
+  { value: WORKSHOP_CODE.W_ABK, label: 'АБК' },
 ];
 
 export const TEAM_OPTIONS = [
@@ -191,6 +192,7 @@ export const PROFESSION_OPTIONS = [
   { value: PROFESSION_CODE.DRIVER, label: 'Водитель погрузчика' },
   { value: PROFESSION_CODE.CUTTER, label: 'Резчик х/м' },
   { value: PROFESSION_CODE.MASTER, label: 'Сменный мастер' },
+  { value: PROFESSION_CODE.MANAGER, label: 'Руководитель' },
 ];
 
 export const SCHEDULE_OPTIONS = [
@@ -217,8 +219,8 @@ export const DATE_OPTIONS = [
 
 export const SHIFT_CODE_OPTIONS = [
   { value: '', label: 'Не выбрано' },
-  { value: SHIFT_CODE.NIGHT, label: '1' },
-  { value: SHIFT_CODE.DAY, label: '2' },
+  { value: String(SHIFT_CODE.NIGHT), label: '1' },
+  { value: String(SHIFT_CODE.DAY), label: '2' },
 ];
 
 export const ATTENDANCE_TYPE = {
