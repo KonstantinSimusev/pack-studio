@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { downloadExcelReportApi } from '../../../utils/api/excel.api';
-import { delay } from '../../../utils/utils';
+// import { delay } from '../../../utils/utils';
 
 export const downloadExcelReport = createAsyncThunk(
   'report/downloadExcelReport',
@@ -8,7 +8,7 @@ export const downloadExcelReport = createAsyncThunk(
     try {
       // Получаем Blob напрямую из API (метод уже возвращает Promise<Blob>)
       const blob = await downloadExcelReportApi();
-      await delay(1000);
+      // await delay(1000);
 
       // Создаём URL для Blob
       const url = window.URL.createObjectURL(blob);
@@ -30,7 +30,7 @@ export const downloadExcelReport = createAsyncThunk(
 
       return undefined; // Успех без данных
     } catch (error) {
-      await delay(1000);
+      // await delay(1000);
       return rejectWithValue(
         error instanceof Error ? error.message : 'Ошибка скачивания',
       );

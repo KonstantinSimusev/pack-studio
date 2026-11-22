@@ -12,42 +12,6 @@ import {
 export class ExcelService {
   constructor() {} // позже: private readonly teamShiftService: TeamShiftService
 
-  // Оси графиков как в приложении.
-  // ВАЖНО: названия должны совпадать с reportArea.shortName в БД,
-  // иначе точка уйдёт в '-'. Если шортнеймы отличаются — поправь массивы.
-  private static readonly AXIS = {
-    production: ['СТАН', 'АНГЦ', 'АНО', 'АИ', 'АНГЦ-3'],
-    shipment: ['Туп 6', 'Туп 7', 'Туп 8', 'Туп 10'],
-    pack: ['ЛУР', '1 оч', '2 оч', '3 оч'],
-    residue: ['1 оч', '2 оч', '3 оч'],
-  };
-
-  // Месяцы вручную — Node без полной ICU отдаёт toLocaleDateString('ru-RU') на английском
-  private static readonly MONTHS = [
-    'января',
-    'февраля',
-    'марта',
-    'апреля',
-    'мая',
-    'июня',
-    'июля',
-    'августа',
-    'сентября',
-    'октября',
-    'ноября',
-    'декабря',
-  ];
-
-  // Высота области столбиков в строках (условные «пиксели» графика)
-  private static readonly BAR_ROWS = 10;
-
-  // Цвет столбика — серый, как на экране приложения
-  private static readonly BAR_COLOR: ExcelJS.Fill = {
-    type: 'pattern',
-    pattern: 'solid',
-    fgColor: { argb: 'FFBDBDBD' },
-  };
-
   // === МОК-ДАННЫЕ: повторяют экран «УУМ ЛПЦ-11, 21 ноября, см 2, бр 4» ===
   // TODO: заменить на вызов teamShiftService.getLastShiftWithChartReport(teamNumber)
   private getMockReport(): IReportList {
