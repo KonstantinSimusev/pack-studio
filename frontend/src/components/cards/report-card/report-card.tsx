@@ -16,7 +16,7 @@ export const ReportCard = ({ report, onClick }: IProps) => {
       <div className={styles.header}>
         <span>{report.areaName}</span>
         <IconButton type='button' onClick={onClick} className={styles.button}>
-          <EditIcon width={22} height={22} />
+          <EditIcon width={24} height={24} />
         </IconButton>
       </div>
 

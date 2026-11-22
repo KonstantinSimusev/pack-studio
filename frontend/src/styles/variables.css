@@ -2,7 +2,7 @@
   --font-family-default: 'Montserrat', arial, helvetica, sans-serif;
   --font-family-logo: 'Raleway', arial, helvetica, sans-serif;
   --horizontal-margin: clamp(1.875rem, -8.406rem + 38.255vw, 37.5rem);
-  --color-default: rgba(255 255 255 / 0.85);
+  --color-default: #d9d9d9;
   --color-icon: rgba(255 255 255 / 0.8);
   --color-button: rgba(0 0 0 / 0.8);
   --color-button-default: #007dff;
@@ -15,7 +15,7 @@
   --color-button-return: rgba(255 255 255 / 0.6);
   --color-shift: rgba(255 255 255 / 0.9);
   --color-error: #e54848;
-  --bg-color-default: #1c1c1c;
+  --bg-color-default: #1f1f21;
   --bg-color-button: rgba(255 255 255 / 0.9);
   --bg-color-button-default: #373737;
   --bg-color-icon-theme: #252525;

@@ -7,15 +7,17 @@
 
 .button {
   display: flex;
-  padding: 6px;
+  width: 44px;
+  height: 44px;
+  /* padding: 6px; */
   border-radius: 50%;
-  border: 1px solid rgba(255 255 255 / 0.1);
-  background-color: rgba(129 129 129 / 0.1);
+  /* border: 1px solid rgba(255 255 255 / 0.1); */
+  background-color: #2c2c2e;
 }
 
 .icon {
-  fill: #007dff;
-  stroke: #007dff;
+  fill: #0a84ff;
+  stroke: #0a84ff;
 }
 
 .chartContainer {
@@ -42,16 +44,16 @@
   gap: 20px;
   padding: 10px;
   /* background-color: #3b5d80; */
-  background-color: rgb(40 40 40);
-  border: 1px solid rgba(255 255 255 / 0.1);
-  border-radius: 4px;
+  background-color: #2c2c2e;
+  /* border: 1px solid rgba(255 255 255 / 0.1); */
+  border-radius: 6px;
 }
 
 .title {
   display: flex;
   gap: 10px;
   font-size: 14px;
-  color: #7bc8f6;
+  color: #4fc3f7;
 }
 
 .wrapper {

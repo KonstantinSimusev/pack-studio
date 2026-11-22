@@ -82,7 +82,7 @@ export const ShiftPage = () => {
               onClick={handleBackClick}
               className={styles.button}
             >
-              <BackIcon className={styles.icon} />
+              <BackIcon className={styles.icon} width={24} height={24} />
             </IconButton>
 
             <div className={styles.header}>
@@ -99,7 +99,7 @@ export const ShiftPage = () => {
               onClick={handleAddClick}
               className={styles.button}
             >
-              <AddIcon className={styles.icon} />
+              <AddIcon className={styles.icon} width={24} height={24} />
             </IconButton>
           </div>
 

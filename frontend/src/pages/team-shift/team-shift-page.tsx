@@ -56,7 +56,7 @@ export const TeamShiftPage = () => {
         onClick={handleBackClick}
         className={styles.button}
       >
-        <BackIcon className={styles.icon} />
+        <BackIcon className={styles.icon} width={24} height={24} />
       </IconButton>
 
       {list && (
