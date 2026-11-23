@@ -12,6 +12,8 @@ import {
 } from '../../services/slices/dashboard/slice';
 import { getHomeTeams } from '../../services/slices/dashboard/actions';
 
+// import { QrScannerButton } from '../../components/scanner/scanner';
+
 export const HomePage = () => {
   const dispatch = useDispatch();
   const teams = useSelector(selectHomeTeams);
@@ -39,6 +41,8 @@ export const HomePage = () => {
     <div className={styles.container}>
       <TeamList list={teams ?? []} />
       <AbsenceBoard />
+
+      {/* <QrScannerButton /> */}
     </div>
   );
 };

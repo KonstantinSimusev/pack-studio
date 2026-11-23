@@ -54,10 +54,10 @@ export const SHIFT_CODE = {
 };
 
 export const REPORT_TYPE_CODE = {
-  PRODUCTION: 'production',
-  SHIPMENT: 'shipment',
-  PACK: 'pack',
-  RESIDUE: 'residue',
+  PRODUCTION: '001_production',
+  PACK: '002_pack',
+  SHIPMENT: '003_shipment',
+  RESIDUE: '004_residue',
 };
 
 // Динамичсекие пути
@@ -107,8 +107,8 @@ export const MENU_ITEMS = [
     ],
   },
   {
-    path: '/shipment',
-    label: 'Отгрузка',
+    path: '/pack',
+    label: 'Упаковка',
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],
@@ -117,8 +117,8 @@ export const MENU_ITEMS = [
     ],
   },
   {
-    path: '/pack',
-    label: 'Упаковка',
+    path: '/shipment',
+    label: 'Отгрузка',
     accessRules: [
       {
         professions: [PROFESSION_CODE.MASTER],

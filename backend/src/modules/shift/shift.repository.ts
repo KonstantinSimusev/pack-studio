@@ -154,6 +154,20 @@ export class ShiftRepository {
     });
   }
 
+  // Excel Report
+  async findByIdWithExcelReport(id: string): Promise<Shift | null> {
+    return this.shiftRepository.findOne({
+      where: { id },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'reports.reportArea.reportType',
+        'reports.reportArea.reportType.reportAreas',
+      ],
+    });
+  }
+
   async countByProfile(
     date: Date,
     shiftCode: number,

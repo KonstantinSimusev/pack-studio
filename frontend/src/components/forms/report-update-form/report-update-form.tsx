@@ -58,7 +58,7 @@ export const ReportUpdateForm = () => {
 
   // Состояние для хранения значений полей формы
   const [formData, setFormData] = useState<IFormData>({
-    count: '',
+    count: String(report.count),
   });
 
   // Состояние для хранения ошибок валидации

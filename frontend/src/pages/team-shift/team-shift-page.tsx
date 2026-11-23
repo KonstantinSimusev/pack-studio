@@ -53,6 +53,21 @@ export const TeamShiftPage = () => {
     navigate(-1);
   };
 
+  if (!list) {
+    return (
+      <div className={styles.container}>
+        <IconButton
+          type='button'
+          onClick={handleBackClick}
+          className={styles.button}
+        >
+          <BackIcon className={styles.icon} width={24} height={24} />
+        </IconButton>
+        <div className={styles.empty}>Нет созданных смен</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <IconButton
@@ -64,128 +79,122 @@ export const TeamShiftPage = () => {
       </IconButton>
 
       <main className={styles.main}>
-        {list && (
-          <>
-            <div className={styles.chartContainer}>
-              <div className={styles.header}>
-                <span
-                  className={styles.workshopName}
-                >{`УУМ ${list.workshopName}`}</span>
-                <div className={styles.shift}>
-                  <span>{formatDayShortMonth(list.shiftDate)},</span>
-                  <span>{`см ${list.shiftCode}`},</span>
-                  <span>{`бр ${list.teamNumber}`}</span>
-                </div>
-              </div>
+        <div className={styles.chartContainer}>
+          <div className={styles.header}>
+            <span
+              className={styles.workshopName}
+            >{`УУМ ${list.workshopName}`}</span>
+            <div className={styles.shift}>
+              <span>{formatDayShortMonth(list.shiftDate)},</span>
+              <span>{`см ${list.shiftCode}`},</span>
+              <span>{`бр ${list.teamNumber}`}</span>
+            </div>
+          </div>
 
-              <div className={styles.chart}>
-                <span className={styles.title}>Производство, шт</span>
-                <Chart list={list.production} emptyLabel='Нет производства' />
-              </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Производство, шт</span>
+            <Chart list={list.production} emptyLabel='Нет производства' />
+          </div>
 
-              <div className={styles.chart}>
-                <span className={styles.title}>Отгрузка, ваг</span>
-                <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
-              </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Упаковка, шт</span>
+            <Chart list={list.pack} emptyLabel='Нет упаковки' />
+          </div>
 
-              <div className={styles.chart}>
-                <span className={styles.title}>Упаковка, шт</span>
-                <Chart list={list.pack} emptyLabel='Нет упаковки' />
-              </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Отгрузка, ваг</span>
+            <Chart list={list.shipment} emptyLabel='Нет отгрузки' />
+          </div>
 
-              <div className={styles.chart}>
-                <span className={styles.title}>Остатки, шт</span>
-                <Chart list={list.residue} emptyLabel='Нет остатков' />
-              </div>
+          <div className={styles.chart}>
+            <span className={styles.title}>Остатки, шт</span>
+            <Chart list={list.residue} emptyLabel='Нет остатков' />
+          </div>
+        </div>
+
+        <div className={styles.tableWrapper}>
+          <div className={styles.header}>
+            <div className={styles.wrapper}>
+              <span
+                className={styles.workshopName}
+              >{`УУМ ${list.workshopName}`}</span>
+              {list.isReady && <SuccessIcon width={16} height={16} />}
             </div>
 
-            <div className={styles.tableWrapper}>
-              <div className={styles.header}>
-                <div className={styles.wrapper}>
-                  <span
-                    className={styles.workshopName}
-                  >{`УУМ ${list.workshopName}`}</span>
-                  {list.isReady && <SuccessIcon width={16} height={16} />}
-                </div>
-
-                <div className={styles.shift}>
-                  <span>{formatDayShortMonth(list.shiftDate)},</span>
-                  <span>{`см ${list.shiftCode}`},</span>
-                  <span>{`бр ${list.teamNumber}`}</span>
-                </div>
-              </div>
-
-              {list.packLocations.length > 0 ? (
-                <ReportTable
-                  title='Ручная упаковка'
-                  status='явка'
-                  label='Чел'
-                  list={list.packLocations}
-                />
-              ) : (
-                <span className={styles.empty}>
-                  Ручная упаковка отдыхает...
-                </span>
-              )}
-
-              {list.lurLocations.length > 0 ? (
-                <ReportTable
-                  title='Линия упаковки рулонов'
-                  status='явка'
-                  label='Чел'
-                  list={list.lurLocations}
-                />
-              ) : (
-                <span className={styles.empty}>
-                  Линия упаковки рулонов отдыхает...
-                </span>
-              )}
-
-              {list.fixLocations.length > 0 ? (
-                <ReportTable
-                  title='Раскрепление'
-                  status='явка'
-                  label='Чел'
-                  list={list.fixLocations}
-                />
-              ) : (
-                <span className={styles.empty}>Отгрузка отдыхает...</span>
-              )}
-
-              {list.detailLocations.length > 0 ? (
-                <ReportTable
-                  title='Производство реквизитов'
-                  status='явка'
-                  label='Чел'
-                  list={list.detailLocations}
-                />
-              ) : (
-                <span className={styles.empty}>
-                  Производство реквизитов отдыхает...
-                </span>
-              )}
-
-              {list.professions.length > 0 ? (
-                <ReportTable
-                  title='Профессия'
-                  status='нет на работе'
-                  label='Чел'
-                  list={list.professions}
-                />
-              ) : (
-                <span className={styles.empty}>Все на работе...</span>
-              )}
+            <div className={styles.shift}>
+              <span>{formatDayShortMonth(list.shiftDate)},</span>
+              <span>{`см ${list.shiftCode}`},</span>
+              <span>{`бр ${list.teamNumber}`}</span>
             </div>
+          </div>
 
-            <Button
-              type='button'
-              className={styles.downloadButton}
-              onClick={() => dispatch(downloadExcelReport(list.shiftId))}
-            >
-              Скачать рапорт
-            </Button>
-          </>
-        )}
+          {list.packLocations.length > 0 ? (
+            <ReportTable
+              title='Ручная упаковка'
+              status='явка'
+              label='Чел'
+              list={list.packLocations}
+            />
+          ) : (
+            <span className={styles.empty}>Ручная упаковка отдыхает...</span>
+          )}
+
+          {list.lurLocations.length > 0 ? (
+            <ReportTable
+              title='Линия упаковки рулонов'
+              status='явка'
+              label='Чел'
+              list={list.lurLocations}
+            />
+          ) : (
+            <span className={styles.empty}>
+              Линия упаковки рулонов отдыхает...
+            </span>
+          )}
+
+          {list.fixLocations.length > 0 ? (
+            <ReportTable
+              title='Раскрепление'
+              status='явка'
+              label='Чел'
+              list={list.fixLocations}
+            />
+          ) : (
+            <span className={styles.empty}>Отгрузка отдыхает...</span>
+          )}
+
+          {list.detailLocations.length > 0 ? (
+            <ReportTable
+              title='Производство реквизитов'
+              status='явка'
+              label='Чел'
+              list={list.detailLocations}
+            />
+          ) : (
+            <span className={styles.empty}>
+              Производство реквизитов отдыхает...
+            </span>
+          )}
+
+          {list.professions.length > 0 ? (
+            <ReportTable
+              title='Профессия'
+              status='нет на работе'
+              label='Чел'
+              list={list.professions}
+            />
+          ) : (
+            <span className={styles.empty}>Все на работе...</span>
+          )}
+        </div>
+
+        <Button
+          type='button'
+          className={styles.downloadButton}
+          onClick={() => dispatch(downloadExcelReport(list.shiftId))}
+        >
+          Скачать рапорт
+        </Button>
       </main>
     </div>
   );

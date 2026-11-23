@@ -27,6 +27,14 @@ export class ReportType {
   })
   name: string; // Производство, Отгрузка, Упаковка, Раскрепление, Остаток
 
+  @Column({
+    name: 'unit',
+    type: 'varchar',
+    length: 10,
+    nullable: false,
+  })
+  unit: string; // шт, ваг
+
   // Связь: один тип — много участков
   @OneToMany(() => ReportArea, (reportArea) => reportArea.reportType)
   reportAreas: ReportArea[];

@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+// import basicSsl from '@vitejs/plugin-basic-ssl';
 
 // https://vite.dev/config/
 
@@ -8,7 +9,9 @@ import { playwright } from '@vitest/browser-playwright';
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), 
+    // basicSsl()
+  ],
   base: '/',
   test: {
     projects: [

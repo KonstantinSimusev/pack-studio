@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitMigration1795248791678 implements MigrationInterface {
-    name = 'InitMigration1795248791678'
+export class InitMigration1795424714412 implements MigrationInterface {
+    name = 'InitMigration1795424714412'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "pack_studio_schema"."accounts" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "login" character varying(255) NOT NULL, "hashed_password" character varying(512) NOT NULL, "hashed_refresh_token" character varying(512), CONSTRAINT "UQ_2b995c673f59534efe164ced42d" UNIQUE ("login"), CONSTRAINT "PK_5a7a02c20412299d198e097a8fe" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pack_studio_schema"."attendance_types" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "attendance_code" character varying(10) NOT NULL, "description" character varying(255) NOT NULL, CONSTRAINT "UQ_021dacc1b22a39478c767d22c2f" UNIQUE ("attendance_code"), CONSTRAINT "PK_7879c3f654d19f112d91eab7828" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "pack_studio_schema"."report_types" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "type_code" character varying(100) NOT NULL, "name" character varying(255) NOT NULL, CONSTRAINT "UQ_979b513e88427a1300b06a46d99" UNIQUE ("type_code"), CONSTRAINT "UQ_4700b6422dbc0efa20dd03406cf" UNIQUE ("name"), CONSTRAINT "PK_cf77ff01fa1da1f9978995e67c3" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "pack_studio_schema"."report_types" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "type_code" character varying(100) NOT NULL, "name" character varying(255) NOT NULL, "unit" character varying(10) NOT NULL, CONSTRAINT "UQ_979b513e88427a1300b06a46d99" UNIQUE ("type_code"), CONSTRAINT "UQ_4700b6422dbc0efa20dd03406cf" UNIQUE ("name"), CONSTRAINT "PK_cf77ff01fa1da1f9978995e67c3" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pack_studio_schema"."report_areas" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "area_code" character varying(100) NOT NULL, "short_name" character varying(50) NOT NULL, "name" character varying(255) NOT NULL, "report_type_id" uuid NOT NULL, "workshop_id" uuid NOT NULL, CONSTRAINT "PK_cc4ff57f2925347ff2d40630a40" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pack_studio_schema"."reports" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "count" integer NOT NULL DEFAULT '0', "report_area_id" uuid NOT NULL, "shift_id" uuid NOT NULL, CONSTRAINT "PK_d9013193989303580053c0b5ef6" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pack_studio_schema"."schedules" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "schedule_code" character varying(20) NOT NULL, "name" character varying(100) NOT NULL, CONSTRAINT "UQ_1a72adaf898e04bfbae78fa7aa9" UNIQUE ("schedule_code"), CONSTRAINT "UQ_758daa8476fd77ea422efacf7b9" UNIQUE ("name"), CONSTRAINT "PK_7e33fc2ea755a5765e3564e66dd" PRIMARY KEY ("id"))`);

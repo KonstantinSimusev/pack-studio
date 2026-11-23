@@ -1,16 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { hasManager } from '../../shared/utils/utils';
+
+import { EAttendanceCode } from '../../shared/enums/enums';
 import {
-  EAttendanceCode,
-  EScheduleCode,
-  EWorkshopCode,
-} from '../../shared/enums/enums';
-import { IEmployeeShift, IShift } from '../../shared/interfaces/api.interface';
+  IEmployeeShift,
+  IReportData,
+  IShift,
+  IReportSection,
+  IReportSectionRow,
+} from '../../shared/interfaces/api.interface';
 
 import { EmployeeShift } from '../employee-shift/entities/employee-shift.entity';
 import { Shift } from './entities/shift.entity';
 import { ShiftRepository } from './shift.repository';
-import { hasManager } from '../../shared/utils/utils';
 
 @Injectable()
 export class ShiftService {
@@ -118,6 +121,69 @@ export class ShiftService {
     }
 
     return shift;
+  }
+
+  // Excel Report
+  async getShiftByIdWithExcelReport(shiftId: string): Promise<IReportData> {
+    const shift = await this.shiftRepository.findByIdWithExcelReport(shiftId);
+
+    if (!shift) {
+      throw new NotFoundException(`Смена с id ${shiftId} не найдена`);
+    }
+
+    return this.mapShiftToReportData(shift);
+  }
+
+  private mapShiftToReportData(shift: Shift): IReportData {
+    // count по areaCode в рамках каждого типа
+    const countsByType = new Map<string, Map<string, number>>();
+
+    for (const report of shift.reports ?? []) {
+      const typeCode = report.reportArea.reportType.typeCode;
+
+      if (!countsByType.has(typeCode)) {
+        countsByType.set(typeCode, new Map());
+      }
+      countsByType.get(typeCode)!.set(report.reportArea.areaCode, report.count);
+    }
+
+    // Типы, встретившиеся в рапортах, сортируем по typeCode
+    const types = [
+      ...new Map(
+        (shift.reports ?? []).map((rep) => [
+          rep.reportArea.reportType.typeCode,
+          rep.reportArea.reportType,
+        ]),
+      ).values(),
+    ].sort((a, b) => a.typeCode.localeCompare(b.typeCode));
+
+    const sections: IReportSection[] = types.map((type) => {
+      const rows: IReportSectionRow[] = type.reportAreas
+        .slice()
+        .sort((a, b) => a.areaCode.localeCompare(b.areaCode))
+        .map((area) => ({
+          name: area.name,
+          value: countsByType.get(type.typeCode)?.get(area.areaCode) ?? null,
+        }));
+
+      // Сумма блока: null-прочерки в расчёт не идут
+      const total = rows.reduce((sum, row) => sum + (row.value ?? 0), 0);
+
+      return {
+        title: type.name,
+        unit: type.unit,
+        rows,
+        total,
+      };
+    });
+
+    return {
+      workshopName: shift.workshop.name,
+      shiftDate: new Date(shift.date),
+      shiftCode: shift.shiftCode,
+      teamNumber: shift.team.teamNumber,
+      sections,
+    };
   }
 
   async existsShift(

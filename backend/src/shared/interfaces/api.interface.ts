@@ -51,6 +51,7 @@ export interface IAttendanceType {
 export interface IReportType {
   typeCode: string;
   name: string;
+  unit: string;
 }
 
 export interface IReportArea {
@@ -243,4 +244,24 @@ export interface IReportList {
   detailLocations: IReportLocation[];
   professions: IReportProfession[];
   isReady: boolean;
+}
+
+export interface IReportSectionRow {
+  name: string;
+  value: number | null; // null = прочерк
+}
+
+export interface IReportSection {
+  title: string;
+  unit: string;
+  rows: IReportSectionRow[];
+  total: number; // готовая сумма, считает сервис
+}
+
+export interface IReportData {
+  workshopName: string;
+  shiftDate: Date;
+  shiftCode: number;
+  teamNumber: number;
+  sections: IReportSection[];
 }

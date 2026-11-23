@@ -320,16 +320,16 @@ export class ShiftManagementService {
       };
 
       switch (report.reportArea.reportType.typeCode) {
-        case 'production':
+        case '001_production':
           production.push(item);
           break;
-        case 'shipment':
-          shipment.push(item);
-          break;
-        case 'pack':
+        case '002_pack':
           pack.push(item);
           break;
-        case 'residue':
+        case '003_shipment':
+          shipment.push(item);
+          break;
+        case '004_residue':
           residue.push(item);
           break;
       }
@@ -476,17 +476,17 @@ export class ShiftManagementService {
 
     // === Проверка готовности чарта ===
     // Сумма явок по всем участкам
-    const attendedCount =
-      packLocations.reduce((sum, location) => sum + location.count, 0) +
-      lurLocations.reduce((sum, location) => sum + location.count, 0) +
-      fixLocations.reduce((sum, location) => sum + location.count, 0) +
-      detailLocations.reduce((sum, location) => sum + location.count, 0);
+    // const attendedCount =
+    //   packLocations.reduce((sum, location) => sum + location.count, 0) +
+    //   lurLocations.reduce((sum, location) => sum + location.count, 0) +
+    //   fixLocations.reduce((sum, location) => sum + location.count, 0) +
+    //   detailLocations.reduce((sum, location) => sum + location.count, 0);
 
     // Сумма отсутствий по профессиям
-    const absentCount = professions.reduce(
-      (sum, profession) => sum + profession.count,
-      0,
-    );
+    // const absentCount = professions.reduce(
+    //   (sum, profession) => sum + profession.count,
+    //   0,
+    // );
 
     const isReady = shift.employeeShifts.every(
       (employeeShift) => employeeShift.isReady === true,
