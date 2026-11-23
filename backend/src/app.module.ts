@@ -12,7 +12,7 @@ import { EmployeeAccountModule } from './modules/employee-account/employee-accou
 import { EmployeeManagementModule } from './modules/employee-management/employee-management.module';
 import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
 import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
-// import { ExcelModule } from './modules/excel/excel.module';
+import { ExcelModule } from './modules/excel/excel.module';
 import { ReportModule } from './modules/report/report.module';
 import { ShiftManagementModule } from './modules/shift-management/shift-management.module';
 import { ShiftModule } from './modules/shift/shift.module';
@@ -30,7 +30,7 @@ import { TeamManagementModule } from './modules/team-management/team-management.
     EmployeeManagementModule,
     EmployeeShiftManagementModule,
     EmployeeShiftModule,
-    // ExcelModule,
+    ExcelModule,
     ReportModule,
     ShiftManagementModule,
     ShiftModule,

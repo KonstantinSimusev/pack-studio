@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { formatDayShortMonth } from '../../utils/utils';
-import { SHIFT_CODE } from '../../utils/constants';
 
 import { useDispatch, useSelector } from '../../services/store';
 import { getLastShiftWithChartReport } from '../../services/slices/dashboard/actions';
@@ -178,15 +177,13 @@ export const TeamShiftPage = () => {
               )}
             </div>
 
-            {list.shiftCode === SHIFT_CODE.NIGHT && (
-              <Button
-                type='button'
-                className={styles.downloadButton}
-                onClick={() => dispatch(downloadExcelReport(list.shiftId))}
-              >
-                Скачать рапорт
-              </Button>
-            )}
+            <Button
+              type='button'
+              className={styles.downloadButton}
+              onClick={() => dispatch(downloadExcelReport(list.shiftId))}
+            >
+              Скачать рапорт
+            </Button>
           </>
         )}
       </main>
