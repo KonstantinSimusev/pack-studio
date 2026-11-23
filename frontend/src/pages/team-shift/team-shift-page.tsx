@@ -182,7 +182,7 @@ export const TeamShiftPage = () => {
               <Button
                 type='button'
                 className={styles.downloadButton}
-                onClick={() => dispatch(downloadExcelReport())}
+                onClick={() => dispatch(downloadExcelReport(list.shiftId))}
               >
                 Скачать рапорт
               </Button>

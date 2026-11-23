@@ -493,6 +493,7 @@ export class ShiftManagementService {
     );
 
     return {
+      shiftId: shift.id,
       workshopName: workshop.name,
       shiftDate: shift.date,
       shiftCode: shift.shiftCode,

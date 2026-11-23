@@ -4,10 +4,10 @@ import { downloadExcelReportApi } from '../../../utils/api/excel.api';
 
 export const downloadExcelReport = createAsyncThunk(
   'report/downloadExcelReport',
-  async (_, { rejectWithValue }) => {
+  async (shiftId: string, { rejectWithValue }) => {
     try {
       // Получаем Blob напрямую из API (метод уже возвращает Promise<Blob>)
-      const blob = await downloadExcelReportApi();
+      const blob = await downloadExcelReportApi(shiftId);
       // await delay(1000);
 
       // Создаём URL для Blob

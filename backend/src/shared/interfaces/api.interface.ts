@@ -228,6 +228,7 @@ export interface IReportProfession {
 }
 
 export interface IReportList {
+  shiftId: string;
   workshopName: string;
   shiftDate: Date;
   shiftCode: number;

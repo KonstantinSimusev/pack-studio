@@ -1,8 +1,10 @@
 import { BASE_PATH } from '../api.config';
 
-export const downloadExcelReportApi = async (): Promise<Blob> => {
+export const downloadExcelReportApi = async (
+  shiftId: string,
+): Promise<Blob> => {
   try {
-    const response = await fetch(`${BASE_PATH}/excel/reports`, {
+    const response = await fetch(`${BASE_PATH}/excel/reports/${shiftId}`, {
       method: 'GET',
       credentials: 'include', // Важно для работы с cookie
     });
