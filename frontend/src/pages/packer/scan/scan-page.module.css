@@ -19,3 +19,43 @@
   margin: 0 30px;
 }
 
+.packButton,
+.fixButton,
+.repackButton {
+  position: relative;
+}
+
+.packButton::after,
+.fixButton::after,
+.repackButton::after {
+  content: '';
+  position: absolute;
+  right: 20px; /* отступ от правого края кнопки */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  opacity: 0.9;
+}
+
+/* Голубой (для pack) — спокойный, премиальный */
+.packButton::after {
+  background-color: #4fc3f7; /* #0091ea с прозрачностью */
+}
+
+/* Жёлтый (для fix) — тёплый, но не «кислотный», в стиле «дорогого» оттенка */
+.fixButton::after {
+  background-color: #ffc107; /* #FFC107 с прозрачностью — тот самый благородный жёлтый */
+}
+
+/* Красный (для repack) — тёплый коралловый, не агрессивный */
+.repackButton::after {
+  background-color: #ff4757; /* #FF6B6B с прозрачностью */
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

@@ -60,7 +60,7 @@ export const EmployeeShiftCard = ({
               onClick={onDelete}
               className={styles.button}
             >
-              <DeleteIcon width={22} height={22} />
+              <DeleteIcon width={24} height={24} />
             </IconButton>
           )}
 

@@ -223,3 +223,11 @@ export interface IReportList {
   professions: IReportProfession[];
   isReady: boolean;
 }
+
+export interface IScanCard {
+  id: string;
+  heatNumber: string;
+  partyNumber: number;
+  orderNumber: number;
+  actionCode: string;
+}
