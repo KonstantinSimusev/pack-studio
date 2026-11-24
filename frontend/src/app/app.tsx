@@ -77,6 +77,7 @@ import { EmployeeAddForm } from '../components/forms/employee-add-form/employee-
 import { EmployeeShiftEditForm } from '../components/forms/employee-shift-edit-form/employee-shift-edit-form';
 import { EmployeeShiftDeleteForm } from '../components/forms/employee-shift-delete-form/employee-shift-delete-form';
 import { ReportUpdateForm } from '../components/forms/report-update-form/report-update-form';
+import { ScanCardDeleteForm } from '../components/forms/scan-card-delete-form/scan-card-delete-form';
 import { ShiftCreateForm } from '../components/forms/shift-create-form/shift-create-form';
 
 import styles from './app.module.css';
@@ -97,6 +98,7 @@ const App = () => {
     isEmployeeShiftEditOpen,
     isEmployeeShiftDeleteOpen,
     isReportUpdateOpen,
+    isScanCardDeleteOpen,
   } = useContext(LayerContext);
 
   const dispatch = useDispatch();
@@ -284,6 +286,12 @@ const App = () => {
       {isReportUpdateOpen && (
         <Modal>
           <ReportUpdateForm />
+        </Modal>
+      )}
+
+      {isScanCardDeleteOpen && (
+        <Modal>
+          <ScanCardDeleteForm />
         </Modal>
       )}
     </div>

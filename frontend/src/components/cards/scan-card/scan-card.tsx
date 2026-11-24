@@ -37,15 +37,15 @@ export const ScanCard = ({ index, card, onDelete }: IProps) => {
 
       <div className={styles.info}>
         <div className={styles.row}>
-          <span className={styles.title}>Плавка</span>
+          <span className={styles.title}>Плавка:</span>
           <span className={styles.text}>{card.heatNumber}</span>
         </div>
         <div className={styles.row}>
-          <span className={styles.title}>Партия</span>
+          <span className={styles.title}>Партия:</span>
           <span className={styles.text}>{card.partyNumber}</span>
         </div>
         <div className={styles.row}>
-          <span className={styles.title}>Номер</span>
+          <span className={styles.title}>Номер:</span>
           <span className={styles.text}>{card.orderNumber}</span>
         </div>
       </div>

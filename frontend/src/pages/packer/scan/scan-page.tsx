@@ -1,5 +1,8 @@
 import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import clsx from 'clsx';
+
+import { LayerContext } from '../../../contexts/layer/layerContext';
 
 import { IScanCard } from '../../../utils/api.interfaces';
 import { Button } from '../../../components/ui/buttons/button/button';
@@ -24,6 +27,12 @@ const parseLabel = (raw: string) => {
 };
 
 export const ScanPage = () => {
+  const {
+    setIsOverlayOpen,
+    setIsScanCardDeleteOpen,
+    // setSelectedId,
+  } = useContext(LayerContext);
+
   const [scannerOpen, setScannerOpen] = useState(false);
   const [action, setAction] = useState<ActionType>();
   const [cards, setCards] = useState<IScanCard[]>([]);
@@ -68,8 +77,37 @@ export const ScanPage = () => {
   };
 
   const onDelete = (id: string) => {
+    // if (shiftId) {
+    //   setSelectedId(shiftId);
+    // }
+
+    // Сюда диспатч + бекенд запрос
     setCards((prev) => prev.filter((card) => card.id !== id));
+
+    setIsOverlayOpen(true);
+    setIsScanCardDeleteOpen(true);
   };
+
+  // сводка: сколько упаковано / приковано / переупаковано
+  const counts = cards.reduce(
+    (acc, card) => {
+      if (card.actionCode in acc) {
+        acc[card.actionCode as ActionType] += 1;
+      }
+      return acc;
+    },
+    { pack: 0, fix: 0, repack: 0 } as Record<ActionType, number>,
+  );
+
+  const summaryItems: Array<{
+    label: string;
+    value: number;
+    actionCode: ActionType;
+  }> = [
+    { label: 'Упаковано', value: counts.pack, actionCode: 'pack' },
+    { label: 'Припаковано', value: counts.fix, actionCode: 'fix' },
+    { label: 'Переупаковано', value: counts.repack, actionCode: 'repack' },
+  ];
 
   return (
     <div className={styles.container}>
@@ -114,6 +152,26 @@ export const ScanPage = () => {
             >
               Переупаковка
             </Button>
+          </div>
+
+          <div className={styles.summary}>
+            {summaryItems.map(
+              (item) =>
+                item.value > 0 && (
+                  <div
+                    key={item.label}
+                    className={clsx(
+                      styles.summaryItem,
+                      item.actionCode === 'pack' && styles.blue,
+                      item.actionCode === 'fix' && styles.yellow,
+                      item.actionCode === 'repack' && styles.red,
+                    )}
+                  >
+                    <span className={styles.label}>{item.label}:</span>
+                    <span className={styles.summaryValue}>{item.value}</span>
+                  </div>
+                ),
+            )}
           </div>
 
           <ul className={styles.cardList}>
