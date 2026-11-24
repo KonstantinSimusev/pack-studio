@@ -44,13 +44,16 @@ import {
 
 import { selectIsReportDownloading } from '../services/slices/excel/slice';
 
+import { ArchivePage } from '../pages/packer/archive/archive-page';
 import { DefaultPage } from '../pages/default/default-page';
 import { HomePage } from '../pages/home/home-page';
 import { EmployeePage } from '../pages/employee/employee-page';
+import { ManualInputPage } from '../pages/packer/manual-input/manual-input-page';
 import { NotFoundPage } from '../pages/not-found/not-found-page';
 import { PackPage } from '../pages/master/pack/pack-page';
 import { ProductionPage } from '../pages/master/production/production-page';
 import { ResiduePage } from '../pages/master/residue/residue-page';
+import { ScanPage } from '../pages/packer/scan/scan-page';
 import { ShiftPage } from '../pages/master/shift/shift-page';
 import { ShipmentPage } from '../pages/master/shipment/shipment-page';
 import { TeamShiftPage } from '../pages/team-shift/team-shift-page';
@@ -193,6 +196,9 @@ const App = () => {
               <Route path='/shipment' element={<ShipmentPage />} />
               <Route path='/pack' element={<PackPage />} />
               <Route path='/residue' element={<ResiduePage />} />
+              <Route path='/scan' element={<ScanPage />} />
+              <Route path='/manual-input' element={<ManualInputPage />} />
+              <Route path='/archive' element={<ArchivePage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>
           </Routes>

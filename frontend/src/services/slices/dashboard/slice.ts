@@ -20,6 +20,7 @@ interface IDashboardState {
   isGetAbsenceSummaryLoading: boolean;
 
   lastShiftWithChartReport: IReportList | null;
+  isLastShiftWithChartReportLoaded: boolean; // ответ по последней смене с графиком получен (любой исход)
   isGetLastShiftWithChartReportLoading: boolean;
 }
 
@@ -31,6 +32,7 @@ const initialState: IDashboardState = {
   isGetAbsenceSummaryLoading: false,
 
   lastShiftWithChartReport: null,
+  isLastShiftWithChartReportLoaded: false,
   isGetLastShiftWithChartReportLoading: false,
 };
 
@@ -46,6 +48,7 @@ export const dashboardSlice = createSlice({
     },
     clearLastShiftWithChartReport: (state) => {
       state.lastShiftWithChartReport = null;
+      state.isLastShiftWithChartReportLoaded = false; // вернулись в «неизвестно»
     },
   },
   selectors: {
@@ -59,6 +62,8 @@ export const dashboardSlice = createSlice({
 
     selectLastShiftWithChartReport: (state: IDashboardState) =>
       state.lastShiftWithChartReport,
+    selectIsLastShiftWithChartReportLoaded: (state: IDashboardState) =>
+      state.isLastShiftWithChartReportLoaded,
     selectIsGetLastShiftWithChartReportLoading: (state: IDashboardState) =>
       state.isGetLastShiftWithChartReportLoading,
   },
@@ -103,10 +108,12 @@ export const dashboardSlice = createSlice({
         (state, action: PayloadAction<IReportList | null>) => {
           state.lastShiftWithChartReport = action.payload;
           state.isGetLastShiftWithChartReportLoading = false;
+          state.isLastShiftWithChartReportLoaded = true; // <- ключ
         },
       )
       .addCase(getLastShiftWithChartReport.rejected, (state) => {
         state.isGetLastShiftWithChartReportLoading = false;
+        state.isLastShiftWithChartReportLoaded = true; // ошибка — тоже завершение
       });
   },
 });
@@ -123,5 +130,6 @@ export const {
   selectAbsenceSummary,
   selectIsGetAbsenceSummaryLoading,
   selectLastShiftWithChartReport,
+  selectIsLastShiftWithChartReportLoaded,
   selectIsGetLastShiftWithChartReportLoading,
 } = dashboardSlice.selectors;

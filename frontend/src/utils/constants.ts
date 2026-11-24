@@ -157,6 +157,36 @@ export const MENU_ITEMS = [
       },
     ],
   },
+  {
+    path: '/scan',
+    label: 'Сканирование',
+    accessRules: [
+      {
+        professions: [PROFESSION_CODE.PACKER],
+        workshops: [WORKSHOP_CODE.W_LPC11],
+      },
+    ],
+  },
+  {
+    path: '/manual-input',
+    label: 'Ручной ввод',
+    accessRules: [
+      {
+        professions: [PROFESSION_CODE.PACKER],
+        workshops: [WORKSHOP_CODE.W_LPC11],
+      },
+    ],
+  },
+  {
+    path: '/archive',
+    label: 'Архив',
+    accessRules: [
+      {
+        professions: [PROFESSION_CODE.PACKER],
+        workshops: [WORKSHOP_CODE.W_LPC11],
+      },
+    ],
+  },
 ];
 
 export const WORKSHOP_OPTIONS = [

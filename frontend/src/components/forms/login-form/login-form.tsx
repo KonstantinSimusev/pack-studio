@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { PROFESSION_CODE } from '../../../utils/constants';
+
 import {
   validateField,
   validateForm,
@@ -106,9 +108,13 @@ export const LoginForm = () => {
     }
 
     try {
-      await dispatch(loginEmployee(formData)).unwrap();
+      const employee = await dispatch(loginEmployee(formData)).unwrap();
 
-      navigate('/home');
+      if (employee.professionCode === PROFESSION_CODE.PACKER) {
+        navigate('/scan');
+      } else {
+        navigate('/home');
+      }
 
       setIsLoginOpen(false);
       setIsOverlayOpen(false);

@@ -9,6 +9,7 @@ import { downloadExcelReport } from '../../services/slices/excel/actions';
 
 import {
   clearLastShiftWithChartReport,
+  selectIsLastShiftWithChartReportLoaded,
   selectLastShiftWithChartReport,
 } from '../../services/slices/dashboard/slice';
 
@@ -27,6 +28,8 @@ export const TeamShiftPage = () => {
 
   const dispatch = useDispatch();
   const list = useSelector(selectLastShiftWithChartReport);
+
+  const isLoaded = useSelector(selectIsLastShiftWithChartReportLoaded);
 
   // Обновление данных 1 раз в сутки и приоткрытие вкладки браузера вновь
   useEffect(() => {
@@ -53,6 +56,12 @@ export const TeamShiftPage = () => {
     navigate(-1);
   };
 
+  // Пока идёт загрузка — лоадер уже показан в App, здесь ничего не рисуем
+  if (!isLoaded) {
+    return null;
+  }
+
+  // Ответ получен (любой исход), но смены нет — пустой экран
   if (!list) {
     return (
       <div className={styles.container}>

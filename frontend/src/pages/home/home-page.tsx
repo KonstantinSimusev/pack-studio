@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from '../../services/store';
+import { getHomeTeams } from '../../services/slices/dashboard/actions';
 
-import { TeamList } from '../../components/lists/team-list/team-list';
-import { AbsenceBoard } from '../../components/absence-board/absence-board';
-
-import styles from './home-page.module.css';
 import {
   clearHomeTeams,
   selectHomeTeams,
 } from '../../services/slices/dashboard/slice';
-import { getHomeTeams } from '../../services/slices/dashboard/actions';
 
-// import { QrScannerButton } from '../../components/scanner/scanner';
+import { AbsenceBoard } from '../../components/absence-board/absence-board';
+import { TeamList } from '../../components/lists/team-list/team-list';
+
+import styles from './home-page.module.css';
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -41,8 +40,6 @@ export const HomePage = () => {
     <div className={styles.container}>
       <TeamList list={teams ?? []} />
       <AbsenceBoard />
-
-      {/* <QrScannerButton /> */}
     </div>
   );
 };
