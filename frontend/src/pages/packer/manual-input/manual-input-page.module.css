@@ -2,5 +2,118 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 60px;
+}
+
+.button {
+  width: calc(100% - 60px);
+  margin: 0 30px;
+  padding: 24px 0;
+  border-radius: 28px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  gap: 30px;
+  margin: 0 30px;
+}
+
+.packButton,
+.fixButton,
+.repackButton,
+.manualInputButton {
+  position: relative;
+  padding: 24px 0;
+  border-radius: 28px;
+}
+
+.packButton::after,
+.fixButton::after,
+.repackButton::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  opacity: 0.9;
+}
+
+.packButton::after {
+  background-color: #4fc3f7;
+}
+
+.fixButton::after {
+  background-color: #ffc107;
+}
+
+.repackButton::after {
+  background-color: #ff4757;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  margin: 0 30px;
+  margin-left: auto;
+}
+
+.summaryItem {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  font-size: 18px;
+  padding-left: 26px; /* место под кружок слева от лейбла */
+}
+
+.summaryItem::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* те же цвета, что у кнопок и карточек */
+.blue::before {
+  background-color: #4fc3f7;
+}
+
+.yellow::before {
+  background-color: #ffc107;
+}
+
+.red::before {
+  background-color: #ff4757;
+}
+
+.label {
+  width: 150px; /* лейбл всегда 150 px */
+  flex-shrink: 0; /* не сжимается, даже если места мало */
+
+}
+
+.summaryValue {
+  position: relative;
+  top: 2px;
+  width: 60px; /* значение всегда 40 px */
+  flex-shrink: 0;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: right; /* цифры выровнены по правому краю своих 40 px */
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

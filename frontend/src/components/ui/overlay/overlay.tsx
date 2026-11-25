@@ -24,6 +24,7 @@ export const Overlay = () => {
     isEmployeeShiftDeleteOpen,
     isReportUpdateOpen,
     isScanCardDeleteOpen,
+    isManualInputCreateOpen,
 
     setIsOverlayOpen,
     setIsMenuOpen,
@@ -40,6 +41,7 @@ export const Overlay = () => {
     setIsEmployeeShiftDeleteOpen,
     setIsReportUpdateOpen,
     setIsScanCardDeleteOpen,
+    setIsManualInputCreateOpen,
   } = useContext(LayerContext);
 
   useEscapeHandler(() => {
@@ -106,6 +108,10 @@ export const Overlay = () => {
     if (isScanCardDeleteOpen) {
       setIsScanCardDeleteOpen(false);
     }
+
+    if (isManualInputCreateOpen) {
+      setIsManualInputCreateOpen(false);
+    }
   });
 
   const handleClick = (event: React.MouseEvent) => {
@@ -130,6 +136,7 @@ export const Overlay = () => {
       setIsEmployeeShiftDeleteOpen(false);
       setIsReportUpdateOpen(false);
       setIsScanCardDeleteOpen(false);
+      setIsManualInputCreateOpen(false);
     }
   };
 

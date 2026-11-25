@@ -1,28 +1,20 @@
-import { Scanner } from '@yudiel/react-qr-scanner';
+import { lazy, Suspense } from 'react';
+import type { IDetectedBarcode } from '@yudiel/react-qr-scanner';
 
-type Props = {
-  onScanResult: (value: string) => void;
-  onClose?: () => void;
-};
+const Scanner = lazy(() =>
+  import('@yudiel/react-qr-scanner').then((m) => ({ default: m.Scanner })),
+);
 
-export const QrScannerButton = ({ onScanResult, onClose }: Props) => {
-  return (
-    <>
-      <Scanner
-        constraints={{ facingMode: 'environment' }}
-        formats={['qr_code']}
-        onScan={(codes) => {
-          const raw = codes[0]?.rawValue;
-          if (!raw) return;
+interface ILazyScannerProps {
+  onScan: (codes: IDetectedBarcode[]) => void;
+}
 
-          const digitsOnly = raw.replace(/\D/g, '');
-          if (digitsOnly) {
-            onScanResult(digitsOnly);
-          }
-        }}
-        onError={(e) => console.error(e?.message)}
-      />
-      <button onClick={onClose}>Закрыть</button>
-    </>
-  );
-};
+export const LazyScanner = ({ onScan }: ILazyScannerProps) => (
+  <Suspense fallback={<p>Загрузка сканера…</p>}>
+    <Scanner
+      constraints={{ facingMode: 'environment' }}
+      formats={['qr_code']}
+      onScan={onScan}
+    />
+  </Suspense>
+);

@@ -590,6 +590,56 @@ export const validationRules: IValidationRules = {
       },
     ],
   },
+  heatNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'length',
+        pattern: /^\S{6}$/,
+        message: 'Введите 6 символов',
+      },
+    ],
+  },
+  partyNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
+        type: 'length',
+        pattern: /^\d{1,7}$/,
+        message: 'Введите до 7 цифр',
+      },
+    ],
+  },
+  orderNumber: {
+    required: true,
+    validators: [
+      {
+        type: 'required',
+        pattern: /^.+$/,
+        message: 'Это поле обязательно',
+      },
+      {
+        type: 'number',
+        pattern: /^[1-9]\d{0,4}$/,
+        message: 'Введите число от 1 до 99999',
+      },
+    ],
+  },
 };
 
 // Функция для валидации одного поля

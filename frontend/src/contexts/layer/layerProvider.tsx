@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 
+import { TActionCode } from '../../utils/constants';
 import { LayerContext } from './layerContext';
+import { IScanCard } from '../../utils/api.interfaces';
 
 interface TLayerProviderProps {
   children: React.ReactNode;
@@ -21,13 +23,21 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
   const [isShiftCreateOpen, setIsShiftCreateOpen] = useState(false);
   const [isEmployeeAddOpen, setIsEmployeeAddOpen] = useState(false);
   const [isEmployeeShiftEditOpen, setIsEmployeeShiftEditOpen] = useState(false);
+
   const [isEmployeeShiftDeleteOpen, setIsEmployeeShiftDeleteOpen] =
     useState(false);
+
   const [isReportUpdateOpen, setIsReportUpdateOpen] = useState(false);
   const [isScanCardDeleteOpen, setIsScanCardDeleteOpen] = useState(false);
+  const [isManualInputCreateOpen, setIsManualInputCreateOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState('');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const [selectedActionCode, setSelectedActionCode] =
+    useState<TActionCode>('pack');
+
+  const [scanCards, setScanCards] = useState<IScanCard[]>([]);
 
   // Мемоизируем значение контекста
   const value = useMemo(
@@ -49,9 +59,12 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       isEmployeeShiftDeleteOpen,
       isReportUpdateOpen,
       isScanCardDeleteOpen,
+      isManualInputCreateOpen,
 
       selectedId,
       selectedDate,
+      selectedActionCode,
+      scanCards,
 
       setIsAgreed,
       setIsOverlayOpen,
@@ -70,9 +83,12 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       setIsEmployeeShiftDeleteOpen,
       setIsReportUpdateOpen,
       setIsScanCardDeleteOpen,
+      setIsManualInputCreateOpen,
 
       setSelectedId,
       setSelectedDate,
+      setSelectedActionCode,
+      setScanCards,
     }),
     [
       isAgreed,
@@ -92,9 +108,12 @@ export const LayerProvider = ({ children }: TLayerProviderProps) => {
       isEmployeeShiftDeleteOpen,
       isReportUpdateOpen,
       isScanCardDeleteOpen,
+      isManualInputCreateOpen,
 
       selectedId,
       selectedDate,
+      selectedActionCode,
+      scanCards,
     ],
   );
 

@@ -1,4 +1,6 @@
 import { createContext } from 'react';
+import { TActionCode } from '../../utils/constants';
+import { IScanCard } from '../../utils/api.interfaces';
 
 interface ILayerContextValue {
   isAgreed: boolean;
@@ -18,9 +20,12 @@ interface ILayerContextValue {
   isEmployeeShiftDeleteOpen: boolean;
   isReportUpdateOpen: boolean;
   isScanCardDeleteOpen: boolean;
+  isManualInputCreateOpen: boolean;
 
   selectedId: string;
   selectedDate: string | null;
+  selectedActionCode: TActionCode;
+  scanCards: IScanCard[];
 
   setIsAgreed: (value: boolean) => void;
   setIsOverlayOpen: (value: boolean) => void;
@@ -39,9 +44,12 @@ interface ILayerContextValue {
   setIsEmployeeShiftDeleteOpen: (value: boolean) => void;
   setIsReportUpdateOpen: (value: boolean) => void;
   setIsScanCardDeleteOpen: (value: boolean) => void;
+  setIsManualInputCreateOpen: (value: boolean) => void;
 
   setSelectedId: (value: string) => void;
   setSelectedDate: (value: string | null) => void;
+  setSelectedActionCode: (value: TActionCode) => void;
+  setScanCards: React.Dispatch<React.SetStateAction<IScanCard[]>>;
 }
 
 export const LayerContext = createContext<ILayerContextValue>({
@@ -62,9 +70,12 @@ export const LayerContext = createContext<ILayerContextValue>({
   isEmployeeShiftDeleteOpen: false,
   isReportUpdateOpen: false,
   isScanCardDeleteOpen: false,
+  isManualInputCreateOpen: false,
 
   selectedId: '',
   selectedDate: null,
+  selectedActionCode: 'pack',
+  scanCards: [],
 
   setIsAgreed: () => {},
   setIsOverlayOpen: () => {},
@@ -83,7 +94,10 @@ export const LayerContext = createContext<ILayerContextValue>({
   setIsEmployeeShiftDeleteOpen: () => {},
   setIsReportUpdateOpen: () => {},
   setIsScanCardDeleteOpen: () => {},
+  setIsManualInputCreateOpen: () => {},
 
   setSelectedId: () => {},
   setSelectedDate: () => {},
+  setSelectedActionCode: () => {},
+  setScanCards: () => {},
 });

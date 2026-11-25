@@ -23,7 +23,8 @@
 
 .packButton,
 .fixButton,
-.repackButton {
+.repackButton,
+.manualInputButton {
   position: relative;
   padding: 24px 0;
   border-radius: 28px;

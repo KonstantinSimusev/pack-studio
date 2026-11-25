@@ -222,3 +222,34 @@ export const formatDurationForUI = (raw: number | undefined | null): string => {
   // Часы оставляем без ведущего нуля (8 ч, а не 08 ч), чтобы не путать со временем суток
   return `${hours} ч ${minStr} мин`;
 };
+
+// Code128: 28 знаков — 3 цех, 2 год, 6 плавка, 7 партия, 5 рулон, 5 вес
+export const parseLabel = (raw: string) => {
+  const digits = raw.replace(/\D/g, '');
+
+  // защита от кривого скана: длина строго 28
+  if (digits.length !== 28) {
+    return null;
+  }
+
+  return {
+    heatNumber: digits.slice(5, 11),
+    partyNumber: Number(digits.slice(11, 18)),
+    orderNumber: Number(digits.slice(18, 23)),
+  };
+};
+
+// Сборка строки Code128 (28 знаков) из полей ручного ввода.
+// Цех (3), год (2) и вес (5) из формы не приходят — заполняются нулями
+// как заглушка, уточним с бекендом, что он ждёт в этих позициях.
+export const buildQrCode = (
+  heatNumber: string,
+  partyNumber: number,
+  orderNumber: number,
+): string =>
+  '000' + // код цеха — 3 знака
+  '00' + // год партии — 2 знака
+  heatNumber.padStart(6, '0') + // плавка — 6 знаков
+  String(partyNumber).padStart(7, '0') + // партия — 7 знаков
+  String(orderNumber).padStart(5, '0') + // рулон — 5 знаков
+  '00000'; // вес нетто — 5 знаков

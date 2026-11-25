@@ -1,43 +1,26 @@
-import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
+import type { IDetectedBarcode } from '@yudiel/react-qr-scanner';
 import { useContext, useState } from 'react';
 import clsx from 'clsx';
 
+import { parseLabel } from '../../../utils/utils';
+import { SUMMARY_ITEMS_CONFIG, TActionCode } from '../../../utils/constants';
 import { LayerContext } from '../../../contexts/layer/layerContext';
 
 import { IScanCard } from '../../../utils/api.interfaces';
 import { Button } from '../../../components/ui/buttons/button/button';
+import { LazyScanner } from '../../../components/scanner/scanner';
 import { ScanCard } from '../../../components/cards/scan-card/scan-card';
 
 import styles from './scan-page.module.css';
 
-type ActionType = 'pack' | 'fix' | 'repack';
-
-const HEAT_LENGTH = 10;
-const PARTY_LENGTH = 10;
-
-// Из строки ярлыка оставляем только цифры и режем: 6 — плавка, 6 — партия, остаток — номер
-const parseLabel = (raw: string) => {
-  const digits = raw.replace(/\D/g, '');
-
-  return {
-    heatNumber: digits.slice(0, HEAT_LENGTH),
-    partyNumber: Number(digits.slice(HEAT_LENGTH, HEAT_LENGTH + PARTY_LENGTH)),
-    orderNumber: Number(digits.slice(HEAT_LENGTH + PARTY_LENGTH)),
-  };
-};
-
 export const ScanPage = () => {
-  const {
-    setIsOverlayOpen,
-    setIsScanCardDeleteOpen,
-    // setSelectedId,
-  } = useContext(LayerContext);
+  const { scanCards, setIsOverlayOpen, setIsScanCardDeleteOpen, setScanCards } =
+    useContext(LayerContext);
 
   const [scannerOpen, setScannerOpen] = useState(false);
-  const [action, setAction] = useState<ActionType>();
-  const [cards, setCards] = useState<IScanCard[]>([]);
+  const [action, setAction] = useState<TActionCode>();
 
-  const handleScan = (type: ActionType) => {
+  const handleScan = (type: TActionCode) => {
     setAction(type);
     setScannerOpen(true);
   };
@@ -45,8 +28,8 @@ export const ScanPage = () => {
   const handleCloseScanner = () => setScannerOpen(false);
 
   const addCard = (
-    label: ReturnType<typeof parseLabel>,
-    actionCode: ActionType,
+    label: NonNullable<ReturnType<typeof parseLabel>>,
+    actionCode: TActionCode,
   ) => {
     const newCard: IScanCard = {
       id: crypto.randomUUID(),
@@ -54,23 +37,12 @@ export const ScanPage = () => {
       actionCode,
     };
 
-    setCards((prev) => [newCard, ...prev]);
+    setScanCards((prev) => [newCard, ...prev]);
   };
 
   const handleQrScanned = (codes: IDetectedBarcode[]) => {
-    const raw = codes[0]?.rawValue;
-    if (!raw) return;
-
-    const label = parseLabel(raw);
-
-    // защита от кривого скана: плавка и партия должны собраться полностью
-    if (
-      label.heatNumber.length !== HEAT_LENGTH ||
-      Number.isNaN(label.partyNumber) ||
-      !label.orderNumber
-    ) {
-      return;
-    }
+    const label = parseLabel(codes[0]?.rawValue ?? '');
+    if (!label || !label.orderNumber) return;
 
     addCard(label, action ?? 'pack');
     handleCloseScanner();
@@ -82,42 +54,33 @@ export const ScanPage = () => {
     // }
 
     // Сюда диспатч + бекенд запрос
-    setCards((prev) => prev.filter((card) => card.id !== id));
+    setScanCards((prev) => prev.filter((card) => card.id !== id));
 
     setIsOverlayOpen(true);
     setIsScanCardDeleteOpen(true);
   };
 
   // сводка: сколько упаковано / приковано / переупаковано
-  const counts = cards.reduce(
+  const counts = scanCards.reduce(
     (acc, card) => {
       if (card.actionCode in acc) {
-        acc[card.actionCode as ActionType] += 1;
+        acc[card.actionCode as TActionCode] += 1;
       }
       return acc;
     },
-    { pack: 0, fix: 0, repack: 0 } as Record<ActionType, number>,
+    { pack: 0, fix: 0, repack: 0 } as Record<TActionCode, number>,
   );
 
-  const summaryItems: Array<{
-    label: string;
-    value: number;
-    actionCode: ActionType;
-  }> = [
-    { label: 'Упаковано', value: counts.pack, actionCode: 'pack' },
-    { label: 'Припаковано', value: counts.fix, actionCode: 'fix' },
-    { label: 'Переупаковано', value: counts.repack, actionCode: 'repack' },
-  ];
+  const summaryItems = SUMMARY_ITEMS_CONFIG.map((item) => ({
+    ...item,
+    value: counts[item.actionCode],
+  }));
 
   return (
     <div className={styles.container}>
       {scannerOpen ? (
         <>
-          <Scanner
-            constraints={{ facingMode: 'environment' }}
-            formats={['qr_code']}
-            onScan={handleQrScanned}
-          />
+          <LazyScanner onScan={handleQrScanned} />
           <Button
             type='button'
             className={styles.button}
@@ -175,10 +138,10 @@ export const ScanPage = () => {
           </div>
 
           <ul className={styles.cardList}>
-            {cards.map((card, index) => (
+            {scanCards.map((card, index) => (
               <li key={card.id} className={styles.cardItem}>
                 <ScanCard
-                  index={cards.length - index}
+                  index={scanCards.length - index}
                   card={card}
                   onDelete={() => onDelete(card.id)}
                 />

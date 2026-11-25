@@ -1,5 +1,26 @@
 import { formatDateForDayUI } from './utils';
 
+export type TActionCode = 'pack' | 'fix' | 'repack';
+
+// конфигурация строк сводки: label и actionCode статичны, value подставляется в компоненте
+export interface ISummaryItemConfig {
+  label: string;
+  actionCode: TActionCode;
+}
+
+export const SUMMARY_ITEMS_CONFIG: ISummaryItemConfig[] = [
+  { actionCode: 'pack', label: 'Упаковано' },
+  { actionCode: 'fix', label: 'Припаковано' },
+  { actionCode: 'repack', label: 'Переупаковано' },
+];
+
+// полный словарь «код → подпись»: доступ всегда возвращает string
+export const ACTION_LABELS: Record<TActionCode, string> = {
+  pack: 'Упаковка',
+  fix: 'Припаковка',
+  repack: 'Переупаковка',
+};
+
 export const WORKSHOP_CODE = {
   W_ABK: 'W_ABK',
   W_LPC4: 'W_LPC4',

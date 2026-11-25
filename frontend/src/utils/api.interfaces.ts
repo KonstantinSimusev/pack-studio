@@ -231,3 +231,10 @@ export interface IScanCard {
   orderNumber: number;
   actionCode: string;
 }
+
+export interface ICreateManualInput {
+  actionCode: string;
+  heatNumber: string;
+  partyNumber: number;
+  orderNumber: number;
+}
