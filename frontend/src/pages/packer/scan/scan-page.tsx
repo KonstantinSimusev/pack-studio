@@ -19,6 +19,7 @@ export const ScanPage = () => {
 
   const [scannerOpen, setScannerOpen] = useState(false);
   const [action, setAction] = useState<TActionCode>();
+  const [rawScan, setRawScan] = useState('');
 
   const handleScan = (type: TActionCode) => {
     setAction(type);
@@ -41,6 +42,9 @@ export const ScanPage = () => {
   };
 
   const handleQrScanned = (codes: IDetectedBarcode[]) => {
+    const raw = codes[0]?.rawValue ?? '';
+    setRawScan(raw); // сырой результат — сразу, без разбора
+
     const label = parseLabel(codes[0]?.rawValue ?? '');
     if (!label || !label.orderNumber) return;
 
@@ -116,6 +120,9 @@ export const ScanPage = () => {
               Переупаковка
             </Button>
           </div>
+
+          <div>Результат</div>
+          <div>{rawScan}</div>
 
           <div className={styles.summary}>
             {summaryItems.map(
