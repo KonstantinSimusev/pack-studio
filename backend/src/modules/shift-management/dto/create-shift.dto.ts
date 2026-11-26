@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer';
-import { IsDate, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
-import { toNumber, toString } from '../../../shared/utils/utils';
+import { IsDate, IsInt, Max, Min } from 'class-validator';
+import { toNumber } from '../../../shared/utils/utils';
 
 export class CreateShiftDto {
   @Type(() => Date)

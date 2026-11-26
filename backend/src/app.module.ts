@@ -10,6 +10,8 @@ import { GlobalAuthModule } from './global/global-auth.module';
 
 import { EmployeeAccountModule } from './modules/employee-account/employee-account.module';
 import { EmployeeManagementModule } from './modules/employee-management/employee-management.module';
+import { EmployeeProductManagementModule } from './modules/employee-product-management/employee-product-management.module';
+import { EmployeeProductModule } from './modules/employee-product/employee-product.module';
 import { EmployeeShiftManagementModule } from './modules/employee-shift-management/employee-shift-management.module';
 import { EmployeeShiftModule } from './modules/employee-shift/employee-shift.module';
 import { ExcelModule } from './modules/excel/excel.module';
@@ -28,6 +30,8 @@ import { TeamManagementModule } from './modules/team-management/team-management.
     GlobalAuthModule,
     EmployeeAccountModule,
     EmployeeManagementModule,
+    EmployeeProductManagementModule,
+    EmployeeProductModule,
     EmployeeShiftManagementModule,
     EmployeeShiftModule,
     ExcelModule,

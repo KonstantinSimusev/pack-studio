@@ -30,7 +30,9 @@ export class Assignment {
 
   // Связь: много назначений — один цех
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Workshop, (workshop) => workshop.assignments, { nullable: false })
+  @ManyToOne(() => Workshop, (workshop) => workshop.assignments, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'current_workshop_id' })
   currentWorkshop: Workshop;
 
@@ -42,17 +44,27 @@ export class Assignment {
 
   // Связь: много назначений — одна профессия
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Profession, (profession) => profession.assignments, { nullable: false })
+  @ManyToOne(() => Profession, (profession) => profession.assignments, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'current_profession_id' })
   currentProfession: Profession;
 
   // Связь: много назначений — один график
   // Это связь нужна для выбора личного кабинета по задачам (бригадир, мастер и тд)
-  @ManyToOne(() => Schedule, (schedule) => schedule.assignments, { nullable: false })
+  @ManyToOne(() => Schedule, (schedule) => schedule.assignments, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'current_schedule_id' })
   currentSchedule: Schedule;
 
-  // Связь: один аккаунт — один сотрудник
-  @OneToOne(() => Employee, (employee) => employee.assignment)
+  // Связь: одно назначение — один сотрудник
+  // FK: employee_id в таблице assignments
+  // Каскад: при удалении сотрудника назначение удаляется вместе с ним
+  @OneToOne(() => Employee, (employee) => employee.assignment, {
+    nullable: false,
+    onDelete: 'CASCADE', // при удалении сотрудника назначение удаляется вместе с ним
+  })
+  @JoinColumn({ name: 'employee_id' })
   employee: Employee;
 }

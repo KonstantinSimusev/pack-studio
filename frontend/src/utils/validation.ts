@@ -599,9 +599,14 @@ export const validationRules: IValidationRules = {
         message: 'Это поле обязательно',
       },
       {
+        type: 'number',
+        pattern: /^\d+$/,
+        message: 'Введите только цифры',
+      },
+      {
         type: 'length',
-        pattern: /^\S{6}$/,
-        message: 'Введите 6 символов',
+        pattern: /^\d{6}$/,
+        message: 'Введите ровно 6 цифр',
       },
     ],
   },
@@ -625,7 +630,7 @@ export const validationRules: IValidationRules = {
       },
     ],
   },
-  orderNumber: {
+  productNumber: {
     required: true,
     validators: [
       {

@@ -1,24 +1,14 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 
 import {
-  IsDate,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsUUID,
-  Max,
   MaxLength,
-  Min,
   MinLength,
 } from 'class-validator';
 
-import {
-  //   toNumber,
-  //   toOptionalBoolean,
-  //   toOptionalNumber,
-  toOptionalString,
-  toString,
-} from '../../../shared/utils/utils';
+import { toOptionalString, toString } from '../../../shared/utils/utils';
 
 export class UpdateEmployeeShiftDto {
   @IsNotEmpty({ message: 'ID смены сотрудника не может быть пустым' })

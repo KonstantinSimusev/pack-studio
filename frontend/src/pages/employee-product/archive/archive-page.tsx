@@ -40,7 +40,7 @@ export const ArchivePage = () => {
 
   return (
     <div className={styles.container}>
-      <h3>ArchivePage</h3>
+      <p>ArchivePage</p>
       {/* <TeamList list={teams ?? []} />
       <AbsenceBoard /> */}
 

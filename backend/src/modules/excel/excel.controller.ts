@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Res, UseGuards } from '@nestjs/common';
 
-import { Response, Request } from 'express';
+import { Response } from 'express';
 
 import { ExcelService } from './excel.service';
 import { AuthGuard } from '../auth/guards/auth.guard';

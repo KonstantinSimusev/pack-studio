@@ -43,20 +43,21 @@ import {
 } from '../services/slices/dashboard/slice';
 
 import { selectIsReportDownloading } from '../services/slices/excel/slice';
+import { selectIsCreateEmployeeProductLoading } from '../services/slices/employee-product/slice';
 
-import { ArchivePage } from '../pages/packer/archive/archive-page';
+import { ArchivePage } from '../pages/employee-product/archive/archive-page';
 import { DefaultPage } from '../pages/default/default-page';
 import { HomePage } from '../pages/home/home-page';
 import { EmployeePage } from '../pages/employee/employee-page';
-import { ManualInputPage } from '../pages/packer/manual-input/manual-input-page';
+import { ManualInputPage } from '../pages/employee-product/manual-input/manual-input-page';
 import { NotFoundPage } from '../pages/not-found/not-found-page';
 import { PackPage } from '../pages/master/pack/pack-page';
 import { ProductionPage } from '../pages/master/production/production-page';
 import { ResiduePage } from '../pages/master/residue/residue-page';
-import { ScanPage } from '../pages/packer/scan/scan-page';
+import { ScanPage } from '../pages/employee-product/scan/scan-page';
 import { ShiftPage } from '../pages/master/shift/shift-page';
 import { ShipmentPage } from '../pages/master/shipment/shipment-page';
-import { TeamShiftPage } from '../pages/team-shift/team-shift-page';
+import { TeamShiftPage } from '../pages/team/team-shift-page';
 import { TimesheetPage } from '../pages/master/timesheet/timesheet-page';
 
 import { BlockingLoader } from '../components/ui/blocking-loader/blocking-loader';
@@ -143,6 +144,10 @@ const App = () => {
     selectIsGetLastShiftWithChartReportLoading,
   );
 
+  const isCreateEmployeeProductLoading = useSelector(
+    selectIsCreateEmployeeProductLoading,
+  );
+
   const isLoading =
     isAuthLoading ||
     isUpdateAccountLoading ||
@@ -161,10 +166,11 @@ const App = () => {
     isGetAbsenceSummaryLoading ||
     isGetHomeTeamsLoading ||
     isGetLastShiftWithChartReportLoading ||
-    isReportDownloading;
+    isReportDownloading ||
+    isCreateEmployeeProductLoading;
 
   // Применяем задержку ТОЛЬКО к показу блокирующего слоя
-  const showBlocker = useLoaderWithDelay(isLoading, 300, 300);
+  const showBlocker = useLoaderWithDelay(isLoading, 0, 1000);
 
   const lastScrollY = useRef(0);
 

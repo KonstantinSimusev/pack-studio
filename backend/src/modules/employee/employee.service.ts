@@ -13,6 +13,17 @@ import { EmployeeRepository } from './employee.repository';
 export class EmployeeService {
   constructor(private readonly employeeRepository: EmployeeRepository) {}
 
+  // Метод для внутренней логики в сервисе
+  async getEntityById(id: string): Promise<Employee> {
+    const employee = await this.employeeRepository.findEntityById(id);
+
+    if (!employee) {
+      throw new NotFoundException(`Сотрудник с ID ${id} не найден`);
+    }
+
+    return employee;
+  }
+
   async getEmployeeById(id: string): Promise<Employee> {
     const employee = await this.employeeRepository.findById(id);
 
@@ -33,7 +44,9 @@ export class EmployeeService {
     return employee;
   }
 
-  async getEmployeeByPersonalNumberForAdd(personalNumber: number): Promise<Employee> {
+  async getEmployeeByPersonalNumberForAdd(
+    personalNumber: number,
+  ): Promise<Employee> {
     const employee =
       await this.employeeRepository.findByPersonalNumberForAdd(personalNumber);
 
@@ -54,36 +67,6 @@ export class EmployeeService {
 
     return employee;
   }
-
-  // async getEmployeeWithWorkshopById(id: string): Promise<Employee> {
-  //   const employee = await this.employeeRepository.findWithWorkshopById(id);
-
-  //   if (!employee) {
-  //     throw new NotFoundException('Работник не найден');
-  //   }
-
-  //   return employee;
-  // }
-
-  // async getTeamEmployees(
-  //   teamNumber: number,
-  //   workshopCode: string,
-  //   scheduleCode: string,
-  // ): Promise<Employee[]> {
-  //   const employees = await this.employeeRepository.findByTeamAndSchedule(
-  //     teamNumber,
-  //     workshopCode,
-  //     scheduleCode,
-  //   );
-
-  //   if (employees.length === 0) {
-  //     throw new NotFoundException(
-  //       `Не найдены сотрудники для бригады ${teamNumber}, цеха ${workshopCode}, графика ${scheduleCode}`,
-  //     );
-  //   }
-
-  //   return employees;
-  // }
 
   async deleteEmployee(id: string): Promise<ISuccess> {
     const result = await this.employeeRepository.delete(id);

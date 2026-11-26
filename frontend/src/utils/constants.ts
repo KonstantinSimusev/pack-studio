@@ -1,6 +1,6 @@
 import { formatDateForDayUI } from './utils';
 
-export type TActionCode = 'pack' | 'fix' | 'repack';
+export type TActionCode = 'pack' | 'fix' | 'repack' | 'case';
 
 // конфигурация строк сводки: label и actionCode статичны, value подставляется в компоненте
 export interface ISummaryItemConfig {
@@ -12,6 +12,7 @@ export const SUMMARY_ITEMS_CONFIG: ISummaryItemConfig[] = [
   { actionCode: 'pack', label: 'Упаковано' },
   { actionCode: 'fix', label: 'Припаковано' },
   { actionCode: 'repack', label: 'Переупаковано' },
+  { actionCode: 'case', label: 'Установлено чехлов' },
 ];
 
 // полный словарь «код → подпись»: доступ всегда возвращает string
@@ -19,6 +20,7 @@ export const ACTION_LABELS: Record<TActionCode, string> = {
   pack: 'Упаковка',
   fix: 'Припаковка',
   repack: 'Переупаковка',
+  case: 'Чехол',
 };
 
 export const WORKSHOP_CODE = {
@@ -183,7 +185,12 @@ export const MENU_ITEMS = [
     label: 'Сканирование',
     accessRules: [
       {
-        professions: [PROFESSION_CODE.PACKER],
+        professions: [
+          PROFESSION_CODE.LEAD_OPERATOR,
+          PROFESSION_CODE.OPERATOR,
+          PROFESSION_CODE.PACKER,
+          PROFESSION_CODE.STACKER,
+        ],
         workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
@@ -193,7 +200,12 @@ export const MENU_ITEMS = [
     label: 'Ручной ввод',
     accessRules: [
       {
-        professions: [PROFESSION_CODE.PACKER],
+        professions: [
+          PROFESSION_CODE.LEAD_OPERATOR,
+          PROFESSION_CODE.OPERATOR,
+          PROFESSION_CODE.PACKER,
+          PROFESSION_CODE.STACKER,
+        ],
         workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],
@@ -203,7 +215,12 @@ export const MENU_ITEMS = [
     label: 'Архив',
     accessRules: [
       {
-        professions: [PROFESSION_CODE.PACKER],
+        professions: [
+          PROFESSION_CODE.LEAD_OPERATOR,
+          PROFESSION_CODE.OPERATOR,
+          PROFESSION_CODE.PACKER,
+          PROFESSION_CODE.STACKER,
+        ],
         workshops: [WORKSHOP_CODE.W_LPC11],
       },
     ],

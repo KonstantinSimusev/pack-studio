@@ -9,16 +9,19 @@ import {
   validationRules,
 } from '../../../utils/validation';
 
+import { LayerContext } from '../../../contexts/layer/layerContext';
+
 import { useDispatch, useSelector } from '../../../services/store';
 
-import { loginEmployee } from '../../../services/slices/auth/actions';
+import {
+  loginEmployee,
+  logoutEmployee,
+} from '../../../services/slices/auth/actions';
 
 import {
   clearAuthError,
   selectAuthError,
 } from '../../../services/slices/auth/slice';
-
-import { LayerContext } from '../../../contexts/layer/layerContext';
 
 import { Button } from '../../ui/buttons/button/button';
 import { Form } from '../../ui/form/form';
@@ -110,10 +113,30 @@ export const LoginForm = () => {
     try {
       const employee = await dispatch(loginEmployee(formData)).unwrap();
 
-      if (employee.professionCode === PROFESSION_CODE.PACKER) {
-        navigate('/scan');
-      } else {
-        navigate('/home');
+      switch (employee.professionCode) {
+        // Укладчики и операторы — на сканирование
+        case PROFESSION_CODE.LEAD_OPERATOR:
+        case PROFESSION_CODE.OPERATOR:
+        case PROFESSION_CODE.PACKER:
+        case PROFESSION_CODE.STACKER:
+          navigate('/scan');
+          break;
+
+        // Руководящий состав — на главную
+        case PROFESSION_CODE.MANAGER:
+        case PROFESSION_CODE.HEAD:
+        case PROFESSION_CODE.LEAD_MASTER:
+        case PROFESSION_CODE.MASTER:
+        case PROFESSION_CODE.DETAIL_MASTER:
+        case PROFESSION_CODE.PRODUCTION_FOREMAN:
+          navigate('/home');
+          break;
+
+        // Остальные профессии
+        // ВАЖНО!!! нужен выход из аакаунта
+        // Сейчас не разаработано
+        default:
+          dispatch(logoutEmployee());
       }
 
       setIsLoginOpen(false);

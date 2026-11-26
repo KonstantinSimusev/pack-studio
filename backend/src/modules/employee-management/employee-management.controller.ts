@@ -20,9 +20,7 @@ import { SearchEmployeeDto } from './dto/search-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 import {
-  IAccountInfo,
   IEmployeeInfo,
-  IList,
   IProfile,
   ISuccess,
 } from '../../shared/interfaces/api.interface';

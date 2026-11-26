@@ -7,6 +7,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
+import { Employee } from '../employee/entities/employee.entity';
+
 import { Account } from './entities/account.entity';
 import { AccountRepository } from './account.repository';
 
@@ -14,10 +16,11 @@ import { AccountRepository } from './account.repository';
 export class AccountService {
   constructor(private readonly accountRepository: AccountRepository) {}
 
-  async createAсcount(
+  async createAccount(
     lastName: string,
     firstName: string,
     patronymic: string,
+    employee: Employee, // <- ссылка, которую поставим в FK
   ): Promise<{ account: Account; initialPassword: string }> {
     const login = this.generateLogin(lastName, firstName, patronymic);
     const password = uuidv4();
@@ -27,9 +30,11 @@ export class AccountService {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Сохраняем в базу данных
+    // FK employee_id попадает в БД здесь
     const account = await this.accountRepository.create({
       login,
       hashedPassword,
+      employee,
     });
 
     return {

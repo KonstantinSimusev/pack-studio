@@ -11,9 +11,7 @@ export class AttendanceTypeRepository {
     private readonly attendanceTypeRepository: Repository<AttendanceType>,
   ) {}
 
-  async findByCode(
-    attendanceCode: string,
-  ): Promise<AttendanceType | null> {
+  async findByCode(attendanceCode: string): Promise<AttendanceType | null> {
     return this.attendanceTypeRepository.findOne({
       where: { attendanceCode },
     });

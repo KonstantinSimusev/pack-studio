@@ -68,6 +68,11 @@ export interface IWorkplaceData {
   professionCode: string;
 }
 
+export interface IActionType {
+  actionCode: string;
+  name: string;
+}
+
 export interface ICreateEmployee {
   lastName: string;
   firstName: string;

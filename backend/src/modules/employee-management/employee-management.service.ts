@@ -1,15 +1,10 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 
 import { EProfessionCode, EScheduleCode } from '../../shared/enums/enums';
-
-import { Employee } from '../employee/entities/employee.entity';
 
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -17,7 +12,6 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
   IAccountInfo,
   IEmployeeInfo,
-  IList,
   IProfile,
   ISuccess,
 } from '../../shared/interfaces/api.interface';
@@ -82,35 +76,35 @@ export class EmployeeManagementService {
       );
     }
 
-    // Создаем аккаунт
-    const { account, initialPassword } =
-      await this.accountService.createAсcount(
-        dto.lastName,
-        dto.firstName,
-        dto.patronymic,
-      );
-
-    // Создаем назначение
-    const assignment = await this.assignmentRepository.create({
-      isActive: true,
-      currentWorkshop: workshop,
-      currentTeam: team,
-      currentProfession: profession,
-      currentSchedule: schedule,
-    });
-
-    // Создаём сотрудника
+    // 1. Сначала сотрудник — без него некому ссылаться
     const employee = await this.employeeRepository.create({
       lastName: dto.lastName,
       firstName: dto.firstName,
       patronymic: dto.patronymic,
       personalNumber: dto.personalNumber,
-      account,
-      assignment,
       homeWorkshop: workshop,
       homeTeam: team,
       homeProfession: profession,
       homeSchedule: schedule,
+    });
+
+    // 2. Аккаунт — FK employee_id ставится здесь
+    const { account, initialPassword } =
+      await this.accountService.createAccount(
+        dto.lastName,
+        dto.firstName,
+        dto.patronymic,
+        employee,
+      );
+
+    // 3. Назначение — тоже со ссылкой на сотрудника
+    const assignment = await this.assignmentRepository.create({
+      isActive: true,
+      employee,
+      currentWorkshop: workshop,
+      currentTeam: team,
+      currentProfession: profession,
+      currentSchedule: schedule,
     });
 
     return {
@@ -236,35 +230,6 @@ export class EmployeeManagementService {
       homeScheduleName: employee.homeSchedule.name,
     };
   }
-
-  // async getEmployeesForSchedule(
-  //   workshopCode: string,
-  //   teamNumber: number,
-  //   scheduleCode: string,
-  // ): Promise<Employee[]> {
-  //   if (scheduleCode === ESchedule.S_2A && workshopCode === EWorkshop.W_LPC11) {
-  //     const [employees2A, employees2] = await Promise.all([
-  //       this.employeeService.getTeamEmployees(
-  //         teamNumber,
-  //         workshopCode,
-  //         scheduleCode,
-  //       ),
-  //       this.employeeService.getTeamEmployees(
-  //         teamNumber,
-  //         workshopCode,
-  //         ESchedule.S_2,
-  //       ),
-  //     ]);
-
-  //     return [...employees2A, ...employees2];
-  //   }
-
-  //   return this.employeeService.getTeamEmployees(
-  //     teamNumber,
-  //     workshopCode,
-  //     scheduleCode,
-  //   );
-  // }
 
   async deleteEmployee(id: string, profile: IProfile): Promise<ISuccess> {
     const { employeeId } = profile;

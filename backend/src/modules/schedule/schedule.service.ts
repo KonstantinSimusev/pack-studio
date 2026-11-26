@@ -16,14 +16,4 @@ export class ScheduleService {
 
     return schedule;
   }
-
-  // async getScheduleById(id: string): Promise<Schedule> {
-  //   const schedule = await this.scheduleRepository.findScheduleById(id);
-
-  //   if (!schedule) {
-  //     throw new NotFoundException(`График не найден`);
-  //   }
-
-  //   return schedule;
-  // }
 }

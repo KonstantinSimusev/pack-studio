@@ -226,15 +226,15 @@ export interface IReportList {
 
 export interface IScanCard {
   id: string;
-  heatNumber: string;
-  partyNumber: number;
-  orderNumber: number;
   actionCode: string;
+  heatNumber: number;
+  partyNumber: number;
+  productNumber: number;
 }
 
-export interface ICreateManualInput {
+export interface ICreateEmployeeProduct {
   actionCode: string;
-  heatNumber: string;
+  heatNumber: number;
   partyNumber: number;
-  orderNumber: number;
+  productNumber: number;
 }

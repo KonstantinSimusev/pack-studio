@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, UseGuards } from '@nestjs/common';
 
 import { ISuccess } from '../../shared/interfaces/api.interface';
 import { AuthGuard } from '../auth/guards/auth.guard';

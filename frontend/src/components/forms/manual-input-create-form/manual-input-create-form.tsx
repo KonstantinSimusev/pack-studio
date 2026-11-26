@@ -1,14 +1,7 @@
-import {
-  useContext,
-  // useEffect,
-  useState,
-} from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-// import { useNavigate } from 'react-router-dom';
-
-import { ICreateManualInput, IScanCard } from '../../../utils/api.interfaces';
 import { ACTION_LABELS } from '../../../utils/constants';
-import { LayerContext } from '../../../contexts/layer/layerContext';
+import { ICreateEmployeeProduct } from '../../../utils/api.interfaces';
 
 import {
   validateField,
@@ -16,28 +9,33 @@ import {
   validationRules,
 } from '../../../utils/validation';
 
-// import { useDispatch, useSelector } from '../../../services/store';
+import { LayerContext } from '../../../contexts/layer/layerContext';
+
+import { useDispatch, useSelector } from '../../../services/store';
+import { createEmployeeProduct } from '../../../services/slices/employee-product/actions';
+
+import {
+  clearCreateEmployeeProductError,
+  selectCreateEmployeeProductError,
+} from '../../../services/slices/employee-product/slice';
 
 import { Button } from '../../ui/buttons/button/button';
 import { Form } from '../../ui/form/form';
-// import { ServerError } from '../../ui/server-error/server-error';
+import { ServerError } from '../../ui/server-error/server-error';
 import { TextInput } from '../../ui/inputs/text-input/text-input';
 
 import styles from './manual-input-create-form.module.css';
-import { buildQrCode } from '../../../utils/utils';
 
 interface IFormData extends Record<string, string> {
   heatNumber: string;
   partyNumber: string;
-  orderNumber: string;
+  productNumber: string;
 }
 
 export const ManualInputCreateForm = () => {
-  // const navigate = useNavigate();
-
   const {
+    isManualInputCreateOpen,
     selectedActionCode,
-    setScanCards,
     setIsManualInputCreateOpen,
     setIsOverlayOpen,
   } = useContext(LayerContext);
@@ -45,28 +43,28 @@ export const ManualInputCreateForm = () => {
   // подпись строго по типам: Record полон, undefined здесь невозможен
   const actionLabel: string = ACTION_LABELS[selectedActionCode];
 
-  // const dispatch = useDispatch();
-  // const serverError = useSelector(selectCreateEmployeeError);
+  const dispatch = useDispatch();
+  const serverError = useSelector(selectCreateEmployeeProductError);
 
   // Состояние для хранения значений полей формы
   const [formData, setFormData] = useState<IFormData>({
     heatNumber: '',
     partyNumber: '',
-    orderNumber: '',
+    productNumber: '',
   });
 
   // Состояние для хранения ошибок валидации
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     heatNumber: '',
     partyNumber: '',
-    orderNumber: '',
+    productNumber: '',
   });
 
-  // useEffect(() => {
-  //   if (isEmployeeCreateOpen) {
-  //     dispatch(clearCreateEmployeeError());
-  //   }
-  // }, [isEmployeeCreateOpen]);
+  useEffect(() => {
+    if (isManualInputCreateOpen) {
+      dispatch(clearCreateEmployeeProductError());
+    }
+  }, [isManualInputCreateOpen]);
 
   // Обработчик изменения поля ввода
   const handleChange = (
@@ -87,7 +85,7 @@ export const ManualInputCreateForm = () => {
     });
 
     // Очищаем ошибки с сервера
-    // dispatch(clearCreateEmployeeError());
+    dispatch(clearCreateEmployeeProductError());
   };
 
   // Обработчик потери фокуса для валидации
@@ -121,32 +119,15 @@ export const ManualInputCreateForm = () => {
     }
 
     // Преобразование данных перед отправкой
-    const dataForBackend: ICreateManualInput = {
+    const data: ICreateEmployeeProduct = {
       actionCode: selectedActionCode,
-      heatNumber: formData.heatNumber,
+      heatNumber: Number(formData.heatNumber),
       partyNumber: Number(formData.partyNumber),
-      orderNumber: Number(formData.orderNumber),
+      productNumber: Number(formData.productNumber),
     };
 
     try {
-      // await dispatch(createEmployee(dataForBackend)).unwrap();
-
-      // navigate('/employee');
-
-      console.log(
-        buildQrCode(
-          formData.heatNumber,
-          dataForBackend.partyNumber,
-          dataForBackend.orderNumber,
-        ),
-      );
-
-      const newCard: IScanCard = {
-        id: crypto.randomUUID(),
-        ...dataForBackend,
-      };
-
-      setScanCards((prev) => [newCard, ...prev]);
+      await dispatch(createEmployeeProduct(data)).unwrap();
 
       setIsManualInputCreateOpen(false);
       setIsOverlayOpen(false);
@@ -154,13 +135,13 @@ export const ManualInputCreateForm = () => {
       setFormData({
         heatNumber: '',
         partyNumber: '',
-        orderNumber: '',
+        productNumber: '',
       });
 
       setErrors({
         heatNumber: '',
         partyNumber: '',
-        orderNumber: '',
+        productNumber: '',
       });
     } catch (error) {
       throw new Error('Что-то пошло не так');
@@ -172,7 +153,7 @@ export const ManualInputCreateForm = () => {
     Object.values(errors).some(Boolean) ||
     !formData.heatNumber ||
     !formData.partyNumber ||
-    !formData.orderNumber;
+    !formData.productNumber;
 
   return (
     <Form
@@ -184,7 +165,7 @@ export const ManualInputCreateForm = () => {
         type='text'
         name='heatNumber'
         label='Плавка'
-        placeholder='A1234567'
+        placeholder='123456'
         value={formData.heatNumber}
         error={errors.heatNumber}
         className={styles.input}
@@ -196,7 +177,7 @@ export const ManualInputCreateForm = () => {
         type='text'
         name='partyNumber'
         label='Партия'
-        placeholder='1234567'
+        placeholder='123'
         value={formData.partyNumber}
         error={errors.partyNumber}
         onBlur={handleBlur}
@@ -205,17 +186,17 @@ export const ManualInputCreateForm = () => {
 
       <TextInput
         type='text'
-        name='orderNumber'
+        name='productNumber'
         label='Номер'
         placeholder='123'
-        value={formData.orderNumber}
-        error={errors.orderNumber}
+        value={formData.productNumber}
+        error={errors.productNumber}
         onBlur={handleBlur}
         onChange={handleChange}
       />
 
       <div className={styles.message}>
-        {/* <ServerError text={serverError} /> */}
+        <ServerError text={serverError} />
       </div>
 
       <Button

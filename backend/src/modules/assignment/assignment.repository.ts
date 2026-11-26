@@ -17,11 +17,6 @@ export class AssignmentRepository {
     return this.assignmentRepository.save(assignment);
   }
 
-  // 2. CRUD: Read (общие методы поиска)
-  // async findById(id: string): Promise<Assignment | null> {
-  //   return this.assignmentRepository.findOneBy({ id });
-  // }
-
   async findByEmployeeId(employeeId: string): Promise<Assignment | null> {
     return this.assignmentRepository.findOne({
       where: {

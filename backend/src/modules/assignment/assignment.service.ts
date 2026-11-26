@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Workshop } from '../workshop/entities/workshop.entity';
-import { Team } from '../team/entities/team.entity';
 import { Profession } from '../profession/entities/profession.entity';
 import { Schedule } from '../schedule/entities/schedule.entity';
+import { Team } from '../team/entities/team.entity';
+import { Workshop } from '../workshop/entities/workshop.entity';
 
 import { AssignmentRepository } from './assignment.repository';
 
@@ -38,14 +38,4 @@ export class AssignmentService {
     // Сохранение изменений
     await this.assignmentRepository.save(assignment);
   }
-
-  // async getAssignmentById(id: string): Promise<Assignment> {
-  //   const assignment = await this.assignmentRepository.findById(id);
-
-  //   if (!assignment) {
-  //     throw new NotFoundException(`Назначение не найдено`);
-  //   }
-
-  //   return assignment;
-  // }
 }

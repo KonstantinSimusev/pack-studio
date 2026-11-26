@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 
 import { ReportArea } from '../../report-area/entities/report-area.entity';
-import { ReportType } from '../../report-type/entities/report-type.entity';
 import { Shift } from '../../shift/entities/shift.entity';
 
 @Entity({

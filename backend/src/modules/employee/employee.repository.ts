@@ -18,6 +18,10 @@ export class EmployeeRepository {
   }
 
   // 2. CRUD: Read (общие методы поиска)
+  async findEntityById(id: string): Promise<Employee | null> {
+    return this.employeeRepository.findOneBy({ id });
+  }
+
   async findByWorkshopAndTeam(
     workshopCode: string,
     teamNumber: number,

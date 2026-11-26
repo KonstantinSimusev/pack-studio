@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { hasManager } from '../../shared/utils/utils';
-
 import { EAttendanceCode } from '../../shared/enums/enums';
+
 import {
   IEmployeeShift,
   IReportData,
@@ -13,6 +13,7 @@ import {
 
 import { EmployeeShift } from '../employee-shift/entities/employee-shift.entity';
 import { Shift } from './entities/shift.entity';
+
 import { ShiftRepository } from './shift.repository';
 
 @Injectable()
@@ -35,7 +36,7 @@ export class ShiftService {
     workshopId: string,
     teamId: string,
     scheduleId: string,
-  ): Promise<Shift | null> {
+  ): Promise<Shift> {
     const shift = await this.shiftRepository.findLastWithEmployeeShifts(
       workshopId,
       teamId,
@@ -132,6 +133,25 @@ export class ShiftService {
     }
 
     return this.mapShiftToReportData(shift);
+  }
+
+  // Pages: Scan, ManualInput
+  async getLastShiftWithEmployeeProducts(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift> {
+    const shift = await this.shiftRepository.findLastWithEmployeeProducts(
+      workshopId,
+      teamId,
+      scheduleId,
+    );
+
+    if (!shift) {
+      throw new NotFoundException('Смена не найдена');
+    }
+
+    return shift;
   }
 
   private mapShiftToReportData(shift: Shift): IReportData {

@@ -32,6 +32,12 @@ export const seedEmployees = async (
   }
 
   console.log(`Сотрудники созданы: ${accounts.length} записей`);
+
   // ФИО + логин + одноразовый пароль — в терминал
-  console.table(accounts);
+  console.table(
+    accounts.reduce<Record<number, IAccountInfo>>((acc, account, i) => {
+      acc[i + 1] = account;
+      return acc;
+    }, {}),
+  );
 };

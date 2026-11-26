@@ -1,4 +1,10 @@
-import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from 'typeorm';
 
 import { Employee } from '../../employee/entities/employee.entity';
 
@@ -35,6 +41,12 @@ export class Account {
   hashedRefreshToken: string | null;
 
   // Связь: один аккаунт — один сотрудник
-  @OneToOne(() => Employee, (employee) => employee.account)
+  // FK: employee_id в таблице accounts
+  // Каскад: при удалении сотрудника аккаунт удаляется вместе с ним
+  @OneToOne(() => Employee, (employee) => employee.account, {
+    nullable: false,
+    onDelete: 'CASCADE', // при удалении сотрудника аккаунт удаляется вместе с ним
+  })
+  @JoinColumn({ name: 'employee_id' })
   employee: Employee;
 }

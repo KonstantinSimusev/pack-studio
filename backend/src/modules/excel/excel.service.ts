@@ -8,13 +8,13 @@ import { ShiftService } from '../shift/shift.service';
 
 @Injectable()
 export class ExcelService {
-  constructor(private readonly shiftService: ShiftService) {} // позже: private readonly teamShiftService: TeamShiftService
+  constructor(private readonly shiftService: ShiftService) {}
 
   async downloadExcelReport(shiftId: string, res: Response): Promise<void> {
     // 1. Данные
     const report: IReportData =
       await this.shiftService.getShiftByIdWithExcelReport(shiftId);
-      
+
     // 2. Формируем файл
     await this.buildChartReportResponse(report, res);
   }

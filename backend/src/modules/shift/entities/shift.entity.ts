@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { EmployeeProduct } from '../../employee-product/entities/employee-product.entity';
 import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
 import { Report } from '../../report/entities/report.entity';
 import { Schedule } from '../../schedule/entities/schedule.entity';

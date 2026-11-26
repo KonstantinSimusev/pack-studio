@@ -10,6 +10,7 @@ import {
 
 import { Account } from '../../account/entities/account.entity';
 import { Assignment } from '../../assignment/entities/assignment.entity';
+import { EmployeeProduct } from '../../employee-product/entities/employee-product.entity';
 import { EmployeeShift } from '../../employee-shift/entities/employee-shift.entity';
 import { Profession } from '../../profession/entities/profession.entity';
 import { Schedule } from '../../schedule/entities/schedule.entity';
@@ -55,20 +56,12 @@ export class Employee {
   })
   personalNumber: number;
 
-  // Связь: один сотрудник — один аккаунт
-  @OneToOne(() => Account, (account) => account.employee, {
-    nullable: false,
-    onDelete: 'CASCADE', // при удалении сотрудника - связанный аккаунт удаляется тоже
-  })
-  @JoinColumn({ name: 'account_id' })
+  // Связь: один сотрудник — один аккаунт (FK живёт в accounts)
+  @OneToOne(() => Account, (account) => account.employee)
   account: Account;
 
-  // Связь: один сотрудник — одно назначений
-  @OneToOne(() => Assignment, (assignment) => assignment.employee, {
-    nullable: false,
-    onDelete: 'CASCADE', // при удалении сотрудника - связанное назаначение удаляется тоже
-  })
-  @JoinColumn({ name: 'assignment_id' })
+  // Связь: один сотрудник — одно назначение (FK живёт в assignments)
+  @OneToOne(() => Assignment, (assignment) => assignment.employee)
   assignment: Assignment;
 
   // Связь: много много сотрудников — один цех
@@ -100,4 +93,11 @@ export class Employee {
   // Связь: один сотрудник — много смен сотрудника
   @OneToMany(() => EmployeeShift, (employeeShift) => employeeShift.employee)
   employeeShifts: EmployeeShift[];
+
+  // Связь: один сотрудник — много записей продукции
+  @OneToMany(
+    () => EmployeeProduct,
+    (employeeProduct) => employeeProduct.employee,
+  )
+  employeeProducts: EmployeeProduct[];
 }

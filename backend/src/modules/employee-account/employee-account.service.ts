@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Injectable } from '@nestjs/common';
 
-import { IAccountInfo, IProfile } from '../../shared/interfaces/api.interface';
+import { IAccountInfo } from '../../shared/interfaces/api.interface';
 
 import { AccountRepository } from '../account/account.repository';
 import { EmployeeService } from '../employee/employee.service';

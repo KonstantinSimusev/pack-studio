@@ -1,4 +1,4 @@
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,23 +21,6 @@ export class ReportRepository {
   async findById(id: string): Promise<Report | null> {
     return this.reportRepository.findOneBy({ id });
   }
-
-  // Возвращает все рапорты смены с участком и типом
-  // async findAllByShift(shiftId: string): Promise<Report[]> {
-  //   return this.reportRepository.find({
-  //     where: {
-  //       shift: { id: shiftId },
-  //     },
-  //     relations: {
-  //       reportArea: {
-  //         reportType: true,
-  //       },
-  //     },
-  //     order: {
-  //       reportArea: { areaCode: 'ASC' },
-  //     },
-  //   });
-  // }
 
   // 3. CRUD: Update
   async save(report: Report): Promise<Report> {

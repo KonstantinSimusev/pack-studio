@@ -1,24 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ISuccess } from '../../shared/interfaces/api.interface';
-
 import { UpdateReportDto } from './dto/update-report.dto';
-import { Report } from './entities/report.entity';
+
 import { ReportRepository } from './report.repository';
 
 @Injectable()
 export class ReportService {
   constructor(private readonly reportRepository: ReportRepository) {}
-
-  // async getReportById(id: string): Promise<Report> {
-  //   const report = await this.reportRepository.findById(id);
-
-  //   if (!report) {
-  //     throw new NotFoundException(`Рапорт с ID ${id} не найден`);
-  //   }
-
-  //   return report;
-  // }
 
   async updateReport(dto: UpdateReportDto): Promise<ISuccess> {
     // Получаем сущность по ID

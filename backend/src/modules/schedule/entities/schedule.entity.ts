@@ -3,7 +3,6 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Assignment } from '../../assignment/entities/assignment.entity';
 import { Employee } from '../../employee/entities/employee.entity';
 import { Shift } from '../../shift/entities/shift.entity';
-// import { ShiftSchedule } from '../../shift-schedule/entities/shift-schedule.entity';
 
 @Entity({
   name: 'schedules',

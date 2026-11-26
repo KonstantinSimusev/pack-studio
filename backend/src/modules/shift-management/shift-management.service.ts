@@ -469,25 +469,6 @@ export class ShiftManagementService {
     // Производство реквизитов — по алфавиту
     detailLocations.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
 
-    // Считаем только рядовых работников — без руководителей
-    // const employeesCount = teamEmployees.filter(
-    //   (employee) => !hasManager(employee.homeProfession.professionCode),
-    // ).length;
-
-    // === Проверка готовности чарта ===
-    // Сумма явок по всем участкам
-    // const attendedCount =
-    //   packLocations.reduce((sum, location) => sum + location.count, 0) +
-    //   lurLocations.reduce((sum, location) => sum + location.count, 0) +
-    //   fixLocations.reduce((sum, location) => sum + location.count, 0) +
-    //   detailLocations.reduce((sum, location) => sum + location.count, 0);
-
-    // Сумма отсутствий по профессиям
-    // const absentCount = professions.reduce(
-    //   (sum, profession) => sum + profession.count,
-    //   0,
-    // );
-
     const isReady = shift.employeeShifts.every(
       (employeeShift) => employeeShift.isReady === true,
     );

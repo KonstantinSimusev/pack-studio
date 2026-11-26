@@ -15,8 +15,4 @@ export class ScheduleRepository {
   async findByCode(scheduleCode: string): Promise<Schedule | null> {
     return this.scheduleRepository.findOneBy({ scheduleCode });
   }
-
-  // async findScheduleById(id: string): Promise<Schedule | null> {
-  //   return this.scheduleRepository.findOneBy({ id });
-  // }
 }

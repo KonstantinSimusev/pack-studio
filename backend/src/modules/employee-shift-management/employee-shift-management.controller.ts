@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
 
 import { ISuccess } from '../../shared/interfaces/api.interface';
 import { CreateEmployeeShiftDto } from './dto/create-employee-shift.dto';
 
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { EmployeeShiftManagementService } from './employee-shift-management.service';
-// import { DeleteEmployeeShiftDto } from './dto/delete-employee-shift.dto';
 import { UpdateEmployeeShiftDto } from './dto/update-employee-shift.dto';
 
 @Controller('employee-shift-management')
@@ -19,9 +18,7 @@ export class EmployeeShiftManagementController {
   async createEmployeeShiftByPersonalNumber(
     @Body() dto: CreateEmployeeShiftDto,
   ): Promise<ISuccess> {
-    return this.employeeShiftManagementService.createByPersonalNumber(
-      dto,
-    );
+    return this.employeeShiftManagementService.createByPersonalNumber(dto);
   }
 
   @Put()

@@ -1,0 +1,54 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  width: 286px;
+  margin: 0 30px;
+  margin: 0 auto;
+}
+
+.summaryItem {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 18px;
+  padding-left: 26px; /* место под кружок слева от лейбла */
+}
+
+.summaryItem::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* те же цвета, что у кнопок и карточек */
+.blue::before {
+  background-color: #4fc3f7;
+}
+
+.yellow::before {
+  background-color: #ffc107;
+}
+
+.red::before {
+  background-color: #ff4757;
+}
+
+.label {
+  flex-shrink: 0; /* не сжимается, даже если места мало */
+}
+
+.summaryValue {
+  position: relative;
+  top: 2px;
+  flex-shrink: 0;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: right; /* цифры выровнены по правому краю своих 40 px */
+}

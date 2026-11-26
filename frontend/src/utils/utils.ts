@@ -233,9 +233,9 @@ export const parseLabel = (raw: string) => {
   }
 
   return {
-    heatNumber: digits.slice(5, 11),
+    heatNumber: Number(digits.slice(5, 11)),
     partyNumber: Number(digits.slice(11, 18)),
-    orderNumber: Number(digits.slice(18, 23)),
+    productNumber: Number(digits.slice(18, 23)),
   };
 };
 
@@ -243,13 +243,13 @@ export const parseLabel = (raw: string) => {
 // Цех (3), год (2) и вес (5) из формы не приходят — заполняются нулями
 // как заглушка, уточним с бекендом, что он ждёт в этих позициях.
 export const buildQrCode = (
-  heatNumber: string,
+  heatNumber: number,
   partyNumber: number,
-  orderNumber: number,
+  productNumber: number,
 ): string =>
   '000' + // код цеха — 3 знака
   '00' + // год партии — 2 знака
-  heatNumber.padStart(6, '0') + // плавка — 6 знаков
+  String(heatNumber).padStart(6, '0') + // плавка — 6 знаков
   String(partyNumber).padStart(7, '0') + // партия — 7 знаков
-  String(orderNumber).padStart(5, '0') + // рулон — 5 знаков
+  String(productNumber).padStart(5, '0') + // рулон — 5 знаков
   '00000'; // вес нетто — 5 знаков

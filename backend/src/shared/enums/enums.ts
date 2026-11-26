@@ -89,3 +89,10 @@ export enum EAttendanceCode {
   PTD = 'ПТД',
   Y = 'Я',
 }
+
+export enum EActionCode {
+  PACK = 'pack',
+  FIX = 'fix',
+  REPACK = 'repack',
+  CASE = 'case',
+}

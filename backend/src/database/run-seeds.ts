@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 
 import { AppModule } from '../app.module';
 
+import { seedActionTypes } from './seeds/action-types.seed';
 import { seedAttendanceTypes } from './seeds/attendance-types.seed';
 import { seedEmployees } from './seeds/employees.seed';
 import { seedProfessions } from './seeds/professions.seed';
@@ -28,6 +29,7 @@ const run = async (): Promise<void> => {
   await seedProfessions(dataSource); // профессии — нужны для рабочих мест
   await seedTeams(dataSource); // бригады
   await seedSchedules(dataSource); // графики
+  await seedActionTypes(dataSource); // типы действий
   await seedAttendanceTypes(dataSource); // типы посещаемости
   await seedWorkplaces(dataSource); // рабочие места — после цехов и профессий
   await seedReportTypes(dataSource); // типы рапортов — до участков

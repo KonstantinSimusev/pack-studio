@@ -1,4 +1,4 @@
-import { Between, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -164,6 +164,28 @@ export class ShiftRepository {
         'schedule',
         'reports.reportArea.reportType',
         'reports.reportArea.reportType.reportAreas',
+      ],
+    });
+  }
+
+  // Pages: Scan, ManualInput
+  async findLastWithEmployeeProducts(
+    workshopId: string,
+    teamId: string,
+    scheduleId: string,
+  ): Promise<Shift | null> {
+    return await this.shiftRepository.findOne({
+      where: {
+        workshop: { id: workshopId },
+        team: { id: teamId },
+        schedule: { id: scheduleId },
+      },
+      relations: [
+        'workshop',
+        'team',
+        'schedule',
+        'employeeShifts.employee',
+        'employeeShifts.attendanceType',
       ],
     });
   }

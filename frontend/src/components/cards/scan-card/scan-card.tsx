@@ -24,6 +24,7 @@ export const ScanCard = ({ index, card, onDelete }: IProps) => {
               card.actionCode === 'pack' && styles.blue,
               card.actionCode === 'fix' && styles.yellow,
               card.actionCode === 'repack' && styles.red,
+              card.actionCode === 'case' && styles.yellow,
             )}
           >
             № {index}
@@ -46,7 +47,7 @@ export const ScanCard = ({ index, card, onDelete }: IProps) => {
         </div>
         <div className={styles.row}>
           <span className={styles.title}>Номер:</span>
-          <span className={styles.text}>{card.orderNumber}</span>
+          <span className={styles.text}>{card.productNumber}</span>
         </div>
       </div>
     </div>
